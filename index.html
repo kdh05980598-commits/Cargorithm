@@ -150,10 +150,10 @@
     <div class="modal-content">
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <h2 style="color:var(--primary); margin-top:0;">견적 상담 신청</h2>
-        <form action="https://formspree.io/f/YOUR_ID" method="POST">
-            <div class="input-group"><label>고객명</label><input type="text" name="name" required></div>
+        <form action="https://formspree.io/f/YOUR_ID" method="POST" onsubmit="saveLeadData()">
+            <div class="input-group"><label>고객명</label><input type="text" name="name" id="userName" required></div>
             <div class="input-group"><label>상담 희망 차종</label><input type="text" name="car" id="targetCar"></div>
-            <div class="input-group"><label>연락처</label><input type="tel" name="phone" placeholder="010-0000-0000" required></div>
+            <div class="input-group"><label>연락처</label><input type="tel" name="phone" id="userPhone" placeholder="010-0000-0000" required></div>
             
             <div class="terms-area">
                 <div class="check-line">
@@ -198,10 +198,22 @@
     </div>
 </div>
 
+<div id="adminModal" class="modal">
+    <div class="modal-content" style="max-width: 600px;">
+        <span class="close-modal" onclick="closeAdmin()">&times;</span>
+        <h2 style="color:var(--primary); margin-top:0;">상담 신청 관리자 페이지</h2>
+        <div id="admin-list" style="margin-top:20px; max-height:400px; overflow-y:auto; border:1px solid #ddd; padding:15px; border-radius:8px;">
+        </div>
+        <button onclick="clearLeads()" class="btn-calc" style="margin-top:20px; padding:12px; font-size:14px; background:#d9534f;">전체 내역 삭제</button>
+    </div>
+</div>
+
 <footer>
     <div class="footer-info">
         (주)제일오토모빌 권도형 팀장 | 010-6670-0590<br>
         카고리즘 비즈니스 솔루션 | All Rights Reserved.
+        <br><br>
+        <span onclick="openAdmin()" style="cursor:pointer; color:#888; font-size:12px; text-decoration:underline;">관리자 모드</span>
     </div>
 </footer>
 
@@ -302,6 +314,60 @@
             rate = next;
         }
         document.getElementById('calc-result').innerText = "입력값을 확인해주세요.";
+    }
+
+    function saveLeadData() {
+        const name = document.getElementById('userName').value;
+        const car = document.getElementById('targetCar').value;
+        const phone = document.getElementById('userPhone').value;
+        const time = new Date().toLocaleString();
+
+        let leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
+        leads.push({ time, name, car, phone });
+        localStorage.setItem('cargo_leads', JSON.stringify(leads));
+    }
+
+    function openAdmin() {
+        const pw = prompt('관리자 비밀번호를 입력하세요.');
+        if(pw === '1234') {
+            document.getElementById('adminModal').style.display = 'block';
+            renderAdminList();
+        } else if(pw !== null) {
+            alert('비밀번호가 일치하지 않습니다.');
+        }
+    }
+
+    function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+    function renderAdminList() {
+        const listDiv = document.getElementById('admin-list');
+        const leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
+        
+        if(leads.length === 0) {
+            listDiv.innerHTML = '<p style="text-align:center; color:#666;">접수된 상담 신청이 없습니다.</p>';
+            return;
+        }
+
+        let html = '<table style="width:100%; border-collapse:collapse; font-size:14px; text-align:left;">';
+        html += '<tr style="border-bottom:2px solid #333;"><th style="padding:10px 5px;">신청 시간</th><th>고객명</th><th>차종</th><th>연락처</th></tr>';
+        
+        leads.reverse().forEach(l => {
+            html += `<tr style="border-bottom:1px solid #eee;">
+                <td style="padding:10px 5px; color:#555;">${l.time}</td>
+                <td>${l.name}</td>
+                <td style="color:var(--accent);">${l.car}</td>
+                <td>${l.phone}</td>
+            </tr>`;
+        });
+        html += '</table>';
+        listDiv.innerHTML = html;
+    }
+
+    function clearLeads() {
+        if(confirm('모든 상담 내역을 삭제하시겠습니까? 복구할 수 없습니다.')) {
+            localStorage.removeItem('cargo_leads');
+            renderAdminList();
+        }
     }
 
     createCards('grid-kia', '기아', 8, 'https://picsum.photos/350/200');
