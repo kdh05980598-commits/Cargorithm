@@ -5,165 +5,326 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>카고리즘 | (주)제일오토모빌</title>
     <style>
-        :root { --primary: #0a192f; --accent: #1164ff; --gray: #f8f9fa; --text: #333; }
-        body { font-family: 'Pretendard', sans-serif; margin: 0; background: var(--gray); color: var(--text); line-height: 1.6; }
-        header { background: #fff; padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .main-logo { font-size: 28px; font-weight: 800; color: var(--primary); letter-spacing: -1px; }
-        .top-contact { font-size: 13px; color: #666; text-align: right; }
+        :root { --primary: #0a192f; --accent: #1164ff; --bg: #f4f7f9; --white: #ffffff; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; background: var(--bg); color: #333; line-height: 1.6; }
         
+        /* 헤더 디자인 */
+        header { background: var(--white); padding: 20px 5%; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .logo-area { display: flex; flex-direction: column; }
+        .main-logo { font-size: 32px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; }
+        .top-contact { font-size: 14px; color: #555; font-weight: 600; text-align: right; }
+        
+        /* 링크 버튼 */
+        .links { display: flex; gap: 8px; margin-top: 10px; flex-wrap: wrap; }
+        .links a { text-decoration: none; padding: 6px 12px; border-radius: 4px; font-size: 11px; color: #fff; font-weight: 600; transition: 0.3s; }
+        .bg-blog { background: #03c75a; } .bg-cafe { background: #2db400; } 
+        .bg-app-blog { background: #ff9800; } .bg-app-tg { background: #0088cc; }
+        .links a:hover { opacity: 0.8; transform: translateY(-2px); }
+
+        /* 탭 내비게이션 */
         .main-nav { display: flex; background: var(--primary); }
-        .main-tab { flex: 1; padding: 18px; text-align: center; color: #fff; cursor: pointer; font-weight: 600; opacity: 0.7; }
-        .main-tab.active { opacity: 1; background: var(--accent); }
-        
-        .sub-nav { display: none; background: #fff; border-bottom: 1px solid #ddd; justify-content: center; gap: 10px; padding: 10px; }
+        .main-tab { flex: 1; padding: 20px; text-align: center; color: #fff; cursor: pointer; font-weight: 700; font-size: 16px; transition: 0.3s; }
+        .main-tab.active { background: var(--accent); }
+
+        .sub-nav-container { background: var(--white); border-bottom: 1px solid #ddd; padding: 10px 0; }
+        .sub-nav { display: none; justify-content: center; gap: 10px; }
         .sub-nav.active { display: flex; }
-        .sub-tab { padding: 8px 15px; border-radius: 20px; font-size: 13px; cursor: pointer; border: 1px solid #ddd; }
+        .sub-tab { padding: 8px 20px; border-radius: 25px; font-size: 14px; cursor: pointer; border: 1px solid #ddd; font-weight: 600; transition: 0.2s; }
         .sub-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .container { max-width: 1100px; margin: 20px auto; padding: 0 15px; }
+        /* 컨텐츠 영역 */
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-
-        .brand-header { background: #fff; padding: 15px; margin-top: 10px; border-radius: 8px; display: flex; align-items: center; cursor: pointer; border: 1px solid #eee; box-shadow: 0 2px 4px rgba(0,0,0,0.03); }
-        .brand-header img { width: 30px; margin-right: 12px; }
-        .brand-header h3 { margin: 0; font-size: 17px; flex-grow: 1; }
-        .brand-body { display: none; padding-top: 15px; }
+        
+        /* 브랜드 아코디언 */
+        .brand-header { background: #fff; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; cursor: pointer; border: 1px solid #eee; margin-bottom: 10px; transition: 0.3s; }
+        .brand-header:hover { background: #fdfdfd; }
+        .brand-header img { height: 25px; margin-right: 15px; }
+        .brand-header h3 { margin: 0; font-size: 18px; flex-grow: 1; color: var(--primary); }
+        .brand-body { display: none; padding: 20px 0; }
         .brand-body.open { display: block; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        .card { background: #fff; border-radius: 12px; padding: 15px; border: 1px solid #eee; transition: 0.3s; }
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.08); }
-        .card img { width: 100%; border-radius: 6px; margin-bottom: 12px; }
-        .price-list { font-size: 12px; color: #555; background: #f9f9f9; padding: 10px; border-radius: 6px; }
-        
-        .calc-wrapper { max-width: 500px; margin: 40px auto; background: #fff; padding: 30px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
-        input { width: 100%; padding: 12px; margin: 8px 0 15px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-        button.action-btn { width: 100%; padding: 15px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-weight: 700; cursor: pointer; }
+        /* 카드 그리드 */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
+        .card { background: #fff; border-radius: 15px; padding: 20px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; background: #f9f9f9; }
+        .price-box { background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 13px; color: #444; line-height: 1.8; }
+        .btn-consult { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 700; margin-top: 15px; cursor: pointer; }
 
-        footer { background: #333; color: #fff; padding: 40px 20px; text-align: center; margin-top: 50px; font-size: 14px; }
-        .footer-info { opacity: 0.8; }
+        /* 계산기 스타일 */
+        .calc-card { max-width: 550px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
+        .calc-card h3 { margin-top: 0; color: var(--primary); text-align: center; margin-bottom: 30px; }
+        .input-group { margin-bottom: 20px; }
+        label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #555; }
+        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        .btn-calc { width: 100%; padding: 18px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: 700; cursor: pointer; transition: 0.3s; }
+        .result { margin-top: 30px; text-align: center; font-size: 24px; color: #d9534f; font-weight: 800; border-top: 2px dashed #eee; padding-top: 20px; }
+
+        /* 모달 스타일 */
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; }
+        .modal-content { background: #fff; width: 90%; max-width: 480px; margin: 50px auto; border-radius: 15px; padding: 35px; position: relative; }
+        .close-modal { position: absolute; right: 20px; top: 20px; font-size: 25px; cursor: pointer; }
+        .terms-box { font-size: 12px; background: #f4f4f4; padding: 15px; border-radius: 5px; margin-top: 10px; display: none; line-height: 1.5; border: 1px solid #ddd; }
+
+        footer { background: #222; color: #fff; padding: 50px 20px; text-align: center; margin-top: 80px; }
+        .footer-info { font-size: 15px; opacity: 0.8; line-height: 2; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="main-logo">카고리즘</div>
-    <div class="top-contact">(주)제일오토모빌 권도형 팀장 010-6670-0590</div>
+    <div class="logo-area">
+        <div class="main-logo">카고리즘</div>
+        <div class="links">
+            <a href="https://blog.naver.com/cargorism" target="_blank" class="bg-blog">네이버 블로그</a>
+            <a href="https://cafe.naver.com/cargorism" target="_blank" class="bg-cafe">네이버 카페</a>
+            <a href="https://blog.naver.com/kdh0598" target="_blank" class="bg-app-blog">앱테크(블로그)</a>
+            <a href="https://t.me/gurida" target="_blank" class="bg-app-tg">앱테크(텔레그램)</a>
+        </div>
+    </div>
+    <div class="top-contact">(주)제일오토모빌 권도형 팀장<br>010-6670-0590</div>
 </header>
 
-<div class="main-nav">
-    <div class="main-tab active" onclick="changeMain(0)">차량 모델</div>
-    <div class="main-tab" onclick="changeMain(1)">차량 계산</div>
-</div>
+<nav class="main-nav">
+    <div class="main-tab active" onclick="showMainTab(0)">차량 모델</div>
+    <div class="main-tab" onclick="showMainTab(1)">차량 금리</div>
+</nav>
 
-<div id="sub-nav-0" class="sub-nav active">
-    <div class="sub-tab active" onclick="changeSub(0, 0)">기아</div>
-    <div class="sub-tab" onclick="changeSub(0, 1)">현대</div>
-    <div class="sub-tab" onclick="changeSub(0, 2)">KGM/쉐보레</div>
-</div>
-
-<div id="sub-nav-1" class="sub-nav">
-    <div class="sub-tab active" onclick="changeSub(1, 0)">렌트 금리</div>
-    <div class="sub-tab" onclick="changeSub(1, 1)">리스 금리</div>
-    <div class="sub-tab" onclick="changeSub(1, 2)">할부 금리</div>
+<div class="sub-nav-container">
+    <div id="sub-nav-models" class="sub-nav active">
+        <div class="sub-tab active" onclick="showSubContent('models', 0)">기아</div>
+        <div class="sub-tab" onclick="showSubContent('models', 1)">현대</div>
+        <div class="sub-tab" onclick="showSubContent('models', 2)">KGM</div>
+        <div class="sub-tab" onclick="showSubContent('models', 3)">쉐보레</div>
+    </div>
+    <div id="sub-nav-rates" class="sub-nav">
+        <div class="sub-tab active" onclick="showSubContent('rates', 0)">렌트 금리</div>
+        <div class="sub-tab" onclick="showSubContent('rates', 1)">리스 금리</div>
+        <div class="sub-tab" onclick="showSubContent('rates', 2)">할부 금리</div>
+    </div>
 </div>
 
 <div class="container">
-    <div id="main-content-0" class="tab-content active">
-        <div id="brand-kia">
-            <div class="brand-header" onclick="toggleBrand('kia-list')">
+    <div id="content-models" class="tab-content active">
+        <div id="brand-kia" class="brand-item active">
+            <div class="brand-header" onclick="toggleAccordion('kia-list')">
                 <img src="https://www.kia.com/etc.clientlibs/kia2-p3/components/content/header/clientlibs/resources/images/logo.png" alt="kia">
-                <h3>기아자동차 (15개 모델)</h3>
-                <span>▼</span>
+                <h3>기아자동차 (KIA)</h3>
+                <span id="kia-list-arrow">▲</span>
             </div>
-            <div id="kia-list" class="brand-body open"><div class="grid" id="kia-grid"></div></div>
+            <div id="kia-list" class="brand-body open"><div class="grid" id="grid-kia"></div></div>
         </div>
-        
-        <div id="brand-hyundai" style="margin-top:15px;">
-            <div class="brand-header" onclick="toggleBrand('h-list')">
+        <div id="brand-hyundai" class="brand-item" style="display:none;">
+            <div class="brand-header" onclick="toggleAccordion('h-list')">
                 <img src="https://www.hyundai.com/static/images/logo.png" alt="hyundai">
-                <h3>현대자동차 (15개 모델)</h3>
-                <span>▼</span>
+                <h3>현대자동차 (HYUNDAI)</h3>
+                <span id="h-list-arrow">▼</span>
             </div>
-            <div id="h-list" class="brand-body"><div class="grid" id="h-grid"></div></div>
+            <div id="h-list" class="brand-body"><div class="grid" id="grid-hyundai"></div></div>
+        </div>
+        <div id="brand-kgm" class="brand-item" style="display:none;">
+            <div class="brand-header" onclick="toggleAccordion('kgm-list')">
+                <img src="https://www.kg-mobility.com/static/images/common/logo.png" alt="kgm">
+                <h3>KGM (쌍용)</h3>
+                <span id="kgm-list-arrow">▼</span>
+            </div>
+            <div id="kgm-list" class="brand-body"><div class="grid" id="grid-kgm"></div></div>
+        </div>
+        <div id="brand-chev" class="brand-item" style="display:none;">
+            <div class="brand-header" onclick="toggleAccordion('chev-list')">
+                <img src="https://www.chevrolet.co.kr/images/common/logo_chevrolet.png" alt="chev">
+                <h3>쉐보레 (CHEVROLET)</h3>
+                <span id="chev-list-arrow">▼</span>
+            </div>
+            <div id="chev-list" class="brand-body"><div class="grid" id="grid-chev"></div></div>
         </div>
     </div>
 
-    <div id="main-content-1" class="tab-content">
-        <div class="calc-wrapper">
-            <h3 id="calc-title">렌트 금리 계산기</h3>
-            <label>차량 가격</label><input type="number" id="price" value="45000000">
-            <label>계약 개월</label><input type="number" id="months" value="60">
-            <label>보증금/선납금</label><input type="number" id="deposit" value="0">
-            <label>잔존가치 (할부시 0)</label><input type="number" id="rv" value="20000000">
-            <label>월 납입료</label><input type="number" id="pmt" value="750000">
-            <button class="action-btn" onclick="calcIRR()">실질 금리 분석하기</button>
-            <div id="res" style="text-align:center; margin-top:20px; font-size:22px; color:red; font-weight:700;"></div>
+    <div id="content-rates" class="tab-content">
+        <div class="calc-card">
+            <h3 id="calc-display-title">렌트 금리 실질 분석</h3>
+            <div class="input-group">
+                <label>차량 가격 (원)</label>
+                <input type="number" id="p_val" value="45000000">
+            </div>
+            <div class="input-group">
+                <label>계약 기간 (개월)</label>
+                <input type="number" id="m_val" value="60">
+            </div>
+            <div class="input-group">
+                <label id="label-dep">보증금 / 선납금 (원)</label>
+                <input type="number" id="d_val" value="0">
+            </div>
+            <div class="input-group">
+                <label id="label-rv">잔존가치 (원) *할부는 0입력</label>
+                <input type="number" id="r_val" value="20000000">
+            </div>
+            <div class="input-group">
+                <label>월 납입료 (원)</label>
+                <input type="number" id="pmt_val" value="750000">
+            </div>
+            <button class="btn-calc" onclick="calculateFinalIRR()">실질 금리 결과 확인</button>
+            <div id="calc-result" class="result"></div>
         </div>
+    </div>
+</div>
+
+<div id="leadModal" class="modal">
+    <div class="modal-content">
+        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <h2 style="margin-top:0; color:var(--primary);">견적 상담 신청</h2>
+        <p style="font-size:14px; color:#666;">카고리즘에서 가장 유리한 견적을 찾아드립니다.</p>
+        <form action="https://formspree.io/f/YOUR_ID" method="POST">
+            <div class="input-group">
+                <label>고객명</label>
+                <input type="text" name="name" placeholder="성함을 입력하세요" required>
+            </div>
+            <div class="input-group">
+                <label>상담 희망 차종 / 메모</label>
+                <input type="text" name="car" id="targetCar" placeholder="차종을 입력하세요">
+            </div>
+            <div class="input-group">
+                <label>연락처</label>
+                <input type="tel" name="phone" placeholder="010-0000-0000" required>
+            </div>
+            
+            <div style="font-size:13px; margin-bottom:10px;">
+                <input type="checkbox" required> (필수) 개인정보취급방침 동의 
+                <span style="color:blue; cursor:pointer;" onclick="toggleTerms('t1')">[내용보기]</span>
+                <div id="t1" class="terms-box">
+                    ■ 개인정보 수집 및 이용 동의<br>
+                    1. 목적: 장기렌트/리스/할부 견적 상담<br>
+                    2. 항목: 이름, 연락처, 차종<br>
+                    3. 보유기간: 상담 완료 후 1년<br>
+                    <button type="button" onclick="toggleTerms('t1')" style="margin-top:5px;">창닫기</button>
+                </div>
+            </div>
+            <div style="font-size:13px; margin-bottom:20px;">
+                <input type="checkbox"> (선택) 제3자 마케팅 활용 동의 
+                <span style="color:blue; cursor:pointer;" onclick="toggleTerms('t2')">[내용보기]</span>
+                <div id="t2" class="terms-box">
+                    ■ 제3자 마케팅 활용<br>
+                    신차 출시 및 프로모션 안내를 위해 활용됩니다.<br>
+                    <button type="button" onclick="toggleTerms('t2')" style="margin-top:5px;">창닫기</button>
+                </div>
+            </div>
+            <button type="submit" class="btn-calc" style="background:var(--accent);">신청하기</button>
+        </form>
     </div>
 </div>
 
 <footer>
     <div class="footer-info">
         (주)제일오토모빌 권도형 팀장 | 010-6670-0590<br>
-        Copyright © 2026 카고리즘 All Rights Reserved.
+        카고리즘 비즈니스 솔루션 | 모든 권리는 카고리즘에 있습니다.
     </div>
 </footer>
 
 <script>
-    function changeMain(idx) {
-        document.querySelectorAll('.main-tab, .sub-nav, .tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.main-tab')[idx].classList.add('active');
-        document.getElementById(`sub-nav-${idx}`).classList.add('active');
-        document.getElementById(`main-content-${idx}`).classList.add('active');
+    // 탭 전환 로직
+    function showMainTab(idx) {
+        document.querySelectorAll('.main-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+        document.querySelectorAll('.sub-nav').forEach((n, i) => n.classList.toggle('active', i === idx));
+        document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
     }
 
-    function toggleBrand(id) {
-        document.getElementById(id).classList.toggle('open');
+    function showSubContent(type, idx) {
+        if(type === 'models') {
+            document.querySelectorAll('#sub-nav-models .sub-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+            const brands = ['brand-kia', 'brand-hyundai', 'brand-kgm', 'brand-chev'];
+            brands.forEach((b, i) => {
+                const el = document.getElementById(b);
+                el.style.display = (i === idx) ? 'block' : 'none';
+                if(i === idx) {
+                    const listId = el.querySelector('.brand-body').id;
+                    document.getElementById(listId).classList.add('open');
+                    document.getElementById(listId + '-arrow').innerText = '▲';
+                }
+            });
+        } else {
+            document.querySelectorAll('#sub-nav-rates .sub-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
+            const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
+            document.getElementById('calc-display-title').innerText = titles[idx];
+            document.getElementById('calc-result').innerText = '';
+        }
     }
 
-    function renderCars(target, brand, count) {
-        let h = '';
+    // 아코디언
+    function toggleAccordion(id) {
+        const body = document.getElementById(id);
+        const arrow = document.getElementById(id + '-arrow');
+        body.classList.toggle('open');
+        arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
+    }
+
+    // 차량 카드 생성
+    function createCards(gridId, brandName, count) {
+        const grid = document.getElementById(gridId);
+        let html = '';
         for(let i=1; i<=count; i++) {
-            h += `<div class="card">
-                <img src="https://via.placeholder.com/300x160?text=${brand}+Model+${i}" alt="car">
-                <h4>${brand} 모델 ${i}</h4>
-                <div class="price-list">
-                    월납입(60개월): 55만원~<br>
-                    36개월(선납30%): 38만원~<br>
-                    60개월(보증30%): 49만원~
+            html += `
+            <div class="card">
+                <img src="https://via.placeholder.com/350x200?text=${brandName}+Model+${i}" alt="car">
+                <h4 style="margin:0 0 10px 0;">${brandName} 대표모델 ${i}</h4>
+                <div class="price-box">
+                    • 60개월 월납: 52만원~<br>
+                    • 36개월(선납30%): 35만원~<br>
+                    • 60개월(보증30%): 48만원~
                 </div>
+                <button class="btn-consult" onclick="openModal('${brandName} 모델 ${i}')">상담 신청</button>
             </div>`;
         }
-        document.getElementById(target).innerHTML = h;
+        grid.innerHTML = html;
     }
 
-    function calcIRR() {
-        const p = document.getElementById('price').value, m = document.getElementById('months').value;
-        const d = document.getElementById('deposit').value, r = document.getElementById('rv').value;
-        const mt = document.getElementById('pmt').value;
+    // 모달 제어
+    function openModal(car) {
+        document.getElementById('targetCar').value = car;
+        document.getElementById('leadModal').style.display = 'block';
+    }
+    function closeModal() { document.getElementById('leadModal').style.display = 'none'; }
+    function toggleTerms(id) {
+        const el = document.getElementById(id);
+        el.style.display = (el.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // IRR 금리 계산기
+    function calculateFinalIRR() {
+        const p = Number(document.getElementById('p_val').value);
+        const m = Number(document.getElementById('m_val').value);
+        const d = Number(document.getElementById('d_val').value);
+        const r = Number(document.getElementById('r_val').value);
+        const pmt = Number(document.getElementById('pmt_val').value);
+
         const principal = p - d;
-        let cfs = [-principal];
-        for (let i = 0; i < m - 1; i++) cfs.push(Number(mt));
-        cfs.push(Number(mt) + Number(r));
+        let cf = [-principal];
+        for(let i=0; i<m-1; i++) cf.push(pmt);
+        cf.push(pmt + r);
+
         let rate = 0.001;
-        for (let i = 0; i < 1000; i++) {
+        for(let i=0; i<1000; i++) {
             let npv = 0, dNpv = 0;
-            for (let t = 0; t < cfs.length; t++) {
-                npv += cfs[t] / Math.pow(1 + rate, t);
-                dNpv -= t * cfs[t] / Math.pow(1 + rate, t + 1);
+            for(let t=0; t<cf.length; t++) {
+                npv += cf[t] / Math.pow(1+rate, t);
+                dNpv -= t * cf[t] / Math.pow(1+rate, t+1);
             }
-            let next = rate - npv / dNpv;
-            if (Math.abs(next - rate) < 0.000001) {
-                document.getElementById('res').innerText = `실질 금리: ${(next * 12 * 100).toFixed(2)}%`;
+            let next = rate - npv/dNpv;
+            if(Math.abs(next - rate) < 0.000001) {
+                document.getElementById('calc-result').innerText = `연 실질 금리: ${(next*12*100).toFixed(2)}%`;
                 return;
             }
             rate = next;
         }
+        document.getElementById('calc-result').innerText = "계산 오류: 값을 확인해주세요.";
     }
 
-    renderCars('kia-grid', '기아', 15);
-    renderCars('h-grid', '현대', 15);
+    // 초기화 실행
+    createCards('grid-kia', '기아', 15);
+    createCards('grid-hyundai', '현대', 15);
+    createCards('grid-kgm', 'KGM', 3);
+    createCards('grid-chev', '쉐보레', 3);
 </script>
 </body>
 </html>
