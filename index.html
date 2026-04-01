@@ -8,10 +8,10 @@
         :root { --primary: #0a192f; --accent: #1164ff; --bg: #f4f7f9; --white: #ffffff; }
         body { font-family: 'Pretendard', sans-serif; margin: 0; background: var(--bg); color: #333; line-height: 1.6; }
         
-        header { background: var(--white); padding: 30px 5%; border-bottom: 1px solid #eee; display: flex; flex-direction: column; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        header { background-color: var(--white); background-size: cover; background-position: center; background-blend-mode: overlay; padding: 30px 5%; border-bottom: 1px solid #eee; display: flex; flex-direction: column; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); transition: 0.3s; }
         .logo-area { text-align: center; margin-bottom: 15px; }
-        .main-logo { font-size: 36px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; margin-bottom: 10px; }
-        .top-contact { font-size: 14px; color: #555; font-weight: 600; text-align: center; }
+        .main-logo { font-size: 36px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; margin-bottom: 10px; text-shadow: 1px 1px 3px rgba(255,255,255,0.8); }
+        .top-contact { font-size: 14px; color: #111; font-weight: 700; text-align: center; background: rgba(255,255,255,0.7); padding: 2px 8px; border-radius: 4px; }
         
         .links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
         .links a { text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 12px; color: #fff; font-weight: 600; transition: 0.3s; }
@@ -27,7 +27,8 @@
         .sub-tab { padding: 8px 25px; border-radius: 25px; font-size: 14px; cursor: pointer; border: 1px solid #ddd; font-weight: 600; transition: 0.2s; }
         .sub-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; min-height: 400px; }
+        .mid-bg-wrapper { background-size: cover; background-position: center; background-attachment: fixed; min-height: 500px; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; min-height: 400px; background: rgba(244, 247, 249, 0.9); }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
         
@@ -40,7 +41,7 @@
 
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .card { background: #fff; border-radius: 15px; padding: 20px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); transition: 0.3s; }
-        .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; background: #f9f9f9; }
+        .card img { width: 100%; height: 180px; object-fit: cover; border-radius: 10px; margin-bottom: 15px; background: #f9f9f9; }
         .price-box { background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 13px; color: #444; margin-top: 10px; line-height: 1.8; }
         .price-row { display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding: 2px 0; }
         .price-row:last-child { border-bottom: none; }
@@ -49,7 +50,7 @@
         .calc-card { max-width: 550px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
         .input-group { margin-bottom: 15px; text-align: left; }
         label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #555; }
-        input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
+        input[type="text"], input[type="number"], input[type="tel"] { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; font-size: 16px; }
         .btn-calc { width: 100%; padding: 18px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: 700; cursor: pointer; }
         .result { margin-top: 30px; text-align: center; font-size: 24px; color: #d9534f; font-weight: 800; border-top: 2px dashed #eee; padding-top: 20px; }
 
@@ -65,12 +66,26 @@
         .terms-content { display: none; background: #f4f4f4; padding: 15px; border-radius: 8px; margin-top: 5px; border: 1px solid #ddd; font-size: 12px; white-space: pre-line; color: #555; }
         .btn-close-terms { display: block; margin-top: 10px; background: #888; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; font-size: 11px; }
 
-        footer { background: #222; color: #fff; padding: 50px 20px; text-align: center; margin-top: 80px; }
+        footer { background-color: #222; background-size: cover; background-position: center; background-blend-mode: overlay; color: #fff; padding: 50px 20px; text-align: center; }
+        .footer-link { color: #aaa; text-decoration: none; font-size: 14px; margin-top: 10px; display: inline-block; border: 1px solid #555; padding: 5px 15px; border-radius: 20px; }
+
+        /* 관리자용 추가 스타일 */
+        .admin-tab-btns { display: flex; gap: 5px; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+        .admin-tab-btns button { flex: 1; padding: 10px; background: #f0f0f0; border: none; border-radius: 5px; cursor: pointer; font-weight: 600; }
+        .admin-tab-btns button.active { background: var(--primary); color: #fff; }
+        .admin-sec { display: none; }
+        .admin-sec.active { display: block; }
+        .admin-car-item { border: 1px solid #ddd; padding: 15px; margin-bottom: 15px; border-radius: 8px; background: #fafafa; }
+        .admin-car-item h4 { margin: 0 0 10px 0; color: var(--primary); }
+        .admin-input-row { display: flex; gap: 10px; margin-bottom: 8px; align-items: center; }
+        .admin-input-row label { width: 120px; margin: 0; font-size: 12px; }
+        .admin-input-row input { padding: 8px; font-size: 13px; }
+        .save-btn { background: #03c75a; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-weight: bold; width: 100%; margin-top: 10px; }
     </style>
 </head>
 <body>
 
-<header>
+<header id="site-header">
     <div class="logo-area">
         <div class="main-logo">카고리즘</div>
         <div class="top-contact">(주)제일오토모빌 권도형 팀장 | 010-6670-0590</div>
@@ -104,44 +119,46 @@
     <div id="sub-nav-ev" class="sub-nav"></div>
 </div>
 
-<div class="container">
-    <div id="content-models" class="tab-content active">
-        <div id="brand-kia" class="brand-item active">
-            <div class="brand-header" onclick="toggleAccordion('kia-list')">
-                <h3>기아자동차 (KIA)</h3><span id="kia-list-arrow">▲</span>
+<div class="mid-bg-wrapper" id="site-middle">
+    <div class="container">
+        <div id="content-models" class="tab-content active">
+            <div id="brand-kia" class="brand-item active">
+                <div class="brand-header" onclick="toggleAccordion('kia-list')">
+                    <h3>기아자동차 (KIA)</h3><span id="kia-list-arrow">▲</span>
+                </div>
+                <div id="kia-list" class="brand-body open"><div class="grid" id="grid-kia"></div></div>
             </div>
-            <div id="kia-list" class="brand-body open"><div class="grid" id="grid-kia"></div></div>
-        </div>
-        <div id="brand-hyundai" class="brand-item">
-            <div class="brand-header" onclick="toggleAccordion('h-list')">
-                <h3>현대자동차 (HYUNDAI)</h3><span id="h-list-arrow">▲</span>
+            <div id="brand-hyundai" class="brand-item">
+                <div class="brand-header" onclick="toggleAccordion('h-list')">
+                    <h3>현대자동차 (HYUNDAI)</h3><span id="h-list-arrow">▲</span>
+                </div>
+                <div id="h-list" class="brand-body open"><div class="grid" id="grid-hyundai"></div></div>
             </div>
-            <div id="h-list" class="brand-body open"><div class="grid" id="grid-hyundai"></div></div>
-        </div>
-        <div id="brand-kgm" class="brand-item">
-            <div class="brand-header" onclick="toggleAccordion('kgm-list')">
-                <h3>KGM (쌍용)</h3><span id="kgm-list-arrow">▲</span>
+            <div id="brand-kgm" class="brand-item">
+                <div class="brand-header" onclick="toggleAccordion('kgm-list')">
+                    <h3>KGM (쌍용)</h3><span id="kgm-list-arrow">▲</span>
+                </div>
+                <div id="kgm-list" class="brand-body open"><div class="grid" id="grid-kgm"></div></div>
             </div>
-            <div id="kgm-list" class="brand-body open"><div class="grid" id="grid-kgm"></div></div>
-        </div>
-        <div id="brand-chev" class="brand-item">
-            <div class="brand-header" onclick="toggleAccordion('chev-list')">
-                <h3>쉐보레 (CHEVROLET)</h3><span id="chev-list-arrow">▲</span>
+            <div id="brand-chev" class="brand-item">
+                <div class="brand-header" onclick="toggleAccordion('chev-list')">
+                    <h3>쉐보레 (CHEVROLET)</h3><span id="chev-list-arrow">▲</span>
+                </div>
+                <div id="chev-list" class="brand-body open"><div class="grid" id="grid-chev"></div></div>
             </div>
-            <div id="chev-list" class="brand-body open"><div class="grid" id="grid-chev"></div></div>
         </div>
-    </div>
 
-    <div id="content-rates" class="tab-content">
-        <div class="calc-card">
-            <h3 id="calc-display-title" style="text-align:center; color:var(--primary);">렌트 금리 실질 분석</h3>
-            <div class="input-group"><label>차량 가격 (원)</label><input type="number" id="p_val" value="45000000"></div>
-            <div class="input-group"><label>계약 기간 (개월)</label><input type="number" id="m_val" value="60"></div>
-            <div class="input-group"><label>보증금 / 선납금 (원)</label><input type="number" id="d_val" value="0"></div>
-            <div class="input-group" id="rv-group"><label>잔존가치 (원)</label><input type="number" id="r_val" value="20000000"></div>
-            <div class="input-group"><label>월 납입료 (원)</label><input type="number" id="pmt_val" value="750000"></div>
-            <button class="btn-calc" onclick="calculateAuto()">실질 금리 결과 확인</button>
-            <div id="calc-result" class="result"></div>
+        <div id="content-rates" class="tab-content">
+            <div class="calc-card">
+                <h3 id="calc-display-title" style="text-align:center; color:var(--primary);">렌트 금리 실질 분석</h3>
+                <div class="input-group"><label>차량 가격 (원)</label><input type="number" id="p_val" value="45000000"></div>
+                <div class="input-group"><label>계약 기간 (개월)</label><input type="number" id="m_val" value="60"></div>
+                <div class="input-group"><label>보증금 / 선납금 (원)</label><input type="number" id="d_val" value="0"></div>
+                <div class="input-group" id="rv-group"><label>잔존가치 (원)</label><input type="number" id="r_val" value="20000000"></div>
+                <div class="input-group"><label>월 납입료 (원)</label><input type="number" id="pmt_val" value="750000"></div>
+                <button class="btn-calc" onclick="calculateAuto()">실질 금리 결과 확인</button>
+                <div id="calc-result" class="result"></div>
+            </div>
         </div>
     </div>
 </div>
@@ -164,54 +181,72 @@
                 <div id="privacy-terms" class="terms-content">
 개인정보취급방침
 ■ 개인정보 수집 및 이용 동의(필수)
-
-① 개인정보 수집/이용 목적
-1. 장기렌터카, 리스, 할부 등 견적상담
-2. 서비스 제공에 관한 계약 이행
-3. 회원 관리
-4. 광고, 이벤트 및 프로모션
-5. 고충처리
-
-② 수집하려는 개인정보의 항목
-이름, 휴대전화번호, 생년월일, 주소, 운전면허번호
-
-③ 개인정보 보유 및 이용기간
-상담 목적 달성 시 즉시 파기
+① 개인정보 수집/이용 목적 : 장기렌터카, 리스, 할부 등 견적상담
+② 수집항목 : 이름, 연락처
+③ 이용기간 : 상담 목적 달성 시 즉시 파기
                     <button type="button" class="btn-close-terms" onclick="toggleTerms('privacy-terms')">창닫기</button>
                 </div>
-
-                <div class="check-line">
-                    <input type="checkbox" id="agree2">
-                    <label for="agree2">(선택) 제 3자 마케팅 활용 동의</label>
-                    <span class="terms-view" onclick="toggleTerms('marketing-terms')">내용보기</span>
-                </div>
-                <div id="marketing-terms" class="terms-content">
-개인정보 제 3자 마케팅 활용
-■ 제3자 마케팅 활용
-수집된 정보는 신차 출시 안내 및 이벤트 마케팅 목적으로 활용됩니다.
-                    <button type="button" class="btn-close-terms" onclick="toggleTerms('marketing-terms')">창닫기</button>
-                </div>
             </div>
-
             <button type="submit" class="btn-consult" style="background:var(--accent); font-size:16px;">상담 신청하기</button>
         </form>
     </div>
 </div>
 
 <div id="adminModal" class="modal">
-    <div class="modal-content" style="max-width: 600px;">
+    <div class="modal-content" style="max-width: 650px;">
         <span class="close-modal" onclick="closeAdmin()">&times;</span>
-        <h2 style="color:var(--primary); margin-top:0;">상담 신청 관리자 페이지</h2>
-        <div id="admin-list" style="margin-top:20px; max-height:400px; overflow-y:auto; border:1px solid #ddd; padding:15px; border-radius:8px;">
+        <h2 style="color:var(--primary); margin-top:0;">관리자 페이지</h2>
+        
+        <div class="admin-tab-btns">
+            <button id="tab-btn-leads" class="active" onclick="switchAdminTab('leads')">상담 내역</button>
+            <button id="tab-btn-cars" onclick="switchAdminTab('cars')">차량 관리</button>
+            <button id="tab-btn-bg" onclick="switchAdminTab('bg')">배경 설정</button>
         </div>
-        <button onclick="clearLeads()" class="btn-calc" style="margin-top:20px; padding:12px; font-size:14px; background:#d9534f;">전체 내역 삭제</button>
+
+        <div id="admin-sec-leads" class="admin-sec active">
+            <div id="admin-list" style="max-height:400px; overflow-y:auto; border:1px solid #ddd; padding:15px; border-radius:8px;"></div>
+            <button onclick="clearLeads()" class="btn-calc" style="margin-top:20px; padding:10px; font-size:14px; background:#d9534f;">전체 내역 삭제</button>
+        </div>
+
+        <div id="admin-sec-cars" class="admin-sec">
+            <div class="input-group">
+                <label>수정할 브랜드 선택</label>
+                <select id="admin-brand-select" onchange="renderCarEditor()" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:5px;">
+                    <option value="kia">기아자동차</option>
+                    <option value="hyundai">현대자동차</option>
+                    <option value="kgm">KGM</option>
+                    <option value="chev">쉐보레</option>
+                </select>
+            </div>
+            <div id="car-editor-list" style="max-height:400px; overflow-y:auto; padding-right:10px;"></div>
+            <button onclick="saveCarData()" class="save-btn">차량 정보 저장</button>
+        </div>
+
+        <div id="admin-sec-bg" class="admin-sec">
+            <div class="input-group">
+                <label>상단 배경 이미지 URL</label>
+                <input type="text" id="bg-top-input" placeholder="http://...">
+            </div>
+            <div class="input-group">
+                <label>중단 배경 이미지 URL</label>
+                <input type="text" id="bg-mid-input" placeholder="http://...">
+            </div>
+            <div class="input-group">
+                <label>하단(푸터) 배경 이미지 URL</label>
+                <input type="text" id="bg-bot-input" placeholder="http://...">
+            </div>
+            <button onclick="saveBgData()" class="save-btn">배경 화면 저장</button>
+        </div>
+
     </div>
 </div>
 
-<footer>
+<footer id="site-footer">
     <div class="footer-info">
         (주)제일오토모빌 권도형 팀장 | 010-6670-0590<br>
         카고리즘 비즈니스 솔루션 | All Rights Reserved.
+        <br>
+        <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link">오시는 길 (지도)</a>
         <br><br>
         <span onclick="openAdmin()" style="cursor:pointer; color:#888; font-size:12px; text-decoration:underline;">관리자 모드</span>
     </div>
@@ -219,12 +254,74 @@
 
 <script>
     let currentCalcType = '렌트';
+    let vehicleData = {};
+
+    function initData() {
+        let savedData = localStorage.getItem('cargo_vehicles');
+        if (savedData) {
+            vehicleData = JSON.parse(savedData);
+        } else {
+            vehicleData = {
+                'kia': generateCars('기아', 8, 'grid-kia'),
+                'hyundai': generateCars('현대', 8, 'grid-hyundai'),
+                'kgm': generateCars('KGM', 4, 'grid-kgm'),
+                'chev': generateCars('쉐보레', 4, 'grid-chev')
+            };
+            localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData));
+        }
+        applyBackgrounds();
+        renderAllCars();
+    }
+
+    function generateCars(brand, count, prefix) {
+        let arr = [];
+        for(let i=1; i<=count; i++) {
+            arr.push({
+                name: `${brand} 추천모델 ${i}`,
+                img: `https://picsum.photos/350/200?sig=${prefix}${i}`,
+                p60: (40 + i).toString(),
+                p36_30: (30 + i).toString(),
+                p60_30: (38 + i).toString()
+            });
+        }
+        return arr;
+    }
+
+    function renderAllCars() {
+        buildGrid('grid-kia', vehicleData.kia);
+        buildGrid('grid-hyundai', vehicleData.hyundai);
+        buildGrid('grid-kgm', vehicleData.kgm);
+        buildGrid('grid-chev', vehicleData.chev);
+    }
+
+    function buildGrid(gridId, cars) {
+        const grid = document.getElementById(gridId);
+        let html = '';
+        cars.forEach(car => {
+            html += `
+            <div class="card">
+                <img src="${car.img}" alt="${car.name}">
+                <h4 style="margin:0 0 10px 0;">${car.name}</h4>
+                <div class="price-box">
+                    <div class="price-row"><span>60개월 월납</span><strong>${car.p60}만원~</strong></div>
+                    <div class="price-row"><span>36개월(선납30%)</span><strong>${car.p36_30}만원~</strong></div>
+                    <div class="price-row"><span>60개월(보증30%)</span><strong>${car.p60_30}만원~</strong></div>
+                </div>
+                <button class="btn-consult" onclick="openModal('${car.name}')">상담 신청</button>
+            </div>`;
+        });
+        grid.innerHTML = html;
+    }
+
+    function applyBackgrounds() {
+        const bgs = JSON.parse(localStorage.getItem('cargo_bgs') || '{"top":"","mid":"","bot":""}');
+        if(bgs.top) document.getElementById('site-header').style.backgroundImage = `url(${bgs.top})`;
+        if(bgs.mid) document.getElementById('site-middle').style.backgroundImage = `url(${bgs.mid})`;
+        if(bgs.bot) document.getElementById('site-footer').style.backgroundImage = `url(${bgs.bot})`;
+    }
 
     function showMainTab(idx) {
-        if(idx === 2) {
-            window.open('https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do', '_blank');
-            return;
-        }
+        if(idx === 2) { window.open('https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do', '_blank'); return; }
         document.querySelectorAll('.main-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
         document.querySelectorAll('.sub-nav').forEach((n, i) => n.classList.toggle('active', i === idx));
         document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
@@ -257,29 +354,6 @@
         target.style.display = (target.style.display === 'block') ? 'none' : 'block';
     }
 
-    function createCards(gridId, brandName, count, imgBaseUrl) {
-        const grid = document.getElementById(gridId);
-        let html = '';
-        for(let i=1; i<=count; i++) {
-            const p60 = (40 + i).toString();
-            const p36_30 = (30 + i).toString();
-            const p60_30 = (38 + i).toString();
-            
-            html += `
-            <div class="card">
-                <img src="${imgBaseUrl}?sig=${gridId}${i}" alt="${brandName} 모델 ${i}">
-                <h4 style="margin:0 0 10px 0;">${brandName} 추천모델 ${i}</h4>
-                <div class="price-box">
-                    <div class="price-row"><span>60개월 월납</span><strong>${p60}만원~</strong></div>
-                    <div class="price-row"><span>36개월(선납30%)</span><strong>${p36_30}만원~</strong></div>
-                    <div class="price-row"><span>60개월(보증30%)</span><strong>${p60_30}만원~</strong></div>
-                </div>
-                <button class="btn-consult" onclick="openModal('${brandName} 모델 ${i}')">상담 신청</button>
-            </div>`;
-        }
-        grid.innerHTML = html;
-    }
-
     function openModal(car) {
         document.getElementById('targetCar').value = car;
         document.getElementById('leadModal').style.display = 'block';
@@ -292,12 +366,10 @@
         const d = Number(document.getElementById('d_val').value);
         const pmt = Number(document.getElementById('pmt_val').value);
         let r = (currentCalcType === '할부') ? 0 : Number(document.getElementById('r_val').value);
-
         const principal = p - d;
         let cf = [-principal];
         for(let i=0; i<m-1; i++) cf.push(pmt);
         cf.push(pmt + r);
-
         let rate = 0.001;
         for(let i=0; i<2000; i++) {
             let npv = 0, dNpv = 0;
@@ -321,7 +393,6 @@
         const car = document.getElementById('targetCar').value;
         const phone = document.getElementById('userPhone').value;
         const time = new Date().toLocaleString();
-
         let leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
         leads.push({ time, name, car, phone });
         localStorage.setItem('cargo_leads', JSON.stringify(leads));
@@ -331,29 +402,36 @@
         const pw = prompt('관리자 비밀번호를 입력하세요.');
         if(pw === '1234') {
             document.getElementById('adminModal').style.display = 'block';
-            renderAdminList();
+            switchAdminTab('leads');
         } else if(pw !== null) {
             alert('비밀번호가 일치하지 않습니다.');
         }
     }
-
     function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
+
+    function switchAdminTab(tabName) {
+        document.querySelectorAll('.admin-tab-btns button').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.admin-sec').forEach(s => s.classList.remove('active'));
+        document.getElementById(`tab-btn-${tabName}`).classList.add('active');
+        document.getElementById(`admin-sec-${tabName}`).classList.add('active');
+        
+        if(tabName === 'leads') renderAdminList();
+        if(tabName === 'cars') renderCarEditor();
+        if(tabName === 'bg') loadBgData();
+    }
 
     function renderAdminList() {
         const listDiv = document.getElementById('admin-list');
         const leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
-        
         if(leads.length === 0) {
             listDiv.innerHTML = '<p style="text-align:center; color:#666;">접수된 상담 신청이 없습니다.</p>';
             return;
         }
-
         let html = '<table style="width:100%; border-collapse:collapse; font-size:14px; text-align:left;">';
         html += '<tr style="border-bottom:2px solid #333;"><th style="padding:10px 5px;">신청 시간</th><th>고객명</th><th>차종</th><th>연락처</th></tr>';
-        
         leads.reverse().forEach(l => {
             html += `<tr style="border-bottom:1px solid #eee;">
-                <td style="padding:10px 5px; color:#555;">${l.time}</td>
+                <td style="padding:10px 5px; color:#555; font-size:12px;">${l.time}</td>
                 <td>${l.name}</td>
                 <td style="color:var(--accent);">${l.car}</td>
                 <td>${l.phone}</td>
@@ -364,16 +442,66 @@
     }
 
     function clearLeads() {
-        if(confirm('모든 상담 내역을 삭제하시겠습니까? 복구할 수 없습니다.')) {
+        if(confirm('모든 상담 내역을 삭제하시겠습니까?')) {
             localStorage.removeItem('cargo_leads');
             renderAdminList();
         }
     }
 
-    createCards('grid-kia', '기아', 8, 'https://picsum.photos/350/200');
-    createCards('grid-hyundai', '현대', 8, 'https://picsum.photos/350/201');
-    createCards('grid-kgm', 'KGM', 4, 'https://picsum.photos/350/202');
-    createCards('grid-chev', '쉐보레', 4, 'https://picsum.photos/350/203');
+    function renderCarEditor() {
+        const brand = document.getElementById('admin-brand-select').value;
+        const cars = vehicleData[brand];
+        const container = document.getElementById('car-editor-list');
+        let html = '';
+        cars.forEach((car, idx) => {
+            html += `
+            <div class="admin-car-item">
+                <h4>${car.name} (수정)</h4>
+                <div class="admin-input-row"><label>모델명</label><input type="text" id="car-name-${brand}-${idx}" value="${car.name}"></div>
+                <div class="admin-input-row"><label>차량 이미지 URL</label><input type="text" id="car-img-${brand}-${idx}" value="${car.img}"></div>
+                <div class="admin-input-row"><label>60개월 월납 (만원)</label><input type="text" id="car-p60-${brand}-${idx}" value="${car.p60}"></div>
+                <div class="admin-input-row"><label>36개월(선납30%)</label><input type="text" id="car-p36-${brand}-${idx}" value="${car.p36_30}"></div>
+                <div class="admin-input-row"><label>60개월(보증30%)</label><input type="text" id="car-p60_30-${brand}-${idx}" value="${car.p60_30}"></div>
+            </div>`;
+        });
+        container.innerHTML = html;
+    }
+
+    function saveCarData() {
+        const brand = document.getElementById('admin-brand-select').value;
+        const cars = vehicleData[brand];
+        cars.forEach((car, idx) => {
+            car.name = document.getElementById(`car-name-${brand}-${idx}`).value;
+            car.img = document.getElementById(`car-img-${brand}-${idx}`).value;
+            car.p60 = document.getElementById(`car-p60-${brand}-${idx}`).value;
+            car.p36_30 = document.getElementById(`car-p36-${brand}-${idx}`).value;
+            car.p60_30 = document.getElementById(`car-p60_30-${brand}-${idx}`).value;
+        });
+        localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData));
+        alert('차량 정보가 저장되었습니다.');
+        renderAllCars();
+    }
+
+    function loadBgData() {
+        const bgs = JSON.parse(localStorage.getItem('cargo_bgs') || '{"top":"","mid":"","bot":""}');
+        document.getElementById('bg-top-input').value = bgs.top;
+        document.getElementById('bg-mid-input').value = bgs.mid;
+        document.getElementById('bg-bot-input').value = bgs.bot;
+    }
+
+    function saveBgData() {
+        const bgs = {
+            top: document.getElementById('bg-top-input').value,
+            mid: document.getElementById('bg-mid-input').value,
+            bot: document.getElementById('bg-bot-input').value
+        };
+        localStorage.setItem('cargo_bgs', JSON.stringify(bgs));
+        alert('배경화면이 저장되었습니다.');
+        applyBackgrounds();
+    }
+
+    // 초기 실행
+    window.onload = initData;
 </script>
 </body>
 </html>
