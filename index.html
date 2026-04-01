@@ -2,93 +2,161 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>제일오토모빌 통합 서비스</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제일오토모빌 - 카고리즘</title>
     <style>
-        body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; color: #333; }
-        .tabs { display: flex; cursor: pointer; margin-bottom: 20px; }
-        .tab { flex: 1; text-align: center; padding: 12px; background: #eee; border: 1px solid #ccc; }
-        .tab.active { background: #007bff; color: white; border-color: #007bff; }
-        .content { display: none; padding: 15px; border: 1px solid #ddd; border-radius: 0 0 8px 8px; }
+        body { font-family: 'Pretendard', sans-serif; margin: 0; padding: 0; background: #f8f9fa; }
+        header { background: #fff; padding: 15px; text-align: center; border-bottom: 1px solid #ddd; position: sticky; top: 0; z-index: 100; }
+        .nav-buttons { margin-top: 10px; display: flex; justify-content: center; gap: 10px; }
+        .nav-buttons a { text-decoration: none; padding: 8px 15px; border-radius: 20px; font-size: 13px; color: #fff; }
+        .btn-blog { background: #03c75a; }
+        .btn-cafe { background: #2db400; }
+        
+        .tabs { display: flex; background: #fff; overflow-x: auto; }
+        .tab { flex: 1; min-width: 100px; text-align: center; padding: 15px; cursor: pointer; border-bottom: 2px solid transparent; transition: 0.3s; }
+        .tab.active { color: #007bff; border-bottom: 2px solid #007bff; font-weight: bold; }
+        
+        .container { padding: 20px; max-width: 1200px; margin: auto; }
+        .content { display: none; }
         .content.active { display: block; }
-        .card { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .card img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
-        label { display: block; margin-top: 10px; font-size: 14px; }
-        input { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
-        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; font-size: 16px; }
-        #res { margin-top: 20px; color: #d9534f; font-size: 18px; text-align: center; }
+        
+        .car-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
+        .car-card { background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center; padding-bottom: 15px; }
+        .car-card img { width: 100%; height: 150px; object-fit: cover; background: #eee; }
+        .car-card h3 { font-size: 16px; margin: 10px 0; }
+        .car-card p { font-size: 14px; color: #666; margin: 5px 0; }
+        .btn-consult { width: 90%; padding: 10px; background: #007bff; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+        
+        .calc-box { background: #fff; padding: 25px; border-radius: 12px; max-width: 500px; margin: auto; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .calc-box label { display: block; margin-top: 15px; font-size: 14px; color: #555; }
+        .calc-box input { width: 100%; padding: 12px; margin-top: 5px; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
+        .btn-calc { width: 100%; padding: 15px; background: #333; color: #fff; border: none; border-radius: 6px; margin-top: 25px; cursor: pointer; font-size: 16px; }
+        .result-area { margin-top: 20px; text-align: center; font-size: 20px; color: #d9534f; font-weight: bold; }
     </style>
 </head>
 <body>
-    <div class="tabs">
-        <div class="tab active" onclick="openTab(event, 'list')">차량 최저가</div>
-        <div class="tab" onclick="openTab(event, 'calc')">금리 계산기</div>
-    </div>
 
+<header>
+    <h2>제일오토모빌</h2>
+    <div class="nav-buttons">
+        <a href="https://blog.naver.com/cargorism" target="_blank" class="btn-blog">네이버 블로그</a>
+        <a href="https://cafe.naver.com/cargorism" target="_blank" class="btn-cafe">네이버 카페</a>
+    </div>
+</header>
+
+<div class="tabs">
+    <div class="tab active" onclick="openTab(event, 'list')">차량목록</div>
+    <div class="tab" onclick="openTab(event, 'calc-loan')">할부계산</div>
+    <div class="tab" onclick="openTab(event, 'calc-lease')">리스계산</div>
+    <div class="tab" onclick="openTab(event, 'calc-rent')">렌트계산</div>
+</div>
+
+<div class="container">
     <div id="list" class="content active">
-        <div class="card">
-            <img src="https://via.placeholder.com/400x200?text=Kia+EV3" alt="EV3">
-            <h3>기아 EV3</h3>
-            <p>월 납입료 40만원대~ | 금리 3.9%~</p>
-            <button onclick="alert('EV3 상담 예약되었습니다.')">상담 신청하기</button>
-        </div>
-        <div class="card">
-            <img src="https://via.placeholder.com/400x200?text=Kia+EV9" alt="EV9">
-            <h3>기아 EV9</h3>
-            <p>월 납입료 80만원대~ | 금리 4.2%~</p>
-            <button onclick="alert('EV9 상담 예약되었습니다.')">상담 신청하기</button>
+        <div class="car-grid" id="carList">
+            <script>
+                const cars = [
+                    { name: "기아 EV3", price: "4,200만원~", img: "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/ev3/color/exterior/stm/1.png" },
+                    { name: "기아 EV9", price: "7,300만원~", img: "https://www.kia.com/content/dam/kwcms/kr/ko/images/vehicles/ev9/color/exterior/isg/1.png" },
+                    { name: "기아 쏘렌토", price: "3,500만원~", img: "" },
+                    { name: "기아 카니발", price: "3,400만원~", img: "" },
+                    { name: "기아 스포티지", price: "2,500만원~", img: "" },
+                    { name: "현대 아이오닉5", price: "5,200만원~", img: "" },
+                    { name: "현대 팰리세이드", price: "3,800만원~", img: "" },
+                    { name: "현대 그랜저", price: "3,700만원~", img: "" },
+                    { name: "현대 싼타페", price: "3,500만원~", img: "" },
+                    { name: "제네시스 GV80", price: "6,900만원~", img: "" }
+                ];
+                document.write(cars.map(car => `
+                    <div class="car-card">
+                        <img src="${car.img || 'https://via.placeholder.com/300x180?text=Image+Ready'}" alt="${car.name}">
+                        <h3>${car.name}</h3>
+                        <p>최저가 ${car.price}</p>
+                        <button class="btn-consult" onclick="alert('${car.name} 상담을 연결합니다.')">상담 신청</button>
+                    </div>
+                `).join(''));
+            </script>
         </div>
     </div>
 
-    <div id="calc" class="content">
-        <label>차량 가격 (원)</label><input type="number" id="price" value="50000000">
-        <label>계약 기간 (개월)</label><input type="number" id="months" value="48">
-        <label>보증금 (원)</label><input type="number" id="deposit" value="5000000">
-        <label>선납금 (원)</label><input type="number" id="down" value="5000000">
-        <label>잔존가치 (원)</label><input type="number" id="rv" value="25000000">
-        <label>월 납입료 (원)</label><input type="number" id="pmt" value="800000">
-        <button onclick="calcIRR()">실질 금리 계산</button>
-        <div id="res"></div>
+    <div id="calc-loan" class="content">
+        <div class="calc-box">
+            <h3>신차 할부 금리 계산</h3>
+            <label>차량 가격 (원)</label><input type="number" id="p1" value="50000000">
+            <label>할부 기간 (개월)</label><input type="number" id="m1" value="60">
+            <label>선수금 (원)</label><input type="number" id="d1" value="10000000">
+            <label>월 납입료 (원)</label><input type="number" id="pmt1" value="800000">
+            <button class="btn-calc" onclick="runCalc('p1','m1','d1',0,0,'pmt1','res1')">실질 금리 확인</button>
+            <div id="res1" class="result-area"></div>
+        </div>
     </div>
 
-    <script>
-        function openTab(evt, tabName) {
-            var i, content, tabs;
-            content = document.getElementsByClassName("content");
-            for (i = 0; i < content.length; i++) content[i].style.display = "none";
-            tabs = document.getElementsByClassName("tab");
-            for (i = 0; i < tabs.length; i++) tabs[i].className = tabs[i].className.replace(" active", "");
-            document.getElementById(tabName).style.display = "block";
-            evt.currentTarget.className += " active";
-        }
+    <div id="calc-lease" class="content">
+        <div class="calc-box">
+            <h3>자동차 리스 금리 계산</h3>
+            <label>차량 가격 (원)</label><input type="number" id="p2" value="60000000">
+            <label>계약 기간 (개월)</label><input type="number" id="m2" value="48">
+            <label>보증금 (원)</label><input type="number" id="dep2" value="6000000">
+            <label>잔존가치 (원)</label><input type="number" id="rv2" value="30000000">
+            <label>월 리스료 (원)</label><input type="number" id="pmt2" value="900000">
+            <button class="btn-calc" onclick="runCalc('p2','m2',0,'dep2','rv2','pmt2','res2')">리스 금리 확인</button>
+            <div id="res2" class="result-area"></div>
+        </div>
+    </div>
 
-        function calcIRR() {
-            const p = parseFloat(document.getElementById('price').value);
-            const m = parseInt(document.getElementById('months').value);
-            const d = parseFloat(document.getElementById('deposit').value);
-            const dn = parseFloat(document.getElementById('down').value);
-            const r = parseFloat(document.getElementById('rv').value);
-            const mt = parseFloat(document.getElementById('pmt').value);
+    <div id="calc-rent" class="content">
+        <div class="calc-box">
+            <h3>장기렌트 금리 계산</h3>
+            <label>차량 가격 (원)</label><input type="number" id="p3" value="40000000">
+            <label>계약 기간 (개월)</label><input type="number" id="m3" value="48">
+            <label>보증금 (원)</label><input type="number" id="dep3" value="4000000">
+            <label>잔존가치 (원)</label><input type="number" id="rv3" value="18000000">
+            <label>월 렌트료 (원)</label><input type="number" id="pmt3" value="700000">
+            <button class="btn-calc" onclick="runCalc('p3','m3',0,'dep3','rv3','pmt3','res3')">렌트 금리 확인</button>
+            <div id="res3" class="result-area"></div>
+        </div>
+    </div>
+</div>
 
-            const principal = p - dn - d;
-            let cfs = [-principal];
-            for (let i = 0; i < m - 1; i++) cfs.push(mt);
-            cfs.push(mt + r - d);
+<script>
+    function openTab(evt, tabId) {
+        const contents = document.getElementsByClassName("content");
+        for (let i = 0; i < contents.length; i++) contents[i].style.display = "none";
+        const tabs = document.getElementsByClassName("tab");
+        for (let i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+        document.getElementById(tabId).style.display = "block";
+        evt.currentTarget.classList.add("active");
+    }
 
-            let rate = 0.001;
-            for (let i = 0; i < 1000; i++) {
-                let npv = 0, dNpv = 0;
-                for (let t = 0; t < cfs.length; t++) {
-                    npv += cfs[t] / Math.pow(1 + rate, t);
-                    dNpv -= t * cfs[t] / Math.pow(1 + rate, t + 1);
-                }
-                let next = rate - npv / dNpv;
-                if (Math.abs(next - rate) < 0.00001) {
-                    document.getElementById('res').innerText = "연 실질 금리: " + (next * 12 * 100).toFixed(2) + "%";
-                    return;
-                }
-                rate = next;
+    function runCalc(pId, mId, dId, depId, rvId, pmtId, resId) {
+        const p = parseFloat(document.getElementById(pId).value) || 0;
+        const m = parseInt(document.getElementById(mId).value) || 0;
+        const d = dId ? parseFloat(document.getElementById(dId).value) : 0;
+        const dep = depId ? parseFloat(document.getElementById(depId).value) : 0;
+        const rv = rvId ? parseFloat(document.getElementById(rvId).value) : 0;
+        const pmt = parseFloat(document.getElementById(pmtId).value) || 0;
+
+        const principal = p - d - dep;
+        let cfs = [-principal];
+        for (let i = 0; i < m - 1; i++) cfs.push(pmt);
+        cfs.push(pmt + rv - dep);
+
+        let rate = 0.001;
+        for (let i = 0; i < 1000; i++) {
+            let npv = 0, dNpv = 0;
+            for (let t = 0; t < cfs.length; t++) {
+                npv += cfs[t] / Math.pow(1 + rate, t);
+                dNpv -= t * cfs[t] / Math.pow(1 + rate, t + 1);
             }
+            let next = rate - npv / dNpv;
+            if (Math.abs(next - rate) < 0.000001) {
+                document.getElementById(resId).innerText = `연 실질 금리: ${(next * 12 * 100).toFixed(2)}%`;
+                return;
+            }
+            rate = next;
         }
-    </script>
+        document.getElementById(resId).innerText = "계산 오류: 값을 확인하세요.";
+    }
+</script>
 </body>
 </html>
