@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>제일오토모빌 통합 서비스</title>
+    <style>
+        body { font-family: sans-serif; max-width: 500px; margin: auto; padding: 20px; color: #333; }
+        .tabs { display: flex; cursor: pointer; margin-bottom: 20px; }
+        .tab { flex: 1; text-align: center; padding: 12px; background: #eee; border: 1px solid #ccc; }
+        .tab.active { background: #007bff; color: white; border-color: #007bff; }
+        .content { display: none; padding: 15px; border: 1px solid #ddd; border-radius: 0 0 8px 8px; }
+        .content.active { display: block; }
+        .card { border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 20px; text-align: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .card img { width: 100%; border-radius: 8px; margin-bottom: 10px; }
+        label { display: block; margin-top: 10px; font-size: 14px; }
+        input { width: 100%; padding: 10px; margin-top: 5px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 5px; }
+        button { width: 100%; padding: 15px; background: #007bff; color: white; border: none; border-radius: 5px; cursor: pointer; margin-top: 20px; font-size: 16px; }
+        #res { margin-top: 20px; color: #d9534f; font-size: 18px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="tabs">
+        <div class="tab active" onclick="openTab(event, 'list')">차량 최저가</div>
+        <div class="tab" onclick="openTab(event, 'calc')">금리 계산기</div>
+    </div>
+
+    <div id="list" class="content active">
+        <div class="card">
+            <img src="https://via.placeholder.com/400x200?text=Kia+EV3" alt="EV3">
+            <h3>기아 EV3</h3>
+            <p>월 납입료 40만원대~ | 금리 3.9%~</p>
+            <button onclick="alert('EV3 상담 예약되었습니다.')">상담 신청하기</button>
+        </div>
+        <div class="card">
+            <img src="https://via.placeholder.com/400x200?text=Kia+EV9" alt="EV9">
+            <h3>기아 EV9</h3>
+            <p>월 납입료 80만원대~ | 금리 4.2%~</p>
+            <button onclick="alert('EV9 상담 예약되었습니다.')">상담 신청하기</button>
+        </div>
+    </div>
+
+    <div id="calc" class="content">
+        <label>차량 가격 (원)</label><input type="number" id="price" value="50000000">
+        <label>계약 기간 (개월)</label><input type="number" id="months" value="48">
+        <label>보증금 (원)</label><input type="number" id="deposit" value="5000000">
+        <label>선납금 (원)</label><input type="number" id="down" value="5000000">
+        <label>잔존가치 (원)</label><input type="number" id="rv" value="25000000">
+        <label>월 납입료 (원)</label><input type="number" id="pmt" value="800000">
+        <button onclick="calcIRR()">실질 금리 계산</button>
+        <div id="res"></div>
+    </div>
+
+    <script>
+        function openTab(evt, tabName) {
+            var i, content, tabs;
+            content = document.getElementsByClassName("content");
+            for (i = 0; i < content.length; i++) content[i].style.display = "none";
+            tabs = document.getElementsByClassName("tab");
+            for (i = 0; i < tabs.length; i++) tabs[i].className = tabs[i].className.replace(" active", "");
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+
+        function calcIRR() {
+            const p = parseFloat(document.getElementById('price').value);
+            const m = parseInt(document.getElementById('months').value);
+            const d = parseFloat(document.getElementById('deposit').value);
+            const dn = parseFloat(document.getElementById('down').value);
+            const r = parseFloat(document.getElementById('rv').value);
+            const mt = parseFloat(document.getElementById('pmt').value);
+
+            const principal = p - dn - d;
+            let cfs = [-principal];
+            for (let i = 0; i < m - 1; i++) cfs.push(mt);
+            cfs.push(mt + r - d);
+
+            let rate = 0.001;
+            for (let i = 0; i < 1000; i++) {
+                let npv = 0, dNpv = 0;
+                for (let t = 0; t < cfs.length; t++) {
+                    npv += cfs[t] / Math.pow(1 + rate, t);
+                    dNpv -= t * cfs[t] / Math.pow(1 + rate, t + 1);
+                }
+                let next = rate - npv / dNpv;
+                if (Math.abs(next - rate) < 0.00001) {
+                    document.getElementById('res').innerText = "연 실질 금리: " + (next * 12 * 100).toFixed(2) + "%";
+                    return;
+                }
+                rate = next;
+            }
+        }
+    </script>
+</body>
+</html>
