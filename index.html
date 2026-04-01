@@ -3,63 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>카고리즘 | (주)제일오토모빌</title>
+    <title>카고리즘</title>
     <style>
         :root { --primary: #0a192f; --accent: #1164ff; --bg: #f4f7f9; --white: #ffffff; }
         body { font-family: 'Pretendard', sans-serif; margin: 0; background: var(--bg); color: #333; line-height: 1.6; }
-        
-        /* 헤더 디자인: 타이틀 중앙 배치 수정 */
         header { background: var(--white); padding: 30px 5%; border-bottom: 1px solid #eee; display: flex; flex-direction: column; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
         .logo-area { text-align: center; margin-bottom: 15px; }
         .main-logo { font-size: 36px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; margin-bottom: 10px; }
         .top-contact { font-size: 14px; color: #555; font-weight: 600; text-align: center; }
-        
-        /* 링크 버튼: 정보 반영 */
         .links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
         .links a { text-decoration: none; padding: 8px 15px; border-radius: 5px; font-size: 12px; color: #fff; font-weight: 600; transition: 0.3s; }
-        .bg-blog { background: #03c75a; } .bg-cafe { background: #2db400; } 
-        .bg-app-blog { background: #ff9800; } .bg-app-tg { background: #0088cc; }
-        .links a:hover { opacity: 0.8; transform: translateY(-2px); }
-
-        /* 탭 내비게이션 로직 개선 */
+        .bg-blog { background: #03c75a; } .bg-cafe { background: #2db400; } .bg-app-blog { background: #ff9800; } .bg-app-tg { background: #0088cc; }
         .main-nav { display: flex; background: var(--primary); max-width: 1200px; margin: 0 auto; }
-        .main-tab { flex: 1; padding: 20px; text-align: center; color: #fff; cursor: pointer; font-weight: 700; font-size: 16px; transition: 0.3s; border-bottom: 4px solid transparent; }
+        .main-tab { flex: 1; padding: 20px; text-align: center; color: #fff; cursor: pointer; font-weight: 700; font-size: 16px; border-bottom: 4px solid transparent; }
         .main-tab.active { background: var(--accent); border-bottom: 4px solid #fff; }
-
         .sub-nav-container { background: var(--white); border-bottom: 1px solid #ddd; padding: 15px 0; }
         .sub-nav { display: none; justify-content: center; gap: 10px; }
         .sub-nav.active { display: flex; }
-        .sub-tab { padding: 8px 25px; border-radius: 25px; font-size: 14px; cursor: pointer; border: 1px solid #ddd; font-weight: 600; transition: 0.2s; }
+        .sub-tab { padding: 8px 25px; border-radius: 25px; font-size: 14px; cursor: pointer; border: 1px solid #ddd; font-weight: 600; }
         .sub-tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
-
         .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; min-height: 400px; }
         .tab-content { display: none; }
         .tab-content.active { display: block; }
-        
         .brand-item { display: none; }
         .brand-item.active { display: block; }
         .brand-header { background: #fff; padding: 15px 20px; border-radius: 10px; display: flex; align-items: center; cursor: pointer; border: 1px solid #eee; margin-bottom: 10px; }
-        .brand-header img { height: 25px; margin-right: 15px; }
         .brand-header h3 { margin: 0; font-size: 18px; flex-grow: 1; color: var(--primary); }
         .brand-body { display: none; padding: 20px 0; }
         .brand-body.open { display: block; }
-
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px; }
         .card { background: #fff; border-radius: 15px; padding: 20px; border: 1px solid #eee; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-        .price-box { background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 13px; color: #444; margin-top: 10px; }
+        .card img { width: 100%; border-radius: 10px; margin-bottom: 15px; background: #f9f9f9; }
+        .price-box { background: #f8f9fa; padding: 15px; border-radius: 8px; font-size: 13px; color: #444; margin-top: 10px; line-height: 1.8; }
         .btn-consult { width: 100%; padding: 12px; background: var(--accent); color: #fff; border: none; border-radius: 8px; font-weight: 700; margin-top: 15px; cursor: pointer; }
-
         .calc-card { max-width: 550px; margin: 0 auto; background: #fff; padding: 40px; border-radius: 20px; box-shadow: 0 15px 35px rgba(0,0,0,0.1); }
-        .input-group { margin-bottom: 20px; text-align: left; }
+        .input-group { margin-bottom: 15px; text-align: left; }
         label { display: block; font-size: 14px; font-weight: 600; margin-bottom: 8px; color: #555; }
         input { width: 100%; padding: 14px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-        .btn-calc { width: 100%; padding: 18px; background: var(--primary); color: #fff; border: none; border-radius: 8px; font-size: 18px; font-weight: 700; cursor: pointer; }
-        .result { margin-top: 30px; text-align: center; font-size: 24px; color: #d9534f; font-weight: 800; border-top: 2px dashed #eee; padding-top: 20px; }
-
-        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; }
-        .modal-content { background: #fff; width: 90%; max-width: 480px; margin: 50px auto; border-radius: 15px; padding: 35px; position: relative; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 2000; overflow-y: auto; }
+        .modal-content { background: #fff; width: 90%; max-width: 480px; margin: 40px auto; border-radius: 15px; padding: 30px; position: relative; }
         .close-modal { position: absolute; right: 20px; top: 20px; font-size: 25px; cursor: pointer; }
-
+        .terms-area { margin-top: 15px; font-size: 13px; color: #666; }
+        .terms-view { color: var(--accent); cursor: pointer; text-decoration: underline; margin-left: 5px; }
+        .terms-content { display: none; background: #f4f4f4; padding: 15px; border-radius: 8px; margin-top: 10px; border: 1px solid #ddd; font-size: 12px; white-space: pre-line; }
+        .btn-close-terms { display: block; margin-top: 10px; background: #888; color: #fff; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer; }
         footer { background: #222; color: #fff; padding: 50px 20px; text-align: center; margin-top: 80px; }
     </style>
 </head>
@@ -73,14 +60,14 @@
     <div class="links">
         <a href="https://blog.naver.com/cargorism" target="_blank" class="bg-blog">공식 블로그</a>
         <a href="https://cafe.naver.com/cargorism" target="_blank" class="bg-cafe">네이버 카페</a>
-        <a href="https://blog.naver.com/kdh0598" target="_blank" class="bg-app-blog">수익형 블로그</a>
-        <a href="https://t.me/gurida" target="_blank" class="bg-app-tg">상담 텔레그램</a>
+        <a href="https://blog.naver.com/kdh0598" target="_blank" class="bg-app-blog">앱테크 Blog</a>
+        <a href="https://t.me/gurida" target="_blank" class="bg-app-tg">앱테크 Telegram</a>
     </div>
 </header>
 
 <nav class="main-nav">
-    <div class="main-tab active" onclick="showMainTab(0)">차량 모델</div>
-    <div class="main-tab" onclick="showMainTab(1)">차량 금리</div>
+    <div class="main-tab active" onclick="showMainTab(0)">차량 모델, 최저가 견적</div>
+    <div class="main-tab" onclick="showMainTab(1)">차량 금리 계산</div>
 </nav>
 
 <div class="sub-nav-container">
@@ -128,28 +115,13 @@
     <div id="content-rates" class="tab-content">
         <div class="calc-card">
             <h3 id="calc-display-title" style="text-align:center; color:var(--primary);">렌트 금리 실질 분석</h3>
-            <div class="input-group">
-                <label>차량 가격 (원)</label>
-                <input type="number" id="p_val" value="45000000">
-            </div>
-            <div class="input-group">
-                <label>계약 기간 (개월)</label>
-                <input type="number" id="m_val" value="60">
-            </div>
-            <div class="input-group">
-                <label>보증금 / 선납금 (원)</label>
-                <input type="number" id="d_val" value="0">
-            </div>
-            <div class="input-group">
-                <label>잔존가치 (원)</label>
-                <input type="number" id="r_val" value="20000000">
-            </div>
-            <div class="input-group">
-                <label>월 납입료 (원)</label>
-                <input type="number" id="pmt_val" value="750000">
-            </div>
-            <button class="btn-calc" onclick="calculateFinalIRR()">실질 금리 결과 확인</button>
-            <div id="calc-result" class="result"></div>
+            <div class="input-group"><label>차량 가격 (원)</label><input type="number" id="p_val" value="45000000"></div>
+            <div class="input-group"><label>계약 기간 (개월)</label><input type="number" id="m_val" value="60"></div>
+            <div class="input-group"><label>보증금 / 선납금 (원)</label><input type="number" id="d_val" value="0"></div>
+            <div class="input-group"><label>잔존가치 (원)</label><input type="number" id="r_val" value="20000000"></div>
+            <div class="input-group"><label>월 납입료 (원)</label><input type="number" id="pmt_val" value="750000"></div>
+            <button class="btn-calc" onclick="calculateFinalIRR()" style="width:100%; padding:18px; background:var(--primary); color:#fff; border:none; border-radius:8px; font-size:18px; font-weight:700; cursor:pointer;">실질 금리 결과 확인</button>
+            <div id="calc-result" style="margin-top:30px; text-align:center; font-size:24px; color:#d9534f; font-weight:800; border-top:2px dashed #eee; padding-top:20px;"></div>
         </div>
     </div>
 </div>
@@ -159,19 +131,45 @@
         <span class="close-modal" onclick="closeModal()">&times;</span>
         <h2 style="color:var(--primary); margin-top:0;">견적 상담 신청</h2>
         <form action="https://formspree.io/f/YOUR_ID" method="POST">
-            <div class="input-group">
-                <label>고객명</label>
-                <input type="text" name="name" required>
+            <div class="input-group"><label>고객명</label><input type="text" name="name" required></div>
+            <div class="input-group"><label>상담 희망 차종</label><input type="text" name="car" id="targetCar"></div>
+            <div class="input-group"><label>연락처</label><input type="tel" name="phone" placeholder="010-0000-0000" required></div>
+            
+            <div class="terms-area">
+                <input type="checkbox" id="agree1" required> (필수) 개인정보취급방침에 동의합니다. 
+                <span class="terms-view" onclick="toggleTerms('privacy-terms')">내용보기</span>
+                <div id="privacy-terms" class="terms-content">
+개인정보취급방침
+■ 개인정보 수집 및 이용 동의(필수)
+
+① 개인정보 수집/이용 목적
+1. 장기렌터카, 리스, 할부 등 견적상담
+2. 서비스 제공에 관한 계약 이행
+3. 회원 관리
+4. 광고, 이벤트 및 프로모션
+5. 고충처리
+
+② 수집하려는 개인정보의 항목
+이름, 휴대전화번호, 생년월일, 주소, 운전면허번호
+
+③ 개인정보 보유 및 이용기간
+상담 목적 달성 시 즉시 파기 (단, 법령에 의거 보존 필요 시 해당 기간 보존)
+                    <button type="button" class="btn-close-terms" onclick="toggleTerms('privacy-terms')">창닫기</button>
+                </div>
             </div>
-            <div class="input-group">
-                <label>상담 희망 차종</label>
-                <input type="text" name="car" id="targetCar">
+
+            <div class="terms-area">
+                <input type="checkbox" id="agree2"> (선택) 개인정보 제 3자 마케팅 활용에 동의합니다.
+                <span class="terms-view" onclick="toggleTerms('marketing-terms')">내용보기</span>
+                <div id="marketing-terms" class="terms-content">
+개인정보 제 3자 마케팅 활용
+■ 제3자 마케팅 활용
+수집된 정보는 신차 출시 안내, 프로모션 이벤트 참여 기회 제공 등 마케팅 목적으로 활용될 수 있습니다.
+                    <button type="button" class="btn-close-terms" onclick="toggleTerms('marketing-terms')">창닫기</button>
+                </div>
             </div>
-            <div class="input-group">
-                <label>연락처</label>
-                <input type="tel" name="phone" placeholder="010-0000-0000" required>
-            </div>
-            <button type="submit" class="btn-calc" style="background:var(--accent);">상담 신청하기</button>
+
+            <button type="submit" class="btn-consult" style="background:var(--accent); font-size:16px;">상담 신청하기</button>
         </form>
     </div>
 </div>
@@ -193,16 +191,12 @@
     function showSubContent(type, idx) {
         const subTabs = document.querySelectorAll(`#sub-nav-${type} .sub-tab`);
         subTabs.forEach((t, i) => t.classList.toggle('active', i === idx));
-        
         if(type === 'models') {
             const brandIds = ['brand-kia', 'brand-hyundai', 'brand-kgm', 'brand-chev'];
-            brandIds.forEach((id, i) => {
-                document.getElementById(id).classList.toggle('active', i === idx);
-            });
+            brandIds.forEach((id, i) => { document.getElementById(id).classList.toggle('active', i === idx); });
         } else {
             const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
             document.getElementById('calc-display-title').innerText = titles[idx];
-            document.getElementById('calc-result').innerText = '';
         }
     }
 
@@ -213,16 +207,23 @@
         arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
     }
 
+    function toggleTerms(id) {
+        const target = document.getElementById(id);
+        target.style.display = (target.style.display === 'block') ? 'none' : 'block';
+    }
+
     function createCards(gridId, brandName, count) {
         const grid = document.getElementById(gridId);
         let html = '';
         for(let i=1; i<=count; i++) {
             html += `
             <div class="card">
+                <img src="https://via.placeholder.com/350x200?text=${brandName}+Car+${i}" alt="car">
                 <h4 style="margin:0 0 10px 0;">${brandName} 추천모델 ${i}</h4>
                 <div class="price-box">
                     • 60개월 월납: 견적문의<br>
-                    • 실시간 최저가 보장제 실시
+                    • 36개월(선납30%): 별도문의<br>
+                    • 60개월(보증30%): 최저가 상담
                 </div>
                 <button class="btn-consult" onclick="openModal('${brandName} 모델 ${i}')">상담 신청</button>
             </div>`;
@@ -237,17 +238,12 @@
     function closeModal() { document.getElementById('leadModal').style.display = 'none'; }
 
     function calculateFinalIRR() {
-        const p = Number(document.getElementById('p_val').value);
-        const m = Number(document.getElementById('m_val').value);
-        const d = Number(document.getElementById('d_val').value);
-        const r = Number(document.getElementById('r_val').value);
-        const pmt = Number(document.getElementById('pmt_val').value);
-
+        const p = Number(document.getElementById('p_val').value), m = Number(document.getElementById('m_val').value);
+        const d = Number(document.getElementById('d_val').value), r = Number(document.getElementById('r_val').value), pmt = Number(document.getElementById('pmt_val').value);
         const principal = p - d;
         let cf = [-principal];
         for(let i=0; i<m-1; i++) cf.push(pmt);
         cf.push(pmt + r);
-
         let rate = 0.001;
         for(let i=0; i<1000; i++) {
             let npv = 0, dNpv = 0;
