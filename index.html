@@ -146,11 +146,6 @@
         .admin-input-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: center; }
         .admin-input-row label { width: 110px; margin: 0; font-size: 12px; color: var(--text-muted); }
         .admin-input-row input { padding: 10px; font-size: 13px; flex: 1; border-radius: 6px; border: 1px solid #cbd5e1; }
-        
-        .log-item { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
-        .log-item:last-child { border-bottom: none; }
-        .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
-        .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -455,7 +450,14 @@
                     <div style="font-size:28px; color:var(--primary); font-weight:800;" id="admin-total-stat">0</div>
                 </div>
             </div>
-            <h4 style="margin:0 0 10px 0; font-size:14px; color:var(--primary);">실시간 방문자 이동 경로</h4>
+            
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:14px; color:var(--primary);">실시간 방문자 이동 경로</h4>
+                <select id="log-ip-filter" onchange="renderAdminStats()" style="padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:12px; color:var(--primary); outline:none;">
+                    <option value="all">전체 방문자 보기</option>
+                </select>
+            </div>
+            
             <div id="admin-log-list" style="max-height:250px; overflow-y:auto; border:1px solid #e2e8f0; border-radius:12px; padding:15px; background:#fff;"></div>
             <button onclick="clearLogs()" class="btn-calc" style="margin-top:15px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">추적 로그 초기화</button>
         </div>
@@ -571,6 +573,16 @@
         setInterval(autoSlide, 5000);
     }
 
+    // 가상 IP 생성 및 관리 로직 추가
+    function getVisitorId() {
+        let vid = localStorage.getItem('cargo_vid');
+        if(!vid) {
+            vid = Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255) + '.' + Math.floor(Math.random() * 255);
+            localStorage.setItem('cargo_vid', vid);
+        }
+        return vid;
+    }
+
     function initTracking() {
         let stats = JSON.parse(localStorage.getItem('cargo_stats') || '{"total":1034, "today":21, "date":""}');
         let todayStr = new Date().toLocaleDateString();
@@ -595,8 +607,10 @@
     function trackEvent(action) {
         let logs = JSON.parse(localStorage.getItem('cargo_logs') || '[]');
         let time = new Date().toLocaleTimeString('ko-KR', { hour12: false });
-        logs.unshift({time: time, action: action});
-        if(logs.length > 50) logs.pop(); 
+        let ip = getVisitorId(); // 방문자 IP 로드
+        
+        logs.unshift({time: time, action: action, ip: ip});
+        if(logs.length > 200) logs.pop(); 
         localStorage.setItem('cargo_logs', JSON.stringify(logs));
     }
 
@@ -906,6 +920,7 @@
         if(tabName === 'bg') loadBgData();
     }
 
+    // 통계 렌더링 시 필터링 기능 추가 적용
     function renderAdminStats() {
         let stats = JSON.parse(localStorage.getItem('cargo_stats') || '{"total":0, "today":0, "date":""}');
         document.getElementById('admin-today-stat').innerText = stats.today.toLocaleString();
@@ -913,14 +928,37 @@
         
         let logs = JSON.parse(localStorage.getItem('cargo_logs') || '[]');
         const listDiv = document.getElementById('admin-log-list');
-        if(logs.length === 0) {
+        const filterSelect = document.getElementById('log-ip-filter');
+        const selectedIp = filterSelect ? filterSelect.value : 'all';
+
+        // 저장된 로그에서 고유 IP 추출하여 필터 목록 생성
+        let uniqueIps = [...new Set(logs.map(l => l.ip))].filter(Boolean);
+        
+        if(filterSelect) {
+            let optionsHtml = '<option value="all">전체 방문자 보기</option>';
+            uniqueIps.forEach(ip => {
+                optionsHtml += `<option value="${ip}" ${ip === selectedIp ? 'selected' : ''}>방문자 IP: ${ip}</option>`;
+            });
+            filterSelect.innerHTML = optionsHtml;
+        }
+
+        // 선택된 IP에 맞춰 로그 리스트 필터링
+        let filteredLogs = selectedIp === 'all' ? logs : logs.filter(l => l.ip === selectedIp);
+
+        if(filteredLogs.length === 0) {
             listDiv.innerHTML = '<p style="text-align:center; color:#64748b; font-size:12px;">수집된 경로 데이터가 없습니다.</p>';
             return;
         }
         
         let html = '';
-        logs.forEach(log => {
-            html += `<div class="log-item"><span class="log-time">[${log.time}]</span><span class="log-action">${log.action}</span></div>`;
+        filteredLogs.forEach(log => {
+            let displayIp = log.ip ? log.ip : '알수없음';
+            html += `<div class="log-item" style="padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+                        <div style="color:#64748b; white-space:nowrap; margin-right:15px;">
+                            [${log.time}]<br><span style="font-size:10px; color:var(--accent); font-weight:700;">IP: ${displayIp}</span>
+                        </div>
+                        <div style="color:var(--primary); font-weight:600; text-align:right; word-break:break-all;">${log.action}</div>
+                     </div>`;
         });
         listDiv.innerHTML = html;
     }
