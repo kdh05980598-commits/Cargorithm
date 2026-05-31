@@ -33,9 +33,11 @@
 
         .nav-wrapper { background: var(--primary); position: relative; z-index: 900; }
         .main-nav { display: flex; max-width: 1200px; margin: 0 auto; padding: 0 10px; }
-        .main-tab { flex: 1; padding: 18px 10px; text-align: center; color: #94a3b8; cursor: pointer; font-weight: 700; font-size: 15px; border-bottom: 3px solid transparent; }
+        .main-tab { flex: 1; padding: 18px 10px; text-align: center; color: #94a3b8; cursor: pointer; font-weight: 700; font-size: 15px; border-bottom: 3px solid transparent; white-space: nowrap; }
         .main-tab:hover { color: #fff; }
         .main-tab.active { color: #fff; background: var(--primary-light); border-bottom: 3px solid var(--accent); }
+
+        .scroll-hint { display: none; }
 
         .sub-nav-container { background: var(--white); border-bottom: 1px solid #e2e8f0; padding: 12px 0; }
         .sub-nav { display: none; justify-content: center; gap: 8px; flex-wrap: wrap; }
@@ -154,91 +156,38 @@
 
         /* 모바일 반응형 디자인 코드 추가 */
         @media (max-width: 768px) {
-            header {
-                flex-direction: column;
-                align-items: stretch;
-                padding: 15px 5%;
-                gap: 15px;
-            }
-            .logo-area {
-                text-align: center;
-            }
-            .main-logo {
-                justify-content: center;
-                font-size: 24px;
-            }
-            .links {
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 6px;
-            }
-            .links a {
-                flex: 1 1 45%;
-                justify-content: center;
-                text-align: center;
-                padding: 10px 5px;
-            }
+            header { flex-direction: column; align-items: stretch; padding: 15px 5%; gap: 15px; }
+            .logo-area { text-align: center; }
+            .main-logo { justify-content: center; font-size: 24px; }
+            .links { flex-wrap: wrap; justify-content: center; gap: 6px; }
+            .links a { flex: 1 1 45%; justify-content: center; text-align: center; padding: 10px 5px; }
             
-            /* 메인 메뉴 스와이프 기능 */
-            .main-nav {
-                overflow-x: auto;
-                white-space: nowrap;
-                display: flex;
-                padding: 0 10px;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-            .main-nav::-webkit-scrollbar {
-                display: none;
-            }
-            .main-tab {
-                flex: 0 0 auto;
-                padding: 15px 20px;
-                font-size: 14px;
+            .main-nav { overflow-x: auto; white-space: nowrap; display: flex; padding: 0 10px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .main-nav::-webkit-scrollbar { display: none; }
+            .main-tab { flex: 0 0 auto; padding: 15px 20px; font-size: 14px; }
+
+            /* 메뉴 우측 스크롤 화살표 힌트 */
+            .scroll-hint {
+                display: flex; position: absolute; right: 0; top: 0; bottom: 0; width: 45px;
+                background: linear-gradient(to right, rgba(15,23,42,0), rgba(15,23,42,1) 80%);
+                color: rgba(255,255,255,0.8); font-size: 18px; font-weight: bold;
+                align-items: center; justify-content: flex-end; padding-right: 12px;
+                pointer-events: none; transition: opacity 0.3s ease; z-index: 10;
             }
 
-            /* 서브 메뉴 스와이프 기능 */
-            .sub-nav, .brand-tabs-wrap {
-                overflow-x: auto;
-                white-space: nowrap;
-                flex-wrap: nowrap;
-                justify-content: flex-start;
-                padding: 10px 15px;
-                -webkit-overflow-scrolling: touch;
-                scrollbar-width: none;
-            }
-            .sub-nav::-webkit-scrollbar, .brand-tabs-wrap::-webkit-scrollbar {
-                display: none;
-            }
-            .sub-tab {
-                flex: 0 0 auto;
-            }
+            .sub-nav, .brand-tabs-wrap { overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; justify-content: flex-start; padding: 10px 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .sub-nav::-webkit-scrollbar, .brand-tabs-wrap::-webkit-scrollbar { display: none; }
+            .sub-tab { flex: 0 0 auto; }
 
-            .slide {
-                padding: 40px 20px;
-            }
-            .slide h2 {
-                font-size: 22px;
-            }
-            .slide p {
-                font-size: 14px;
-            }
+            .slide { padding: 40px 20px; }
+            .slide h2 { font-size: 22px; }
+            .slide p { font-size: 14px; }
             
-            .premium-calc-wrapper, .calc-card {
-                padding: 25px 15px !important;
-                margin: 0 10px;
-            }
+            .premium-calc-wrapper, .calc-card { padding: 25px 15px !important; margin: 0 10px; }
             
-            .admin-input-row {
-                flex-direction: column;
-                align-items: flex-start;
-            }
-            .admin-input-row label {
-                margin-bottom: 5px;
-            }
-            .admin-input-row input {
-                width: 100%;
-            }
+            .admin-input-row { flex-direction: column; align-items: flex-start; }
+            .admin-input-row label { margin-bottom: 5px; }
+            .admin-input-row input { width: 100%; }
         }
     </style>
 </head>
@@ -258,18 +207,19 @@
 </header>
 
 <div class="nav-wrapper">
-    <nav class="main-nav">
+    <div class="scroll-hint" id="nav-scroll-hint">❯</div>
+    <nav class="main-nav" id="main-nav-scroll">
         <div class="main-tab active" onclick="showMainTab(0)">차량 라인업 및 견적</div>
         <div class="main-tab" onclick="showMainTab(1)">실질 금리 계산기</div>
         <div class="main-tab" onclick="showMainTab(2)">심사 자가진단</div>
         <div class="main-tab" onclick="showMainTab(3)">고객 인도 후기</div>
-        <div class="main-tab" onclick="showMainTab(4)">전기차 보조금 조회⚡</div>
+        <div class="main-tab" onclick="showMainTab(4)">전기차 보조금 조회</div>
     </nav>
 </div>
 
 <div class="sub-nav-container">
     <div id="sub-nav-models" class="sub-nav active" style="flex-direction: column; align-items: center;">
-        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 5px;">
+        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px;">
             <button class="group-btn active" onclick="setCarGroup('domestic')">국산차</button>
             <button class="group-btn" onclick="setCarGroup('imported')">수입차</button>
         </div>
@@ -674,6 +624,27 @@
         renderReviews();
         checkPromoPopup();
         setInterval(autoSlide, 5000);
+        
+        // 메뉴 스크롤 화살표 로직 초기화
+        initNavScrollHint();
+    }
+
+    function initNavScrollHint() {
+        const nav = document.getElementById('main-nav-scroll');
+        const hint = document.getElementById('nav-scroll-hint');
+        if(!nav || !hint) return;
+        
+        function checkScroll() {
+            if (nav.scrollWidth - nav.clientWidth <= nav.scrollLeft + 5) {
+                hint.style.opacity = '0';
+            } else {
+                hint.style.opacity = '1';
+            }
+        }
+        
+        nav.addEventListener('scroll', checkScroll);
+        window.addEventListener('resize', checkScroll);
+        setTimeout(checkScroll, 300);
     }
 
     function getVisitorId() {
@@ -761,7 +732,7 @@
         if(!grid) return;
         let html = '';
         cars.forEach(car => {
-            html += `<div class="card"><img src="${car.img}" alt="${car.name}"><h4>${car.name}</h4><div class="price-box"><div class="price-row"><span>60개월 초기비용0원</span><strong>${car.p60} 만원~</strong></div><div class="price-row"><span>36개월 (선납30%)</span><strong>${car.p36_30} 만원~</strong></div><div class="price-row"><span>60개월 (보증30%)</span><strong>${car.p60_30} 만원~</strong></div></div><button class="btn-consult" onclick="openModal('${car.name}')">상담 신청</button></div>`;
+            html += `<div class="card"><img src="${car.img}" alt="${car.name}"><h4>${car.name}</h4><div class="price-box"><div class="price-row"><span>60개월 다이렉트</span><strong>${car.p60} 만원~</strong></div><div class="price-row"><span>36개월 (선납30%)</span><strong>${car.p36_30} 만원~</strong></div><div class="price-row"><span>60개월 (보증30%)</span><strong>${car.p60_30} 만원~</strong></div></div><button class="btn-consult" onclick="openModal('${car.name}')">상담 신청</button></div>`;
         });
         grid.innerHTML = html;
     }
