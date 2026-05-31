@@ -132,6 +132,9 @@
         .footer-info { max-width: 800px; margin: 0 auto; line-height: 1.8; }
         .footer-link { color: #cbd5e1; text-decoration: none; font-size: 13px; margin-top: 16px; display: inline-block; border: 1px solid var(--text-muted); padding: 6px 20px; border-radius: 20px; }
         .footer-link:hover { background: var(--primary-light); color: #fff; border-color: #fff; }
+        
+        .visitor-counter { margin-top: 24px; padding: 12px; background: rgba(0,0,0,0.2); border-radius: 8px; display: inline-block; font-size: 12px; color: #cbd5e1; }
+        .visitor-counter span { color: #fff; font-weight: 700; }
 
         .admin-tab-btns { display: flex; gap: 6px; margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; padding-bottom: 12px; flex-wrap: wrap; }
         .admin-tab-btns button { flex: 1; padding: 10px; background: #f1f5f9; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; color: var(--text-muted); min-width: 80px; font-size: 13px; }
@@ -143,6 +146,11 @@
         .admin-input-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: center; }
         .admin-input-row label { width: 110px; margin: 0; font-size: 12px; color: var(--text-muted); }
         .admin-input-row input { padding: 10px; font-size: 13px; flex: 1; border-radius: 6px; border: 1px solid #cbd5e1; }
+        
+        .log-item { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .log-item:last-child { border-bottom: none; }
+        .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
+        .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -425,6 +433,7 @@
         
         <div class="admin-tab-btns">
             <button id="tab-btn-leads" class="active" onclick="switchAdminTab('leads')">상담 신청 내역</button>
+            <button id="tab-btn-stats" onclick="switchAdminTab('stats')">트래픽 분석</button>
             <button id="tab-btn-cars" onclick="switchAdminTab('cars')">전시 차량 설정</button>
             <button id="tab-btn-reviews" onclick="switchAdminTab('reviews')">인도 후기 편집</button>
             <button id="tab-btn-bg" onclick="switchAdminTab('bg')">비주얼 스킨</button>
@@ -433,6 +442,22 @@
         <div id="admin-sec-leads" class="admin-sec active">
             <div id="admin-list" style="max-height:400px; overflow-y:auto; border:1px solid #e2e8f0; padding:15px; border-radius:12px; background:#fff;"></div>
             <button onclick="clearLeads()" class="btn-calc" style="margin-top:20px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">데이터 전체 파기</button>
+        </div>
+
+        <div id="admin-sec-stats" class="admin-sec">
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <div style="flex:1; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0; text-align:center;">
+                    <div style="font-size:12px; color:var(--text-muted);">금일 방문자</div>
+                    <div style="font-size:28px; color:var(--primary); font-weight:800;" id="admin-today-stat">0</div>
+                </div>
+                <div style="flex:1; background:#f8fafc; padding:20px; border-radius:12px; border:1px solid #e2e8f0; text-align:center;">
+                    <div style="font-size:12px; color:var(--text-muted);">누적 방문자</div>
+                    <div style="font-size:28px; color:var(--primary); font-weight:800;" id="admin-total-stat">0</div>
+                </div>
+            </div>
+            <h4 style="margin:0 0 10px 0; font-size:14px; color:var(--primary);">실시간 방문자 이동 경로</h4>
+            <div id="admin-log-list" style="max-height:250px; overflow-y:auto; border:1px solid #e2e8f0; border-radius:12px; padding:15px; background:#fff;"></div>
+            <button onclick="clearLogs()" class="btn-calc" style="margin-top:15px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">추적 로그 초기화</button>
         </div>
 
         <div id="admin-sec-cars" class="admin-sec">
@@ -483,6 +508,10 @@
         상담센터 : 010-6670-0590 | 카고리즘 카 인텔리전스 금융 분석 시스템 | All Rights Reserved.
         <br>
         <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
+        <br>
+        <div class="visitor-counter">
+            오늘 방문자: <span id="visit-today">0</span>명 &nbsp;|&nbsp; 누적 방문자: <span id="visit-total">0</span>명
+        </div>
         <br><br>
         <span onclick="openAdmin()" style="cursor:pointer; color:var(--text-muted); font-size:11px; text-decoration:underline;">보안 관리자 모드</span>
     </div>
@@ -494,11 +523,12 @@
     let reviewData = [];
     let slideIndex = 0;
     
-    // 자가진단 툴 변수
     let currentCustomerType = '개인';
     let currentInitCost = 0;
 
     function initData() {
+        initTracking();
+
         let savedData = localStorage.getItem('cargo_vehicles');
         if (savedData) { 
             vehicleData = JSON.parse(savedData); 
@@ -541,6 +571,35 @@
         setInterval(autoSlide, 5000);
     }
 
+    function initTracking() {
+        let stats = JSON.parse(localStorage.getItem('cargo_stats') || '{"total":1034, "today":21, "date":""}');
+        let todayStr = new Date().toLocaleDateString();
+        
+        if(stats.date !== todayStr) {
+            stats.today = 1;
+            stats.date = todayStr;
+        } else {
+            stats.today += 1;
+        }
+        stats.total += 1;
+        
+        localStorage.setItem('cargo_stats', JSON.stringify(stats));
+        document.getElementById('visit-today').innerText = stats.today.toLocaleString();
+        document.getElementById('visit-total').innerText = stats.total.toLocaleString();
+        
+        let ref = document.referrer;
+        let refText = ref ? ref : '직접 입력 또는 북마크';
+        trackEvent('홈페이지 접속 (유입 경로: ' + refText + ')');
+    }
+
+    function trackEvent(action) {
+        let logs = JSON.parse(localStorage.getItem('cargo_logs') || '[]');
+        let time = new Date().toLocaleTimeString('ko-KR', { hour12: false });
+        logs.unshift({time: time, action: action});
+        if(logs.length > 50) logs.pop(); 
+        localStorage.setItem('cargo_logs', JSON.stringify(logs));
+    }
+
     function autoSlide() {
         const track = document.getElementById('slider-track');
         if(!track) return;
@@ -553,6 +612,7 @@
         const hideDate = localStorage.getItem('hide_promo_until');
         if(!hideDate || new Date().getTime() > parseInt(hideDate)) {
             document.getElementById('promo-popup').style.display = 'block';
+            trackEvent('프로모션 팝업 노출');
         }
     }
 
@@ -562,6 +622,7 @@
             localStorage.setItem('hide_promo_until', tmr.toString());
         }
         document.getElementById('promo-popup').style.display = 'none';
+        trackEvent('프로모션 팝업 닫기');
     }
 
     function generateCars(brand, count, prefix) {
@@ -605,6 +666,9 @@
     }
 
     function showMainTab(idx) {
+        const tabNames = ['차량 라인업 및 견적', '실질 금리 계산기', '심사 자가진단', '고객 인도 후기', '전기차 보조금 조회'];
+        trackEvent('메인 메뉴 탭 클릭: ' + tabNames[idx]);
+        
         if(idx === 4) { window.open('https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do', '_blank'); return; }
         document.querySelectorAll('.main-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
         document.querySelectorAll('.sub-nav').forEach((n, i) => n.classList.toggle('active', i === idx));
@@ -612,6 +676,7 @@
     }
 
     function setCarGroup(group) {
+        trackEvent('차량 그룹 변경: ' + (group === 'domestic' ? '국산차' : '수입차'));
         document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
         event.currentTarget.classList.add('active');
         
@@ -628,6 +693,7 @@
     }
 
     function showBrand(brandId, btnElement, group) {
+        trackEvent('브랜드 조회: ' + brandId.toUpperCase());
         document.querySelectorAll(`#brand-tabs-${group} .sub-tab`).forEach(t => t.classList.remove('active'));
         if(btnElement) btnElement.classList.add('active');
         
@@ -642,6 +708,7 @@
             subTabs.forEach((t, i) => t.classList.toggle('active', i === idx));
             const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
             currentCalcType = titles[idx].split(' ')[0];
+            trackEvent('금리 탭 조회: ' + currentCalcType);
             document.getElementById('calc-display-title').innerText = titles[idx];
             document.getElementById('rv-group').style.display = (currentCalcType === '할부') ? 'none' : 'block';
             document.getElementById('calc-result').innerText = '';
@@ -661,12 +728,14 @@
     }
 
     function openModal(car) {
+        trackEvent('견적 상담 팝업 호출: ' + car);
         document.getElementById('targetCar').value = car;
         document.getElementById('leadModal').style.display = 'block';
     }
     function closeModal() { document.getElementById('leadModal').style.display = 'none'; }
 
     function calculateAuto() {
+        trackEvent('실질 금리 계산기 실행');
         const p = Number(document.getElementById('p_val').value), m = Number(document.getElementById('m_val').value), d = Number(document.getElementById('d_val').value), pmt = Number(document.getElementById('pmt_val').value);
         let r = (currentCalcType === '할부') ? 0 : Number(document.getElementById('r_val').value);
         const principal = p - d;
@@ -688,7 +757,6 @@
         document.getElementById('calc-result').innerText = "입력 지표를 다시 점검해 주십시오.";
     }
 
-    // 자가진단 툴 관련 스크립트 함수
     function setCustomerType(type) {
         currentCustomerType = type;
         const tabs = document.querySelectorAll('.calc-tab');
@@ -738,6 +806,7 @@
     }
 
     function calculateProbability() {
+        trackEvent('심사 자가진단 분석 실행');
         const score = parseInt(document.getElementById('credit-input').value);
         const carPrice = parseInt(document.getElementById('car-price-input').value);
         const finance = parseInt(document.getElementById('finance-input').value);
@@ -793,21 +862,22 @@
 
         let tipText = '';
         if (finalProb < 50) {
-            tipText = '현재 설정하신 신용점수와 차량 가격과 소득 증빙 수준에서는 단독 무보증 승인이 다소 까다로울 수 있습니다. 하지만 선택하신 ' + currentInitCost + '%의 초기비용 납입 조건 또는 소득 증빙 보강을 통해 예외 승인을 충분히 이끌어낼 수 있습니다. 전문 컨설팅을 신청해 주시면 최적의 금융사를 매칭해 드리겠습니다.';
+            tipText = '현재 설정하신 차량 가격과 소득 증빙 수준에서는 단독 무보증 승인이 다소 까다로울 수 있습니다. 하지만 선택하신 ' + currentInitCost + '%의 초기비용 납입 조건 또는 소득 증빙 보강을 통해 예외 승인을 충분히 이끌어낼 수 있습니다. 전문 컨설팅을 신청해 주시면 최적의 금융사를 매칭해 드리겠습니다.';
         } else if (finalProb >= 50 && finalProb < 80) {
-            tipText = '안정적인 승인권에 진입해 있습니다. 설정하신 차량 가격 대비 소득/매출 밸런스가 양호하며, 초기비용 없이 심사 승인 가능할 수 있는 조건입니다.';
+            tipText = '안정적인 승인권에 진입해 있습니다. 설정하신 차량 가격 대비 소득/매출 밸런스가 양호하며, 한도 증액이나 금리 인하 혜택을 추가로 타진해 볼 수 있는 조건입니다.';
         } else {
-            tipText = '우량 조건으로 대부분의 금융사에서 승인이 가능한 상태입니다. 최저 금리 금융사를 선별하여 가장 유리한 조건으로 즉시 출고를 도와드릴 수 있습니다.';
+            tipText = '우량 조건으로 대부분의 금융사에서 VIP 승인이 가능한 상태입니다. 최저 금리 금융사를 선별하여 가장 유리한 조건으로 즉시 출고를 도와드릴 수 있습니다.';
         }
         
         if(currentInitCost > 0 && finalProb < 90) {
-            tipText += '<br><br><span style="color:#2563eb;">컨설팅 팁:</span> 설정하신 ' + currentInitCost + '%의 보증금은 계약 만기 시 100% 반환되며, 심사 승인율을 대폭 상승시키는 강력한 조건입니다.';
+            tipText += '<br><br><span style="color:#2563eb; font-weight:700;">컨설팅 팁:</span> 설정하신 ' + currentInitCost + '%의 보증금은 계약 만기 시 100% 반환되며, 심사 승인율을 대폭 상승시키는 강력한 조건입니다.';
         }
 
         advisory.innerHTML = tipText;
     }
 
     function saveLeadData() {
+        trackEvent('상담 신청 제출 완료');
         const name = document.getElementById('userName').value, car = document.getElementById('targetCar').value, phone = document.getElementById('userPhone').value, time = new Date().toLocaleString();
         let leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
         leads.push({ time, name, car, phone });
@@ -818,7 +888,7 @@
 
     function openAdmin() {
         const pw = prompt('인증 핀코드를 입력하십시오.');
-        if(pw === '89568956') { document.getElementById('adminModal').style.display = 'block'; switchAdminTab('leads'); }
+        if(pw === '1234') { document.getElementById('adminModal').style.display = 'block'; switchAdminTab('leads'); }
         else if(pw !== null) { alert('접근 자격이 일치하지 않습니다.'); }
     }
     function closeAdmin() { document.getElementById('adminModal').style.display = 'none'; }
@@ -830,18 +900,46 @@
         document.getElementById(`admin-sec-${tabName}`).classList.add('active');
         
         if(tabName === 'leads') renderAdminList();
+        if(tabName === 'stats') renderAdminStats();
         if(tabName === 'cars') renderCarEditor();
         if(tabName === 'reviews') renderReviewEditor();
         if(tabName === 'bg') loadBgData();
     }
 
+    function renderAdminStats() {
+        let stats = JSON.parse(localStorage.getItem('cargo_stats') || '{"total":0, "today":0, "date":""}');
+        document.getElementById('admin-today-stat').innerText = stats.today.toLocaleString();
+        document.getElementById('admin-total-stat').innerText = stats.total.toLocaleString();
+        
+        let logs = JSON.parse(localStorage.getItem('cargo_logs') || '[]');
+        const listDiv = document.getElementById('admin-log-list');
+        if(logs.length === 0) {
+            listDiv.innerHTML = '<p style="text-align:center; color:#64748b; font-size:12px;">수집된 경로 데이터가 없습니다.</p>';
+            return;
+        }
+        
+        let html = '';
+        logs.forEach(log => {
+            html += `<div class="log-item"><span class="log-time">[${log.time}]</span><span class="log-action">${log.action}</span></div>`;
+        });
+        listDiv.innerHTML = html;
+    }
+
+    function clearLogs() {
+        if(confirm('모든 방문자 트래픽 추적 로그를 초기화하시겠습니까?')) {
+            localStorage.removeItem('cargo_logs');
+            renderAdminStats();
+        }
+    }
+
     function renderAdminList() {
         const listDiv = document.getElementById('admin-list'), leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
-        if(leads.length === 0) { listDiv.innerHTML = '<p style="text-align:center; color:#64748b;">수집된 상담 인바운드가 없습니다.</p>'; return; }
+        if(leads.length === 0) { listDiv.innerHTML = '<p style="text-align:center; color:#64748b; font-size:12px;">수집된 상담 인바운드가 없습니다.</p>'; return; }
         let html = '<table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;"><tr style="border-bottom:2px solid #0f172a; color:#1e293b;"><th style="padding:12px 6px;">인입 시각</th><th>고객명</th><th>요청 모델</th><th>전화번호</th></tr>';
         leads.reverse().forEach(l => { html += `<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px 6px; color:#64748b; font-size:12px;">${l.time}</td><td style="font-weight:600;">${l.name}</td><td style="color:var(--accent); font-weight:600;">${l.car}</td><td>${l.phone}</td></tr>`; });
         html += '</table>'; listDiv.innerHTML = html;
     }
+    
     function clearLeads() { if(confirm('모든 인바운드 DB를 영구 파기하시겠습니까?')) { localStorage.removeItem('cargo_leads'); renderAdminList(); } }
 
     function renderCarEditor() {
@@ -852,6 +950,7 @@
         });
         container.innerHTML = html;
     }
+    
     function saveCarData() {
         const brand = document.getElementById('admin-brand-select').value, cars = vehicleData[brand];
         cars.forEach((car, idx) => { car.name = document.getElementById(`car-name-${brand}-${idx}`).value; car.img = document.getElementById(`car-img-${brand}-${idx}`).value; car.p60 = document.getElementById(`car-p60-${brand}-${idx}`).value; car.p36_30 = document.getElementById(`car-p36-${brand}-${idx}`).value; car.p60_30 = document.getElementById(`car-p60_30-${brand}-${idx}`).value; });
@@ -864,6 +963,7 @@
         reviewData.forEach((rv, idx) => { html += `<div class="admin-car-item" style="display:flex; gap:12px; align-items:center; background:#fff;"><img src="${rv.img}" style="width:44px; height:44px; object-fit:cover; border-radius:6px;"><div style="flex:1; font-size:12px; color:var(--text-main);">${rv.desc}</div><button onclick="deleteReview(${idx})" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:11px;">원격 삭제</button></div>`; });
         container.innerHTML = html;
     }
+    
     function addReview() {
         const img = document.getElementById('new-review-img').value, desc = document.getElementById('new-review-desc').value;
         if(!img || !desc) { alert('데이터를 누락 없이 기입해 주십시오.'); return; }
@@ -872,6 +972,7 @@
         document.getElementById('new-review-img').value = ''; document.getElementById('new-review-desc').value = '';
         renderReviewEditor(); renderReviews();
     }
+    
     function deleteReview(idx) {
         if(confirm('해당 미디어를 인덱스에서 제외하시겠습니까?')) { reviewData.splice(idx, 1); localStorage.setItem('cargo_reviews', JSON.stringify(reviewData)); renderReviewEditor(); renderReviews(); }
     }
@@ -880,6 +981,7 @@
         const bgs = JSON.parse(localStorage.getItem('cargo_bgs') || '{"top":"","mid":"","bot":""}');
         document.getElementById('bg-top-input').value = bgs.top; document.getElementById('bg-mid-input').value = bgs.mid;
     }
+    
     function saveBgData() {
         const bgs = { top: document.getElementById('bg-top-input').value, mid: document.getElementById('bg-mid-input').value, bot: "" };
         localStorage.setItem('cargo_bgs', JSON.stringify(bgs)); alert('시스템 그래픽 구성요소가 저장되었습니다.'); applyBackgrounds();
