@@ -84,6 +84,11 @@
         .btn-consult { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; margin-top: 16px; cursor: pointer; }
         .card:hover .btn-consult { background: var(--accent); }
 
+        .review-card { background: #fff; border-radius: 16px; padding: 0; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); overflow: hidden; }
+        .review-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
+        .review-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid #e2e8f0; }
+        .review-desc { font-size: 14px; color: var(--text-main); padding: 20px; font-weight: 500; text-align: left; background: #fff; }
+
         .calc-card { max-width: 500px; margin: 20px auto; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; }
         .input-group { margin-bottom: 20px; text-align: left; }
         label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); text-transform: uppercase; }
@@ -146,6 +151,95 @@
         .log-item:last-child { border-bottom: none; }
         .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
         .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
+
+        /* 모바일 반응형 디자인 코드 추가 */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 15px 5%;
+                gap: 15px;
+            }
+            .logo-area {
+                text-align: center;
+            }
+            .main-logo {
+                justify-content: center;
+                font-size: 24px;
+            }
+            .links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 6px;
+            }
+            .links a {
+                flex: 1 1 45%;
+                justify-content: center;
+                text-align: center;
+                padding: 10px 5px;
+            }
+            
+            /* 메인 메뉴 스와이프 기능 */
+            .main-nav {
+                overflow-x: auto;
+                white-space: nowrap;
+                display: flex;
+                padding: 0 10px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .main-nav::-webkit-scrollbar {
+                display: none;
+            }
+            .main-tab {
+                flex: 0 0 auto;
+                padding: 15px 20px;
+                font-size: 14px;
+            }
+
+            /* 서브 메뉴 스와이프 기능 */
+            .sub-nav, .brand-tabs-wrap {
+                overflow-x: auto;
+                white-space: nowrap;
+                flex-wrap: nowrap;
+                justify-content: flex-start;
+                padding: 10px 15px;
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .sub-nav::-webkit-scrollbar, .brand-tabs-wrap::-webkit-scrollbar {
+                display: none;
+            }
+            .sub-tab {
+                flex: 0 0 auto;
+            }
+
+            .slide {
+                padding: 40px 20px;
+            }
+            .slide h2 {
+                font-size: 22px;
+            }
+            .slide p {
+                font-size: 14px;
+            }
+            
+            .premium-calc-wrapper, .calc-card {
+                padding: 25px 15px !important;
+                margin: 0 10px;
+            }
+            
+            .admin-input-row {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .admin-input-row label {
+                margin-bottom: 5px;
+            }
+            .admin-input-row input {
+                width: 100%;
+            }
+        }
     </style>
 </head>
 <body>
@@ -175,7 +269,7 @@
 
 <div class="sub-nav-container">
     <div id="sub-nav-models" class="sub-nav active" style="flex-direction: column; align-items: center;">
-        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 5px;">
             <button class="group-btn active" onclick="setCarGroup('domestic')">국산차</button>
             <button class="group-btn" onclick="setCarGroup('imported')">수입차</button>
         </div>
@@ -368,19 +462,14 @@
 
         <div id="content-reviews" class="tab-content">
             <div style="background: #fff; border-radius: 16px; padding: 50px 20px; box-shadow: 0 10px 30px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; margin-bottom: 30px; text-align: center;">
-    <h3 style="color: #0f172a; margin-top: 0; margin-bottom: 15px; font-size: 24px; letter-spacing: -1px;">카고리즘 리얼 출고 스토리</h3>
-    <p style="font-size: 15px; color: #64748b; margin-bottom: 30px;">차 전문가의 철저한 심사 승인과 신속한 인도 과정을 거친<br>고객님들의 생생한 후기를 네이버 공식 카고리즘 카페에서 확인해 보세요.</p>
-    <a href="https://cafe.naver.com/cargorism?iframe_url=/ArticleList.nhn%3Fsearch.clubid=31588210%26search.menuid=9" target="_blank" style="display: inline-block; padding: 18px 40px; background: #03c75a; color: #fff; text-decoration: none; font-size: 16px; font-weight: 700; border-radius: 12px; box-shadow: 0 4px 15px rgba(3,199,90,0.3); transition: all 0.2s;">
-        네이버 공식 카페에서 후기 모아보기(클릭)
-    </a>
-</div>
-            <div style="background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; margin-bottom: 30px;">
-                <h3 style="text-align: center; color: #0f172a; margin-top: 10px; margin-bottom: 20px; font-size: 22px;">카고리즘 출고 후기(오류시 ⬆️링크 클릭)</h3>
-                <iframe src="https://cafe.naver.com/ArticleList.nhn?search.clubid=31588210&search.menuid=9" width="100%" height="800px" frameborder="0" scrolling="auto" style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>
-                <p style="text-align:center; font-size:13px; color:#64748b; margin-top:15px;">네이버 공식 카페에서 더 많은 생생한 후기를 확인하실 수 있습니다.</p>
+                <h3 style="color: #0f172a; margin-top: 0; margin-bottom: 15px; font-size: 24px; letter-spacing: -1px;">카고리즘 리얼 출고 스토리</h3>
+                <p style="font-size: 15px; color: #64748b; margin-bottom: 30px;">10년 차 전문가의 철저한 심사 승인과 신속한 인도 과정을 거친<br>고객님들의 생생한 후기를 네이버 공식 카페에서 확인해 보세요.</p>
+                <a href="https://cafe.naver.com/cargorism?iframe_url=/ArticleList.nhn%3Fsearch.clubid=31588210%26search.menuid=9" target="_blank" style="display: inline-block; padding: 18px 40px; background: #03c75a; color: #fff; text-decoration: none; font-size: 16px; font-weight: 700; border-radius: 12px; box-shadow: 0 4px 15px rgba(3,199,90,0.3); transition: all 0.2s;">
+                    네이버 공식 카페에서 후기 모아보기
+                </a>
             </div>
             
-            <h4 style="color: var(--primary); margin-bottom: 15px;">최근 베스트 출고 리뷰</h4>
+            <h4 style="color: var(--primary); margin-bottom: 15px;">최근 베스트 인도 리뷰</h4>
             <div class="grid" id="grid-reviews"></div>
         </div>
 
