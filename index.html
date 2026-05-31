@@ -505,3 +505,86 @@
 </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>장기렌트/리스 승인 자가진단</title>
+    <style>
+        body { font-family: sans-serif; background: #f4f6f9; padding: 20px; }
+        .card { background: #fff; max-width: 600px; margin: 0 auto; padding: 20px; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        h2 { text-align: center; color: #003366; }
+        .section { margin-bottom: 20px; }
+        .btn-group { display: flex; gap: 10px; }
+        .btn { flex: 1; padding: 10px; border: 1px solid #ccc; background: #fff; cursor: pointer; text-align: center; border-radius: 4px; }
+        .btn.active { border-color: #003366; background: #e6f0fa; color: #003366; }
+        .range-box { margin-top: 10px; }
+        input[type="range"] { width: 100%; }
+        .value-display { text-align: right; font-weight: bold; margin-top: 5px; }
+        .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .grid-item { border: 1px solid #ccc; padding: 10px; text-align: center; border-radius: 4px; cursor: pointer; }
+        .grid-item.selected { border-color: red; color: red; }
+        .result-box { background: #f0f4f8; padding: 15px; border-radius: 4px; margin-top: 20px; text-align: center; }
+        .score { font-size: 24px; color: red; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>장기렌트/리스 승인 자가진단</h2>
+        
+        <div class="section">
+            <p>고객 유형</p>
+            <div class="btn-group">
+                <button class="btn active">개인(사업자)</button>
+                <button class="btn">법인사업자</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <p>희망 상품 선택</p>
+            <div class="btn-group">
+                <button class="btn active">장기렌트</button>
+                <button class="btn">오토리스</button>
+            </div>
+        </div>
+
+        <div class="section">
+            <p>원하는 차량 가격 (옵션 포함)</p>
+            <div class="range-box">
+                <input type="range" min="1000" max="20000" value="7900">
+                <div class="value-display">79,000,000 원</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p>연간 소득 혹은 매출</p>
+            <div class="range-box">
+                <input type="range" min="1000" max="20000" value="8000">
+                <div class="value-display">80,000,000 원</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p>신용점수 (KCB 올크레딧 기준)</p>
+            <div class="range-box">
+                <input type="range" min="300" max="1000" value="620">
+                <div class="value-display">620 점</div>
+            </div>
+        </div>
+
+        <div class="section">
+            <p>준비 가능한 초기비용</p>
+            <div class="grid">
+                <div class="grid-item selected">무보증(0%)<br>55%</div>
+                <div class="grid-item">10% 준비<br>65%</div>
+                <div class="grid-item">20% 준비<br>75%</div>
+            </div>
+        </div>
+
+        <div class="result-box">
+            <p>최종 예상 승인 확률</p>
+            <div class="score">55%</div>
+        </div>
+    </div>
+</body>
+</html>
