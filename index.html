@@ -84,11 +84,6 @@
         .btn-consult { width: 100%; padding: 14px; background: var(--primary); color: #fff; border: none; border-radius: 10px; font-weight: 700; font-size: 14px; margin-top: 16px; cursor: pointer; }
         .card:hover .btn-consult { background: var(--accent); }
 
-        .review-card { background: #fff; border-radius: 16px; padding: 0; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02); overflow: hidden; }
-        .review-card:hover { transform: translateY(-4px); box-shadow: 0 15px 30px rgba(0,0,0,0.05); }
-        .review-card img { width: 100%; height: 220px; object-fit: cover; border-bottom: 1px solid #e2e8f0; }
-        .review-desc { font-size: 14px; color: var(--text-main); padding: 20px; font-weight: 500; text-align: left; background: #fff; }
-
         .calc-card { max-width: 500px; margin: 20px auto; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; }
         .input-group { margin-bottom: 20px; text-align: left; }
         label { display: block; font-size: 13px; font-weight: 700; margin-bottom: 8px; color: var(--text-main); text-transform: uppercase; }
@@ -146,6 +141,11 @@
         .admin-input-row { display: flex; gap: 12px; margin-bottom: 10px; align-items: center; }
         .admin-input-row label { width: 110px; margin: 0; font-size: 12px; color: var(--text-muted); }
         .admin-input-row input { padding: 10px; font-size: 13px; flex: 1; border-radius: 6px; border: 1px solid #cbd5e1; }
+        
+        .log-item { padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .log-item:last-child { border-bottom: none; }
+        .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
+        .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
     </style>
 </head>
 <body>
@@ -367,6 +367,13 @@
         </div>
 
         <div id="content-reviews" class="tab-content">
+            <div style="background: #fff; border-radius: 16px; padding: 20px; box-shadow: 0 10px 30px rgba(15,23,42,0.08); border: 1px solid #e2e8f0; margin-bottom: 30px;">
+                <h3 style="text-align: center; color: #0f172a; margin-top: 10px; margin-bottom: 20px; font-size: 22px;">카고리즘 리얼 출고 후기</h3>
+                <iframe src="https://cafe.naver.com/ArticleList.nhn?search.clubid=YOUR_CLUB_ID&search.menuid=YOUR_MENU_ID" width="100%" height="800px" frameborder="0" scrolling="auto" style="border: 1px solid #e2e8f0; border-radius: 8px;"></iframe>
+                <p style="text-align:center; font-size:13px; color:#64748b; margin-top:15px;">네이버 공식 카페에서 더 많은 생생한 후기를 확인하실 수 있습니다.</p>
+            </div>
+            
+            <h4 style="color: var(--primary); margin-bottom: 15px;">최근 베스트 인도 리뷰</h4>
             <div class="grid" id="grid-reviews"></div>
         </div>
 
@@ -573,7 +580,6 @@
         setInterval(autoSlide, 5000);
     }
 
-    // 가상 IP 생성 및 관리 로직 추가
     function getVisitorId() {
         let vid = localStorage.getItem('cargo_vid');
         if(!vid) {
@@ -607,7 +613,7 @@
     function trackEvent(action) {
         let logs = JSON.parse(localStorage.getItem('cargo_logs') || '[]');
         let time = new Date().toLocaleTimeString('ko-KR', { hour12: false });
-        let ip = getVisitorId(); // 방문자 IP 로드
+        let ip = getVisitorId(); 
         
         logs.unshift({time: time, action: action, ip: ip});
         if(logs.length > 200) logs.pop(); 
@@ -920,7 +926,6 @@
         if(tabName === 'bg') loadBgData();
     }
 
-    // 통계 렌더링 시 필터링 기능 추가 적용
     function renderAdminStats() {
         let stats = JSON.parse(localStorage.getItem('cargo_stats') || '{"total":0, "today":0, "date":""}');
         document.getElementById('admin-today-stat').innerText = stats.today.toLocaleString();
@@ -931,7 +936,6 @@
         const filterSelect = document.getElementById('log-ip-filter');
         const selectedIp = filterSelect ? filterSelect.value : 'all';
 
-        // 저장된 로그에서 고유 IP 추출하여 필터 목록 생성
         let uniqueIps = [...new Set(logs.map(l => l.ip))].filter(Boolean);
         
         if(filterSelect) {
@@ -942,7 +946,6 @@
             filterSelect.innerHTML = optionsHtml;
         }
 
-        // 선택된 IP에 맞춰 로그 리스트 필터링
         let filteredLogs = selectedIp === 'all' ? logs : logs.filter(l => l.ip === selectedIp);
 
         if(filteredLogs.length === 0) {
