@@ -164,26 +164,24 @@
     <nav class="main-nav">
         <div class="main-tab active" onclick="showMainTab(0)">차량 라인업 및 견적</div>
         <div class="main-tab" onclick="showMainTab(1)">실질 금리 계산기</div>
-        <div class="main-tab" onclick="showMainTab(2)">고객 인도 후기</div>
-        <div class="main-tab" onclick="showMainTab(3)">전기차 보조금 조회</div>
+        <div class="main-tab" onclick="showMainTab(2)">심사 자가진단</div>
+        <div class="main-tab" onclick="showMainTab(3)">고객 인도 후기</div>
+        <div class="main-tab" onclick="showMainTab(4)">전기차 보조금 조회</div>
     </nav>
 </div>
 
 <div class="sub-nav-container">
     <div id="sub-nav-models" class="sub-nav active" style="flex-direction: column; align-items: center;">
-        
         <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px;">
             <button class="group-btn active" onclick="setCarGroup('domestic')">국산차</button>
             <button class="group-btn" onclick="setCarGroup('imported')">수입차</button>
         </div>
-
         <div id="brand-tabs-domestic" class="brand-tabs-wrap active">
             <div class="sub-tab active" onclick="showBrand('kia', this, 'domestic')">기아자동차</div>
             <div class="sub-tab" onclick="showBrand('hyundai', this, 'domestic')">현대자동차</div>
             <div class="sub-tab" onclick="showBrand('kgm', this, 'domestic')">KGM</div>
             <div class="sub-tab" onclick="showBrand('chev', this, 'domestic')">쉐보레</div>
         </div>
-
         <div id="brand-tabs-imported" class="brand-tabs-wrap">
             <div class="sub-tab" onclick="showBrand('benz', this, 'imported')">벤츠 (Benz)</div>
             <div class="sub-tab" onclick="showBrand('bmw', this, 'imported')">BMW</div>
@@ -191,7 +189,6 @@
             <div class="sub-tab" onclick="showBrand('porsche', this, 'imported')">포르쉐 (Porsche)</div>
             <div class="sub-tab" onclick="showBrand('volvo', this, 'imported')">볼보 (Volvo)</div>
         </div>
-
     </div>
     
     <div id="sub-nav-rates" class="sub-nav">
@@ -199,6 +196,8 @@
         <div class="sub-tab" onclick="showSubContent('rates', 1)">리스 금리</div>
         <div class="sub-tab" onclick="showSubContent('rates', 2)">할부 금리</div>
     </div>
+    
+    <div id="sub-nav-diagnosis" class="sub-nav"></div>
     <div id="sub-nav-reviews" class="sub-nav"></div>
     <div id="sub-nav-ev" class="sub-nav"></div>
 </div>
@@ -289,6 +288,80 @@
                 <div id="calc-result" class="result"></div>
             </div>
         </div>
+        
+        <div id="content-diagnosis" class="tab-content">
+            <div class="premium-calc-wrapper" style="max-width: 600px; margin: 0 auto; background: #ffffff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 40px rgba(0,0,0,0.08); border: 1px solid #e2e8f0;">
+                <h3 style="text-align: center; color: #0f172a; margin-top: 0; margin-bottom: 30px; font-size: 24px; letter-spacing: -1px;">맞춤형 심사 자가진단</h3>
+            
+                <div style="display: flex; gap: 8px; margin-bottom: 24px;">
+                    <button class="calc-tab active" onclick="setCustomerType('개인')" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #0f172a; background: #0f172a; color: #fff; cursor: pointer; font-size: 14px;">개인</button>
+                    <button class="calc-tab" onclick="setCustomerType('개인사업자')" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 14px;">개인사업자</button>
+                    <button class="calc-tab" onclick="setCustomerType('법인사업자')" style="flex: 1; padding: 12px; border-radius: 12px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 14px;">법인사업자</button>
+                </div>
+            
+                <div style="display: flex; gap: 8px; margin-bottom: 30px;">
+                    <button class="prod-tab active" onclick="setProductType('장기렌트')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #2563eb; background: #2563eb; color: #fff; cursor: pointer; font-size: 14px;">장기렌트</button>
+                    <button class="prod-tab" onclick="setProductType('리스')" style="flex: 1; padding: 10px; border-radius: 8px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 14px;">오토리스</button>
+                </div>
+            
+                <div style="margin-bottom: 30px;">
+                    <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 8px;">차량 가격 (만원)</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="range" id="car-price-slider" min="1000" max="25000" step="100" value="4500" oninput="updateInput('car-price')" style="flex: 1; accent-color: #0f172a;">
+                        <input type="number" id="car-price-input" value="4500" oninput="updateSlider('car-price')" style="width: 100px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right;">
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button onclick="addAmount('car-price', 1000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+1,000만</button>
+                        <button onclick="addAmount('car-price', 5000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+5,000만</button>
+                        <button onclick="addAmount('car-price', 10000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+1억</button>
+                    </div>
+                </div>
+            
+                <div style="margin-bottom: 30px;">
+                    <label id="finance-label" style="display: block; font-size: 13px; color: #64748b; margin-bottom: 8px;">연간 소득 (만원)</label>
+                    <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                        <input type="range" id="finance-slider" min="1000" max="100000" step="100" value="4000" oninput="updateInput('finance')" style="flex: 1; accent-color: #0f172a;">
+                        <input type="number" id="finance-input" value="4000" oninput="updateSlider('finance')" style="width: 100px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right;">
+                    </div>
+                    <div style="display: flex; gap: 6px;">
+                        <button onclick="addAmount('finance', 1000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+1,000만</button>
+                        <button onclick="addAmount('finance', 5000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+5,000만</button>
+                        <button onclick="addAmount('finance', 10000)" style="flex: 1; padding: 6px; border: 1px solid #e2e8f0; background: #f8fafc; border-radius: 4px; cursor: pointer; font-size: 12px; color: #475569;">+1억</button>
+                    </div>
+                </div>
+            
+                <div style="margin-bottom: 30px;">
+                    <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 8px;">KCB 신용점수</label>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <input type="range" id="credit-slider" min="300" max="1000" step="1" value="750" oninput="updateInput('credit')" style="flex: 1; accent-color: #2563eb;">
+                        <input type="number" id="credit-input" value="750" oninput="updateSlider('credit')" style="width: 100px; padding: 8px; border: 1px solid #cbd5e1; border-radius: 6px; text-align: right;">
+                    </div>
+                </div>
+            
+                <div style="margin-bottom: 40px;">
+                    <label style="display: block; font-size: 13px; color: #64748b; margin-bottom: 8px;">초기비용 (보증금/선납금)</label>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                        <button class="init-cost-btn active" onclick="setInitCost(0)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #0f172a; background: #0f172a; color: #fff; cursor: pointer; font-size: 13px;">무보증 (0%)</button>
+                        <button class="init-cost-btn" onclick="setInitCost(10)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 13px;">10%</button>
+                        <button class="init-cost-btn" onclick="setInitCost(20)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 13px;">20%</button>
+                        <button class="init-cost-btn" onclick="setInitCost(30)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 13px;">30%</button>
+                        <button class="init-cost-btn" onclick="setInitCost(40)" style="flex: 1; padding: 8px; border-radius: 6px; border: 1px solid #cbd5e1; background: #fff; color: #64748b; cursor: pointer; font-size: 13px;">40%</button>
+                    </div>
+                </div>
+            
+                <button onclick="calculateProbability()" style="width: 100%; padding: 18px; background: linear-gradient(135deg, #0f172a, #1e293b); color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 15px rgba(15,23,42,0.2);">예상 승인 확률 확인하기</button>
+            
+                <div id="result-area" style="display: none; margin-top: 30px; padding-top: 30px; border-top: 1px dashed #cbd5e1; text-align: center;">
+                    <div style="font-size: 14px; color: #64748b; margin-bottom: 10px;">카고리즘 분석 예상 승인율</div>
+                    <div style="position: relative; width: 100%; height: 24px; background: #e2e8f0; border-radius: 12px; overflow: hidden; margin-bottom: 20px;">
+                        <div id="prob-bar" style="height: 100%; width: 0%; background: #2563eb; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                    </div>
+                    <div id="prob-text" style="font-size: 42px; color: #0f172a; font-weight: 800; line-height: 1; margin-bottom: 15px;">0%</div>
+                    <div id="advisory-tip" style="padding: 16px; background: #f8fafc; border-radius: 10px; font-size: 14px; color: #334155; line-height: 1.6; border: 1px solid #e2e8f0;"></div>
+                    <button onclick="openModal('자가진단 맞춤 상담')" style="margin-top: 20px; width: 100%; padding: 16px; background: var(--accent); color: #fff; border: none; border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer; box-shadow: 0 4px 12px rgba(37,99,235,0.2);">이 조건으로 바로 상담 신청하기</button>
+                </div>
+            </div>
+        </div>
 
         <div id="content-reviews" class="tab-content">
             <div class="grid" id="grid-reviews"></div>
@@ -322,7 +395,7 @@
         <h2 style="color:var(--primary); margin:0 0 24px 0; font-size:22px; font-weight:800;">프리미엄 견적 상담</h2>
         <form action="#" method="POST" onsubmit="saveLeadData(); return false;">
             <div class="input-group"><label>고객명</label><input type="text" name="name" id="userName" required></div>
-            <div class="input-group"><label>상담 희망 차종</label><input type="text" name="car" id="targetCar"></div>
+            <div class="input-group"><label>상담 희망 차종 / 비고</label><input type="text" name="car" id="targetCar"></div>
             <div class="input-group"><label>연락처</label><input type="tel" name="phone" id="userPhone" placeholder="010-0000-0000" required></div>
             
             <div class="terms-area">
@@ -382,7 +455,7 @@
                 </select>
             </div>
             <div id="car-editor-list" style="max-height:400px; overflow-y:auto; padding-right:10px;"></div>
-            <button onclick="saveCarData()" class="save-btn">차량 정보 업데이트</button>
+            <button onclick="saveCarData()" class="save-btn" style="background:var(--primary); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer; margin-top:10px;">차량 정보 업데이트</button>
         </div>
 
         <div id="admin-sec-reviews" class="admin-sec">
@@ -390,7 +463,7 @@
                 <h4>신규 출고 후기 피드 추가</h4>
                 <div class="admin-input-row"><label>이미지 링크</label><input type="text" id="new-review-img" placeholder="http://..."></div>
                 <div class="admin-input-row"><label>출고 스토리 내용</label><input type="text" id="new-review-desc" placeholder="예: 무보증 즉시출고 완료"></div>
-                <button onclick="addReview()" class="save-btn" style="background:var(--accent);">후기 채널 등록</button>
+                <button onclick="addReview()" class="save-btn" style="background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">후기 채널 등록</button>
             </div>
             <div id="review-editor-list" style="max-height:300px; overflow-y:auto;"></div>
         </div>
@@ -399,15 +472,14 @@
             <div class="input-group"><label>헤더 스킨 이미지 URL</label><input type="text" id="bg-top-input" placeholder="http://..."></div>
             <div class="input-group"><label>미들 레이어 이미지 URL</label><input type="text" id="bg-mid-input" placeholder="http://..."></div>
             <div class="input-group"><label>푸터 영역 이미지 URL</label><input type="text" id="bg-bot-input" placeholder="http://..."></div>
-            <button onclick="saveBgData()" class="save-btn">환경 설정 저장</button>
+            <button onclick="saveBgData()" class="save-btn" style="background:var(--primary); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">환경 설정 저장</button>
         </div>
-
     </div>
 </div>
 
 <footer>
     <div class="footer-info">
-        카고리즘 권도형 | 오피셜 비즈니스 파트너 파트너스 그룹<br>
+        (주)제일오토모빌 권도형 | 오피셜 비즈니스 파트너 파트너스 그룹<br>
         상담센터 : 010-6670-0590 | 카고리즘 카 인텔리전스 금융 분석 시스템 | All Rights Reserved.
         <br>
         <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
@@ -421,12 +493,15 @@
     let vehicleData = {};
     let reviewData = [];
     let slideIndex = 0;
+    
+    // 자가진단 툴 변수
+    let currentCustomerType = '개인';
+    let currentInitCost = 0;
 
     function initData() {
         let savedData = localStorage.getItem('cargo_vehicles');
         if (savedData) { 
             vehicleData = JSON.parse(savedData); 
-            // 구버전 데이터 마이그레이션 (수입차 데이터가 없을 경우 추가)
             if(!vehicleData.benz) {
                 vehicleData.benz = generateCars('벤츠', 4, 'grid-benz');
                 vehicleData.bmw = generateCars('BMW', 4, 'grid-bmw');
@@ -530,7 +605,7 @@
     }
 
     function showMainTab(idx) {
-        if(idx === 3) { window.open('https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do', '_blank'); return; }
+        if(idx === 4) { window.open('https://ev.or.kr/nportal/buySupprt/initSubsidyPaymentCheckAction.do', '_blank'); return; }
         document.querySelectorAll('.main-tab').forEach((t, i) => t.classList.toggle('active', i === idx));
         document.querySelectorAll('.sub-nav').forEach((n, i) => n.classList.toggle('active', i === idx));
         document.querySelectorAll('.tab-content').forEach((c, i) => c.classList.toggle('active', i === idx));
@@ -611,6 +686,125 @@
             rate = next;
         }
         document.getElementById('calc-result').innerText = "입력 지표를 다시 점검해 주십시오.";
+    }
+
+    // 자가진단 툴 관련 스크립트 함수
+    function setCustomerType(type) {
+        currentCustomerType = type;
+        const tabs = document.querySelectorAll('.calc-tab');
+        tabs.forEach(tab => {
+            if(tab.innerText === type) {
+                tab.style.background = '#0f172a'; tab.style.color = '#fff'; tab.style.borderColor = '#0f172a';
+            } else {
+                tab.style.background = '#fff'; tab.style.color = '#64748b'; tab.style.borderColor = '#cbd5e1';
+            }
+        });
+        document.getElementById('finance-label').innerText = (type === '개인') ? '연간 소득 (만원)' : '연간 매출 (만원)';
+    }
+
+    function setProductType(type) {
+        const tabs = document.querySelectorAll('.prod-tab');
+        tabs.forEach(tab => {
+            if(tab.innerText.includes(type)) {
+                tab.style.background = '#2563eb'; tab.style.color = '#fff'; tab.style.borderColor = '#2563eb';
+            } else {
+                tab.style.background = '#fff'; tab.style.color = '#64748b'; tab.style.borderColor = '#cbd5e1';
+            }
+        });
+    }
+
+    function setInitCost(val) {
+        currentInitCost = val;
+        const btns = document.querySelectorAll('.init-cost-btn');
+        btns.forEach(btn => {
+            if(btn.innerText.includes(val.toString() + '%') || (val === 0 && btn.innerText.includes('무보증'))) {
+                btn.style.background = '#0f172a'; btn.style.color = '#fff'; btn.style.borderColor = '#0f172a';
+            } else {
+                btn.style.background = '#fff'; btn.style.color = '#64748b'; btn.style.borderColor = '#cbd5e1';
+            }
+        });
+    }
+
+    function updateInput(id) { document.getElementById(id + '-input').value = document.getElementById(id + '-slider').value; }
+    function updateSlider(id) { document.getElementById(id + '-slider').value = document.getElementById(id + '-input').value; }
+
+    function addAmount(id, amount) {
+        const input = document.getElementById(id + '-input');
+        const slider = document.getElementById(id + '-slider');
+        let newVal = parseInt(input.value) + amount;
+        if(newVal > parseInt(slider.max)) newVal = slider.max;
+        input.value = newVal;
+        slider.value = newVal;
+    }
+
+    function calculateProbability() {
+        const score = parseInt(document.getElementById('credit-input').value);
+        const carPrice = parseInt(document.getElementById('car-price-input').value);
+        const finance = parseInt(document.getElementById('finance-input').value);
+        let baseProb = 0;
+
+        if (score < 550) baseProb = 20;
+        else if (score >= 550 && score <= 599) baseProb = 45;
+        else if (score >= 600 && score <= 649) baseProb = 55;
+        else if (score >= 650 && score <= 699) baseProb = 70;
+        else if (score >= 700 && score <= 799) baseProb = 80;
+        else if (score >= 800) baseProb = 95;
+
+        let modifier = 0;
+        if (currentInitCost === 10) modifier = 10;
+        else if (currentInitCost === 20) modifier = 15;
+        else if (currentInitCost === 30) modifier = 20;
+        else if (currentInitCost === 40) modifier = 25;
+
+        let priceMod = 0;
+        if (carPrice > 5000) { priceMod = -Math.floor((carPrice - 5000) / 3000) * 5; } 
+        else if (carPrice < 5000) { priceMod = Math.floor((5000 - carPrice) / 1000) * 5; }
+
+        let financeMod = Math.floor(finance / 10000) * 3;
+        let finalProb = baseProb + modifier + priceMod + financeMod;
+        
+        if (finalProb > 99) finalProb = 99;
+        if (finalProb < 0) finalProb = 0;
+
+        const resultArea = document.getElementById('result-area');
+        const probBar = document.getElementById('prob-bar');
+        const probText = document.getElementById('prob-text');
+        const advisory = document.getElementById('advisory-tip');
+
+        resultArea.style.display = 'block';
+        
+        setTimeout(() => {
+            probBar.style.width = finalProb + '%';
+            if(finalProb >= 80) probBar.style.background = '#10b981';
+            else if(finalProb >= 50) probBar.style.background = '#3b82f6';
+            else probBar.style.background = '#ef4444';
+
+            let counter = 0;
+            const interval = setInterval(() => {
+                if(counter >= finalProb) {
+                    clearInterval(interval);
+                    probText.innerText = finalProb + '%';
+                } else {
+                    counter++;
+                    probText.innerText = counter + '%';
+                }
+            }, 10);
+        }, 100);
+
+        let tipText = '';
+        if (finalProb < 50) {
+            tipText = '현재 설정하신 차량 가격과 소득 증빙 수준에서는 단독 무보증 승인이 다소 까다로울 수 있습니다. 하지만 선택하신 ' + currentInitCost + '%의 초기비용 납입 조건 또는 소득 증빙 보강을 통해 예외 승인을 충분히 이끌어낼 수 있습니다. 전문 컨설팅을 신청해 주시면 최적의 금융사를 매칭해 드리겠습니다.';
+        } else if (finalProb >= 50 && finalProb < 80) {
+            tipText = '안정적인 승인권에 진입해 있습니다. 설정하신 차량 가격 대비 소득/매출 밸런스가 양호하며, 한도 증액이나 금리 인하 혜택을 추가로 타진해 볼 수 있는 조건입니다.';
+        } else {
+            tipText = '우량 조건으로 대부분의 금융사에서 VIP 승인이 가능한 상태입니다. 최저 금리 금융사를 선별하여 가장 유리한 조건으로 즉시 출고를 도와드릴 수 있습니다.';
+        }
+        
+        if(currentInitCost > 0 && finalProb < 90) {
+            tipText += '<br><br><span style="color:#2563eb;">컨설팅 팁:</span> 설정하신 ' + currentInitCost + '%의 보증금은 계약 만기 시 100% 반환되며, 심사 승인율을 대폭 상승시키는 강력한 조건입니다.';
+        }
+
+        advisory.innerHTML = tipText;
     }
 
     function saveLeadData() {
