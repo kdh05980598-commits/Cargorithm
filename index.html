@@ -158,8 +158,8 @@
     <div class="links">
         <a href="https://blog.naver.com/cargorism" target="_blank" class="bg-blog">공식 블로그</a>
         <a href="https://cafe.naver.com/cargorism" target="_blank" class="bg-cafe">공식 카페</a>
-        <a href="https://blog.naver.com/kdh0598" target="_blank" class="bg-app-blog">앱테크 Blog</a>
-        <a href="https://t.me/gurida" target="_blank" class="bg-app-tg">Telegram</a>
+        <a href="https://blog.naver.com/kdh0598" target="_blank" class="bg-app-blog">(광고)앱테크Blog</a>
+        <a href="https://t.me/gurida" target="_blank" class="bg-app-tg">(광고)크립토Telegram</a>
     </div>
 </header>
 
@@ -194,7 +194,7 @@
         <div class="slider-wrapper">
             <div class="slider-track" id="slider-track">
                 <div class="slide">
-                    <h2>이달의 무보증 특가 프로모션</h2>
+                    <h2>이달의 인기차량 </h2>
                     <p>초기 비용 부담 없이 최적의 조건으로 신차를 소유하는 방법</p>
                 </div>
                 <div class="slide" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
@@ -207,25 +207,25 @@
         <div id="content-models" class="tab-content active">
             <div id="brand-kia" class="brand-item active">
                 <div class="brand-header" onclick="toggleAccordion('kia-list')">
-                    <h3>기아자동차 (KIA) 명품 라인업</h3><span id="kia-list-arrow">▲</span>
+                    <h3>기아자동차 (KIA) 라인업</h3><span id="kia-list-arrow">▲</span>
                 </div>
                 <div id="kia-list" class="brand-body open"><div class="grid" id="grid-kia"></div></div>
             </div>
             <div id="brand-hyundai" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('h-list')">
-                    <h3>현대자동차 (HYUNDAI) 명품 라인업</h3><span id="h-list-arrow">▲</span>
+                    <h3>현대자동차 (HYUNDAI) 라인업</h3><span id="h-list-arrow">▲</span>
                 </div>
                 <div id="h-list" class="brand-body open"><div class="grid" id="grid-hyundai"></div></div>
             </div>
             <div id="brand-kgm" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('kgm-list')">
-                    <h3>KGM 프리미엄 라인업</h3><span id="kgm-list-arrow">▲</span>
+                    <h3>KGM 라인업</h3><span id="kgm-list-arrow">▲</span>
                 </div>
                 <div id="kgm-list" class="brand-body open"><div class="grid" id="grid-kgm"></div></div>
             </div>
             <div id="brand-chev" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('chev-list')">
-                    <h3>쉐보레 (CHEVROLET) 스페셜 라인업</h3><span id="chev-list-arrow">▲</span>
+                    <h3>쉐보레 (CHEVROLET) 라인업</h3><span id="chev-list-arrow">▲</span>
                 </div>
                 <div id="chev-list" class="brand-body open"><div class="grid" id="grid-chev"></div></div>
             </div>
@@ -252,7 +252,7 @@
 </div>
 
 <div class="floating-btns">
-    <a href="https://open.kakao.com/o/YOUR_KAKAO_LINK" target="_blank" class="float-btn kakao-btn">TALK<span>카톡문의</span></a>
+    <a href="https://open.kakao.com/o/szQQdOCh" target="_blank" class="float-btn kakao-btn">TALK<span>카톡문의</span></a>
     <a href="tel:010-6670-0590" class="float-btn phone-btn">CALL<span>전화연결</span></a>
 </div>
 
@@ -355,7 +355,7 @@
         (주)제일오토모빌 권도형 팀장 | 오피셜 비즈니스 파트너 파트너스 그룹<br>
         상담센터 : 010-6670-0590 | 카고리즘 카 인텔리전스 금융 분석 시스템 | All Rights Reserved.
         <br>
-        <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link">헤드오피스 오시는 길</a>
+        <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
         <br><br>
         <span onclick="openAdmin()" style="cursor:pointer; color:var(--text-muted); font-size:11px; text-decoration:underline;">보안 관리자 모드</span>
     </div>
@@ -433,7 +433,7 @@
         const grid = document.getElementById(gridId);
         let html = '';
         cars.forEach(car => {
-            html += `<div class="card"><img src="${car.img}" alt="${car.name}"><h4>${car.name}</h4><div class="price-box"><div class="price-row"><span>60개월 다이렉트</span><strong>${car.p60} 만원~</strong></div><div class="price-row"><span>36개월 (선납30%)</span><strong>${car.p36_30} 만원~</strong></div><div class="price-row"><span>60개월 (보증30%)</span><strong>${car.p60_30} 만원~</strong></div></div><button class="btn-consult" onclick="openModal('${car.name}')">컨설팅 예약</button></div>`;
+            html += `<div class="card"><img src="${car.img}" alt="${car.name}"><h4>${car.name}</h4><div class="price-box"><div class="price-row"><span>60개월 다이렉트</span><strong>${car.p60} 만원~</strong></div><div class="price-row"><span>36개월 (선납30%)</span><strong>${car.p36_30} 만원~</strong></div><div class="price-row"><span>60개월 (보증30%)</span><strong>${car.p60_30} 만원~</strong></div></div><button class="btn-consult" onclick="openModal('${car.name}')">상담 신청</button></div>`;
         });
         grid.innerHTML = html;
     }
