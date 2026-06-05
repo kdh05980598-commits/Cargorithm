@@ -642,6 +642,64 @@
     <div class="footer-info">
         (주)제일오토모빌 권도형 | 오피셜 비즈니스 파트너 파트너스 그룹<br>
         상담센터 : 010-6670-0590 | 카고리즘 카 인텔리전스 금융 분석 시스템 | All Rights Reserved.
+        사업자등록번호           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                <h4 style="margin:0; font-size:14px; color:var(--primary);">실시간 방문자 이동 경로</h4>
+                <select id="log-ip-filter" onchange="renderAdminStats()" style="padding:6px 10px; border-radius:6px; border:1px solid #cbd5e1; font-size:12px; color:var(--primary); outline:none;">
+                    <option value="all">전체 방문자 보기</option>
+                </select>
+            </div>
+            
+            <div id="admin-log-list" style="max-height:250px; overflow-y:auto; border:1px solid #e2e8f0; border-radius:12px; padding:15px; background:#fff;"></div>
+            <button onclick="clearLogs()" class="btn-calc" style="margin-top:15px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">추적 로그 초기화</button>
+        </div>
+
+        <div id="admin-sec-cars" class="admin-sec">
+            <div class="input-group">
+                <label>수정할 제조사 카테고리</label>
+                <select id="admin-brand-select" onchange="renderCarEditor()">
+                    <optgroup label="국산차">
+                        <option value="kia">기아자동차</option>
+                        <option value="hyundai">현대자동차</option>
+                        <option value="kgm">KGM</option>
+                        <option value="chev">쉐보레</option>
+                    </optgroup>
+                    <optgroup label="수입차">
+                        <option value="benz">벤츠 (Benz)</option>
+                        <option value="bmw">BMW</option>
+                        <option value="audi">아우디 (Audi)</option>
+                        <option value="porsche">포르쉐 (Porsche)</option>
+                        <option value="volvo">볼보 (Volvo)</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div id="car-editor-list" style="max-height:400px; overflow-y:auto; padding-right:10px;"></div>
+            <button onclick="saveCarData()" class="save-btn" style="background:var(--primary); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer; margin-top:10px;">차량 정보 업데이트</button>
+        </div>
+
+        <div id="admin-sec-reviews" class="admin-sec">
+            <div class="admin-car-item">
+                <h4>신규 출고 후기 피드 추가</h4>
+                <div class="admin-input-row"><label>이미지 링크</label><input type="text" id="new-review-img" placeholder="http://..."></div>
+                <div class="admin-input-row"><label>출고 스토리 내용</label><input type="text" id="new-review-desc" placeholder="예: 무보증 즉시출고 완료"></div>
+                <button onclick="addReview()" class="save-btn" style="background:var(--accent); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">후기 채널 등록</button>
+            </div>
+            <div id="review-editor-list" style="max-height:300px; overflow-y:auto;"></div>
+        </div>
+
+        <div id="admin-sec-bg" class="admin-sec">
+            <div class="input-group"><label>헤더 스킨 이미지 URL</label><input type="text" id="bg-top-input" placeholder="http://..."></div>
+            <div class="input-group"><label>미들 레이어 이미지 URL</label><input type="text" id="bg-mid-input" placeholder="http://..."></div>
+            <div class="input-group"><label>푸터 영역 이미지 URL</label><input type="text" id="bg-bot-input" placeholder="http://..."></div>
+            <button onclick="saveBgData()" class="save-btn" style="background:var(--primary); color:#fff; border:none; padding:12px; border-radius:8px; width:100%; cursor:pointer;">환경 설정 저장</button>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <div class="footer-info">
+        (주)제일오토모빌 권도형 | 오피셜 비즈니스 파트너 파트너스 그룹<br>
+        상담센터 : 010-6670-0590 | 카고리즘 카 인텔리전스 금융 분석 시스템 | All Rights Reserved.
+        사업자등록번호 : 466-06-03698
         <br>
         <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
         <br>
