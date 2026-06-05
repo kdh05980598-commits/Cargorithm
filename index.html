@@ -252,6 +252,9 @@
             .promo-media-frame { width: 100%; border-right: none; border-bottom: 3px solid #ff4757; }
             .promo-pricing-bar { flex-direction: column; gap: 12px; align-items: stretch; }
             .btn-promo-action { width: 100%; text-align: center; justify-content: center; }
+            
+            /* 저신용 테이블 스크롤 보정 */
+            #brand-lowcredit_list table { font-size: 12px; white-space: nowrap; }
         }
     </style>
 </head>
@@ -290,6 +293,7 @@
         <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px;">
             <button class="group-btn active" onclick="setCarGroup('domestic')">국산차</button>
             <button class="group-btn" onclick="setCarGroup('imported')">수입차</button>
+            <button class="group-btn" onclick="setCarGroup('lowcredit')">저신용</button>
         </div>
         <div id="brand-tabs-domestic" class="brand-tabs-wrap active">
             <div class="sub-tab active" onclick="showBrand('kia', this, 'domestic')">기아자동차</div>
@@ -303,6 +307,11 @@
             <div class="sub-tab" onclick="showBrand('audi', this, 'imported')">아우디 (Audi)</div>
             <div class="sub-tab" onclick="showBrand('porsche', this, 'imported')">포르쉐 (Porsche)</div>
             <div class="sub-tab" onclick="showBrand('volvo', this, 'imported')">볼보 (Volvo)</div>
+            <div class="sub-tab" onclick="showBrand('byd', this, 'imported')">BYD</div>
+            <div class="sub-tab" onclick="showBrand('tesla', this, 'imported')">테슬라 (Tesla)</div>
+        </div>
+        <div id="brand-tabs-lowcredit" class="brand-tabs-wrap">
+            <div class="sub-tab active" onclick="showBrand('lowcredit_list', this, 'lowcredit')">저신용 전용 특가 리스트</div>
         </div>
     </div>
     
@@ -433,6 +442,70 @@
                     <h3>볼보 (VOLVO) 라인업</h3><span id="volvo-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="volvo-list" class="brand-body open"><div class="grid" id="grid-volvo"></div></div>
+            </div>
+            
+            <div id="brand-byd" class="brand-item">
+                <div class="brand-header" onclick="toggleAccordion('byd-list')">
+                    <h3>BYD 라인업</h3><span id="byd-list-arrow" class="arrow">▲</span>
+                </div>
+                <div id="byd-list" class="brand-body open"><div class="grid" id="grid-byd"></div></div>
+            </div>
+            <div id="brand-tesla" class="brand-item">
+                <div class="brand-header" onclick="toggleAccordion('tesla-list')">
+                    <h3>테슬라 (TESLA) 라인업</h3><span id="tesla-list-arrow" class="arrow">▲</span>
+                </div>
+                <div id="tesla-list" class="brand-body open"><div class="grid" id="grid-tesla"></div></div>
+            </div>
+            
+            <div id="brand-lowcredit_list" class="brand-item">
+                <div style="background: #fff5f5; border: 1px solid #ffccd2; border-left: 4px solid #ff4757; padding: 20px; border-radius: 12px; margin-bottom: 20px; text-align: left;">
+                    <h3 style="color: #ff4757; margin: 0 0 10px 0; font-size: 18px;">저신용 전용 상품 안내</h3>
+                    <p style="margin: 0; font-size: 14px; color: #334155; line-height: 1.6;">본 리스트는 저신용 고객님을 위한 전용 특가 라인업입니다.<br>
+                    <span style="color: #ff4757; font-weight: 700;">보증금 5% 납입이 필수 조건</span>이며, 일반 심사 상품 대비 금융사 금리가 다소 높게 산정될 수 있음을 안내해 드립니다.</p>
+                </div>
+                
+                <div style="overflow-x: auto; background: #fff; border-radius: 12px; border: 1px solid #e2e8f0; box-shadow: 0 4px 20px rgba(0,0,0,0.02);">
+                    <table style="width: 100%; border-collapse: collapse; text-align: center; font-size: 14px;">
+                        <thead>
+                            <tr style="background: #0f172a; color: #fff;">
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">차종</th>
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">차량 가격</th>
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">세부 옵션</th>
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">36개월 (월)</th>
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">48개월 (월)</th>
+                                <th style="padding: 15px 10px; border-bottom: 1px solid #e2e8f0;">60개월 (월)</th>
+                            </tr>
+                        </thead>
+                        <tbody id="lowcredit-table-body">
+                            <!-- 수정해서 적을 수 있는 테이블 영역 -->
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">현대 아반떼 1.6 가솔린</td>
+                                <td style="padding: 15px 10px; color: #64748b;">19,600,000원</td>
+                                <td style="padding: 15px 10px; color: #64748b;">모던 트림, 내비게이션 추가</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">450,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">410,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">380,000원</td>
+                            </tr>
+                            <tr style="border-bottom: 1px solid #e2e8f0;">
+                                <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">기아 스포티지 1.6 터보</td>
+                                <td style="padding: 15px 10px; color: #64748b;">25,370,000원</td>
+                                <td style="padding: 15px 10px; color: #64748b;">프레스티지, 스타일 패키지</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">580,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">530,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">490,000원</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">현대 디 올 뉴 그랜저 2.5</td>
+                                <td style="padding: 15px 10px; color: #64748b;">37,160,000원</td>
+                                <td style="padding: 15px 10px; color: #64748b;">프리미엄, 파노라마 선루프</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">720,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">670,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">620,000원</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="text-align: right; font-size: 12px; color: #94a3b8; margin-top: 10px;">※ 위 리스트의 차량 가격 및 월 납입료는 금융사 정책에 따라 수시로 변경될 수 있습니다.</p>
             </div>
         </div>
 
@@ -708,6 +781,8 @@
                         <option value="audi">아우디 (Audi)</option>
                         <option value="porsche">포르쉐 (Porsche)</option>
                         <option value="volvo">볼보 (Volvo)</option>
+                        <option value="byd">BYD</option>
+                        <option value="tesla">테슬라 (Tesla)</option>
                     </optgroup>
                 </select>
             </div>
@@ -832,6 +907,14 @@
             { name: "볼보 S90 B5", img: "https://kdh05980598-commits.github.io/Cargorithm/s90.png", p60: "89", p36_30: "72", p60_30: "83" },
             { name: "볼보 EX30", img: "https://kdh05980598-commits.github.io/Cargorithm/ex30.png", p60: "72", p36_30: "39", p60_30: "65" },
             { name: "볼보 XC90", img: "https://kdh05980598-commits.github.io/Cargorithm/xc90.png", p60: "108", p36_30: "62", p60_30: "98" }
+        ],
+        byd: [
+            { name: "BYD Atto 3", img: "https://via.placeholder.com/350x200?text=BYD+Atto+3", p60: "45", p36_30: "30", p60_30: "40" },
+            { name: "BYD Seal", img: "https://via.placeholder.com/350x200?text=BYD+Seal", p60: "55", p36_30: "38", p60_30: "50" }
+        ],
+        tesla: [
+            { name: "테슬라 Model 3", img: "https://via.placeholder.com/350x200?text=Tesla+Model+3", p60: "80", p36_30: "60", p60_30: "75" },
+            { name: "테슬라 Model Y", img: "https://via.placeholder.com/350x200?text=Tesla+Model+Y", p60: "95", p36_30: "75", p60_30: "90" }
         ]
     };
 
@@ -960,7 +1043,7 @@
     }
 
     function renderAllCars() {
-        const brands = ['kia', 'hyundai', 'kgm', 'chev', 'benz', 'bmw', 'audi', 'porsche', 'volvo'];
+        const brands = ['kia', 'hyundai', 'kgm', 'chev', 'benz', 'bmw', 'audi', 'porsche', 'volvo', 'byd', 'tesla'];
         brands.forEach(b => {
             if(vehicleData[b]) buildGrid(`grid-${b}`, vehicleData[b]);
         });
@@ -1014,7 +1097,7 @@
     }
 
     function setCarGroup(group) {
-        trackEvent('차량 그룹 변경: ' + (group === 'domestic' ? '국산차' : '수입차'));
+        trackEvent('차량 그룹 변경: ' + (group === 'domestic' ? '국산차' : (group === 'imported' ? '수입차' : '저신용')));
         document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
         event.currentTarget.classList.add('active');
         
@@ -1024,9 +1107,12 @@
         if(group === 'domestic') {
             const firstTab = document.querySelector('#brand-tabs-domestic .sub-tab');
             showBrand('kia', firstTab, 'domestic');
-        } else {
+        } else if(group === 'imported') {
             const firstTab = document.querySelector('#brand-tabs-imported .sub-tab');
             showBrand('benz', firstTab, 'imported');
+        } else {
+            const firstTab = document.querySelector('#brand-tabs-lowcredit .sub-tab');
+            showBrand('lowcredit_list', firstTab, 'lowcredit');
         }
     }
 
