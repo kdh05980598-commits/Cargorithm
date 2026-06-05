@@ -575,58 +575,26 @@
     let vehicleData = {};
     let reviewData = [];
     let slideIndex = 0;
-    
     let currentCustomerType = '개인';
     let currentInitCost = 0;
-async function initData() {
-    initTracking();
 
-    const SHEET_NAME = '시트1';
-    // 하단 URL은 배포된 '웹 앱' URL로 정확히 교체하세요.
-    const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
-    
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('네트워크 응답 오류');
+    async function initData() {
+        initTracking();
+        const SHEET_NAME = '시트1';
+        const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
         
-        vehicleData = await response.json();
-        console.log("시트 데이터 로드 성공:", vehicleData);
-        
-        applyBackgrounds();
-        renderAllCars();
-        renderReviews();
-        checkPromoPopup();
-        setInterval(autoSlide, 5000);
-        initNavScrollHint();
-    } catch (e) {
-        console.error("데이터 연동에 실패했습니다.", e);
-    }
-}
-                applyBackgrounds();
-                renderAllCars();
-                renderReviews();
-                checkPromoPopup();
-                setInterval(autoSlide, 5000);
-                initNavScrollHint();
-            } catch (e) {
-                console.error("데이터 연동에 실패했습니다.", e);
-            }
-        } // initData 끝
-
-        // 괄호가 꼬이지 않도록 여기서부터 함수들이 다시 시작됩니다
-        function initNavScrollHint() { /* ... 기존 내용 ... */ }
-        function getVisitorId() { /* ... 기존 내용 ... */ }
-        // ... (나머지 함수들을 여기에 순서대로 넣으세요)
-        
-        // 마지막에 window.onload는 반드시 하나만 있어야 합니다
-        window.onload = initData;
-    </script>
-</body>
-</html>
-        if(grid) grid.innerHTML = "데이터 연동 실패: " + e.message;
-    }
-}
-            alert("데이터를 불러오는 중 오류가 발생했습니다. 앱스 스크립트 권한을 확인해주세요.");
+        try {
+            const response = await fetch(url);
+            vehicleData = await response.json();
+            
+            applyBackgrounds();
+            renderAllCars();
+            renderReviews();
+            checkPromoPopup();
+            setInterval(autoSlide, 5000);
+            initNavScrollHint();
+        } catch (e) {
+            console.error("데이터 연동에 실패했습니다.", e);
         }
     }
 
@@ -728,7 +696,7 @@ async function initData() {
         });
     }
 
-   function buildGrid(gridId, cars) {
+    function buildGrid(gridId, cars) {
         const grid = document.getElementById(gridId);
         if(!grid) return;
         let html = '';
@@ -751,6 +719,7 @@ async function initData() {
 
     function renderReviews() {
         const grid = document.getElementById('grid-reviews');
+        if(!grid) return;
         let html = '';
         reviewData.forEach(rv => {
             html += `<div class="review-card"><img src="${rv.img}"><div class="review-desc">${rv.desc}</div></div>`;
@@ -817,12 +786,14 @@ async function initData() {
     function toggleAccordion(id) {
         const body = document.getElementById(id);
         const arrow = document.getElementById(id + '-arrow');
+        if(!body) return;
         body.classList.toggle('open');
-        arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
+        if(arrow) arrow.innerText = body.classList.contains('open') ? '▲' : '▼';
     }
 
     function toggleTerms(id) {
         const target = document.getElementById(id);
+        if(!target) return;
         target.style.display = (target.style.display === 'block') ? 'none' : 'block';
     }
 
@@ -1015,6 +986,7 @@ async function initData() {
         const filterSelect = document.getElementById('log-ip-filter');
         const selectedIp = filterSelect ? filterSelect.value : 'all';
 
+        if(!listDiv) return;
         let uniqueIps = [...new Set(logs.map(l => l.ip))].filter(Boolean);
         
         if(filterSelect) {
@@ -1054,6 +1026,7 @@ async function initData() {
 
     function renderAdminList() {
         const listDiv = document.getElementById('admin-list'), leads = JSON.parse(localStorage.getItem('cargo_leads') || '[]');
+        if(!listDiv) return;
         if(leads.length === 0) { listDiv.innerHTML = '<p style="text-align:center; color:#64748b; font-size:12px;">수집된 상담 인바운드가 없습니다.</p>'; return; }
         let html = '<table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;"><tr style="border-bottom:2px solid #0f172a; color:#1e293b;"><th style="padding:12px 6px;">인입 시각</th><th>고객명</th><th>요청 모델</th><th>전화번호</th></tr>';
         leads.reverse().forEach(l => { html += `<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px 6px; color:#64748b; font-size:12px;">${l.time}</td><td style="font-weight:600;">${l.name}</td><td style="color:var(--accent); font-weight:600;">${l.car}</td><td>${l.phone}</td></tr>`; });
@@ -1064,6 +1037,7 @@ async function initData() {
 
     function renderCarEditor() {
         const brand = document.getElementById('admin-brand-select').value, cars = vehicleData[brand], container = document.getElementById('car-editor-list');
+        if(!container || !cars) return;
         let html = '';
         cars.forEach((car, idx) => {
             html += `<div class="admin-car-item"><h4>${car.name} (편집 엔진)</h4><div class="admin-input-row"><label>제어 모델명</label><input type="text" id="car-name-${brand}-${idx}" value="${car.name}"></div><div class="admin-input-row"><label>카탈로그 이미지</label><input type="text" id="car-img-${brand}-${idx}" value="${car.img}"></div><div class="admin-input-row"><label>60개월 표준료</label><input type="text" id="car-p60-${brand}-${idx}" value="${car.p60}"></div><div class="admin-input-row"><label>36개월(선납)</label><input type="text" id="car-p36-${brand}-${idx}" value="${car.p36_30}"></div><div class="admin-input-row"><label>60개월(보증)</label><input type="text" id="car-p60_30-${brand}-${idx}" value="${car.p60_30}"></div></div>`;
@@ -1073,12 +1047,14 @@ async function initData() {
     
     function saveCarData() {
         const brand = document.getElementById('admin-brand-select').value, cars = vehicleData[brand];
+        if(!cars) return;
         cars.forEach((car, idx) => { car.name = document.getElementById(`car-name-${brand}-${idx}`).value; car.img = document.getElementById(`car-img-${brand}-${idx}`).value; car.p60 = document.getElementById(`car-p60-${brand}-${idx}`).value; car.p36_30 = document.getElementById(`car-p36-${brand}-${idx}`).value; car.p60_30 = document.getElementById(`car-p60_30-${brand}-${idx}`).value; });
         localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData)); alert('차량 마스터 데이터베이스가 동기화되었습니다.'); renderAllCars();
     }
 
     function renderReviewEditor() {
         const container = document.getElementById('review-editor-list');
+        if(!container) return;
         let html = '';
         reviewData.forEach((rv, idx) => { html += `<div class="admin-car-item" style="display:flex; gap:12px; align-items:center; background:#fff;"><img src="${rv.img}" style="width:44px; height:44px; object-fit:cover; border-radius:6px;"><div style="flex:1; font-size:12px; color:var(--text-main);">${rv.desc}</div><button onclick="deleteReview(${idx})" style="background:#ef4444; color:#fff; border:none; padding:6px 12px; border-radius:6px; cursor:pointer; font-size:11px;">원격 삭제</button></div>`; });
         container.innerHTML = html;
