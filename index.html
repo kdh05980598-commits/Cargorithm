@@ -174,9 +174,13 @@
                 pointer-events: none; transition: opacity 0.3s ease; z-index: 10;
             }
 
-            .sub-nav, .brand-tabs-wrap { overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; justify-content: flex-start; padding: 10px 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .sub-nav { overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; justify-content: flex-start; padding: 10px 15px; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+            .brand-tabs-wrap.active { display: flex !important; overflow-x: auto; white-space: nowrap; flex-wrap: nowrap; justify-content: flex-start; padding: 5px; -webkit-overflow-scrolling: touch; gap: 8px; }
             .sub-nav::-webkit-scrollbar, .brand-tabs-wrap::-webkit-scrollbar { display: none; }
             .sub-tab { flex: 0 0 auto; }
+
+            .grid { grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)) !important; gap: 15px !important; }
+            .card img { height: 130px !important; object-fit: contain !important; }
 
             .slide { padding: 40px 20px; }
             .slide h2 { font-size: 22px; }
@@ -579,7 +583,6 @@
     let currentCustomerType = '개인';
     let currentInitCost = 0;
 
-    // 내부 정적 로컬 데이터베이스 정의 (App 스크립트 장애 방지형 직접 연동 기법)
     const localVehicleDatabase = {
         kia: [
             { name: "기아 더 뉴 카니발", img: "https://picsum.photos/350/200?sig=kia1", p60: "52", p36_30: "41", p60_30: "48" },
@@ -634,7 +637,6 @@
     function initData() {
         initTracking();
         
-        // 로컬에 커스텀 저장된 데이터가 있다면 적용하고, 없다면 정적 데이터베이스 초기 세팅
         let savedVehicles = localStorage.getItem('cargo_vehicles');
         if (savedVehicles) {
             vehicleData = JSON.parse(savedVehicles);
