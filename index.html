@@ -580,14 +580,13 @@
     
     let currentCustomerType = '개인';
     let currentInitCost = 0;
-
-    function initData() {const SPREADSHEET_ID = '1oVnAk69yMr4AfUHg4bC6lgdbeFsD3kluK3CJHCRPIIY';
-const SHEET_NAME = '시트1';
-
 async function initData() {
     initTracking();
+
+
+
     
-    const url = `https://script.google.com/macros/s/EXECUTION_ID/exec?spreadsheetId=${AKfycbzNOwLbWbEQSYXbGF6_J4eb_QiF_nED5aFKBnclVQqbZNiVCl6JMp-jXkoukBVtaIye/exec}&sheet=${SHEET_NAME}`;
+    const url = `https://script.google.com/macros/s/EXECUTION_ID/exec?spreadsheetId=AKfycbzNOwLbWbEQSYXbGF6_J4eb_QiF_nED5aFKBnclVQqbZNiVCl6JMp-jXkoukBVtaIye/exec&sheet=${SHEET_NAME}`;
     
     try {
         const response = await fetch(url);
