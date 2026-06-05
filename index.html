@@ -154,7 +154,6 @@
         .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
         .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
 
-        /* 모바일 반응형 디자인 코드 추가 */
         @media (max-width: 768px) {
             header { flex-direction: column; align-items: stretch; padding: 15px 5%; gap: 15px; }
             .logo-area { text-align: center; }
@@ -166,7 +165,6 @@
             .main-nav::-webkit-scrollbar { display: none; }
             .main-tab { flex: 0 0 auto; padding: 15px 20px; font-size: 14px; }
 
-            /* 메뉴 우측 스크롤 화살표 힌트 */
             .scroll-hint {
                 display: flex; position: absolute; right: 0; top: 0; bottom: 0; width: 45px;
                 background: linear-gradient(to right, rgba(15,23,42,0), rgba(15,23,42,1) 80%);
@@ -580,28 +578,26 @@
     
     let currentCustomerType = '개인';
     let currentInitCost = 0;
-async function initData() {
-    initTracking();
 
+    async function initData() {
+        initTracking();
 
-
-    
-    const url = `https://script.google.com/macros/s/EXECUTION_ID/exec?spreadsheetId=AKfycbzNOwLbWbEQSYXbGF6_J4eb_QiF_nED5aFKBnclVQqbZNiVCl6JMp-jXkoukBVtaIye/exec&sheet=${SHEET_NAME}`;
-    
-    try {
-        const response = await fetch(url);
-        vehicleData = await response.json();
+        const SHEET_NAME = '시트1';
+        const url = `https://script.google.com/macros/s/AKfycbzNOwLbWbEQSYXbGF6_J4eb_QiF_nED5aFKBnclVQqbZNiVCl6JMp-jXkoukBVtaIye/exec?sheet=${SHEET_NAME}`;
         
-        applyBackgrounds();
-        renderAllCars();
-        renderReviews();
-        checkPromoPopup();
-        setInterval(autoSlide, 5000);
-        initNavScrollHint();
-    } catch (e) {
-        console.error("데이터 연동에 실패했습니다.");
-    }
-}
+        try {
+            const response = await fetch(url);
+            vehicleData = await response.json();
+            
+            applyBackgrounds();
+            renderAllCars();
+            renderReviews();
+            checkPromoPopup();
+            setInterval(autoSlide, 5000);
+            initNavScrollHint();
+        } catch (e) {
+            console.error("데이터 연동에 실패했습니다.", e);
+        }
     }
 
     function initNavScrollHint() {
@@ -707,7 +703,6 @@ async function initData() {
         if(!grid) return;
         let html = '';
         cars.forEach(car => {
-            // 모바일에서도 이미지 URL이 확실히 적용되도록 처리
             const imageUrl = car.img || 'https://via.placeholder.com/350x200?text=Image+Ready';
             html += `
                 <div class="card">
