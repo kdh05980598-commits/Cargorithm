@@ -70,6 +70,7 @@
         .brand-header { background: #fff; padding: 18px 24px; border-radius: 12px; display: flex; align-items: center; cursor: pointer; border: 1px solid #e2e8f0; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.01); }
         .brand-header h3 { margin: 0; font-size: 16px; font-weight: 700; flex-grow: 1; color: var(--primary); }
         .brand-header span { color: var(--text-muted); font-size: 12px; }
+        .brand-header span.arrow { margin-left: 5px; }
         .brand-body { display: none; padding: 15px 0 30px 0; }
         .brand-body.open { display: block; }
 
@@ -253,7 +254,7 @@
         <div class="slider-wrapper">
             <div class="slider-track" id="slider-track">
                 <div class="slide">
-                    <h2>이달의 인기차량 </h2>
+                    <h2>이달의 인기차량</h2>
                     <p>초기 비용 부담 없이 최적의 조건으로 신차를 소유하는 방법</p>
                 </div>
                 <div class="slide" style="background: linear-gradient(135deg, #1e3a8a, #3b82f6);">
@@ -266,56 +267,56 @@
         <div id="content-models" class="tab-content active">
             <div id="brand-kia" class="brand-item active">
                 <div class="brand-header" onclick="toggleAccordion('kia-list')">
-                    <h3>기아자동차 (KIA) 라인업</h3><span id="kia-list-arrow">▲</span>
+                    <h3>기아자동차 (KIA) 라인업</h3><span id="kia-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="kia-list" class="brand-body open"><div class="grid" id="grid-kia"></div></div>
             </div>
             <div id="brand-hyundai" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('h-list')">
-                    <h3>현대자동차 (HYUNDAI) 라인업</h3><span id="h-list-arrow">▲</span>
+                    <h3>현대자동차 (HYUNDAI) 라인업</h3><span id="h-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="h-list" class="brand-body open"><div class="grid" id="grid-hyundai"></div></div>
             </div>
             <div id="brand-kgm" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('kgm-list')">
-                    <h3>KGM 라인업</h3><span id="kgm-list-arrow">▲</span>
+                    <h3>KGM 라인업</h3><span id="kgm-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="kgm-list" class="brand-body open"><div class="grid" id="grid-kgm"></div></div>
             </div>
             <div id="brand-chev" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('chev-list')">
-                    <h3>쉐보레 (CHEVROLET) 라인업</h3><span id="chev-list-arrow">▲</span>
+                    <h3>쉐보레 (CHEVROLET) 라인업</h3><span id="chev-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="chev-list" class="brand-body open"><div class="grid" id="grid-chev"></div></div>
             </div>
 
             <div id="brand-benz" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('benz-list')">
-                    <h3>벤츠 (MERCEDES-BENZ) 라인업</h3><span id="benz-list-arrow">▲</span>
+                    <h3>벤츠 (MERCEDES-BENZ) 라인업</h3><span id="benz-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="benz-list" class="brand-body open"><div class="grid" id="grid-benz"></div></div>
             </div>
             <div id="brand-bmw" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('bmw-list')">
-                    <h3>BMW 라인업</h3><span id="bmw-list-arrow">▲</span>
+                    <h3>BMW 라인업</h3><span id="bmw-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="bmw-list" class="brand-body open"><div class="grid" id="grid-bmw"></div></div>
             </div>
             <div id="brand-audi" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('audi-list')">
-                    <h3>아우디 (AUDI) 라인업</h3><span id="audi-list-arrow">▲</span>
+                    <h3>아우디 (AUDI) 라인업</h3><span id="audi-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="audi-list" class="brand-body open"><div class="grid" id="grid-audi"></div></div>
             </div>
             <div id="brand-porsche" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('porsche-list')">
-                    <h3>포르쉐 (PORSCHE) 라인업</h3><span id="porsche-list-arrow">▲</span>
+                    <h3>포르쉐 (PORSCHE) 라인업</h3><span id="porsche-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="porsche-list" class="brand-body open"><div class="grid" id="grid-porsche"></div></div>
             </div>
             <div id="brand-volvo" class="brand-item">
                 <div class="brand-header" onclick="toggleAccordion('volvo-list')">
-                    <h3>볼보 (VOLVO) 라인업</h3><span id="volvo-list-arrow">▲</span>
+                    <h3>볼보 (VOLVO) 라인업</h3><span id="volvo-list-arrow" class="arrow">▲</span>
                 </div>
                 <div id="volvo-list" class="brand-body open"><div class="grid" id="grid-volvo"></div></div>
             </div>
@@ -578,24 +579,84 @@
     let currentCustomerType = '개인';
     let currentInitCost = 0;
 
-    async function initData() {
+    // 내부 정적 로컬 데이터베이스 정의 (App 스크립트 장애 방지형 직접 연동 기법)
+    const localVehicleDatabase = {
+        kia: [
+            { name: "기아 더 뉴 카니발", img: "https://picsum.photos/350/200?sig=kia1", p60: "52", p36_30: "41", p60_30: "48" },
+            { name: "기아 쏘렌토 하이브리드", img: "https://picsum.photos/350/200?sig=kia2", p60: "48", p36_30: "38", p60_30: "44" },
+            { name: "기아 스포티지", img: "https://picsum.photos/350/200?sig=kia3", p60: "38", p36_30: "29", p60_30: "35" },
+            { name: "기아 K8 하이브리드", img: "https://picsum.photos/350/200?sig=kia4", p60: "49", p36_30: "39", p60_30: "45" }
+        ],
+        hyundai: [
+            { name: "현대 디 올 뉴 그랜저", img: "https://picsum.photos/350/200?sig=hy1", p60: "51", p36_30: "40", p60_30: "47" },
+            { name: "현대 싼타페 하이브리드", img: "https://picsum.photos/350/200?sig=hy2", p60: "49", p36_30: "39", p60_30: "45" },
+            { name: "현대 아반떼", img: "https://picsum.photos/350/200?sig=hy3", p60: "29", p36_30: "21", p60_30: "26" },
+            { name: "현대 팰리세이드", img: "https://picsum.photos/350/200?sig=hy4", p60: "55", p36_30: "45", p60_30: "51" }
+        ],
+        kgm: [
+            { name: "KGM 토레스", img: "https://picsum.photos/350/200?sig=kgm1", p60: "39", p36_30: "30", p60_30: "36" },
+            { name: "KGM 렉스턴 스포츠", img: "https://picsum.photos/350/200?sig=kgm2", p60: "41", p36_30: "32", p60_30: "38" }
+        ],
+        chev: [
+            { name: "쉐보레 트랙스 크로스오버", img: "https://picsum.photos/350/200?sig=chev1", p60: "32", p36_30: "24", p60_30: "29" },
+            { name: "쉐보레 트레일블레이저", img: "https://picsum.photos/350/200?sig=chev2", p60: "35", p36_30: "27", p60_30: "32" }
+        ],
+        benz: [
+            { name: "벤츠 E클래스 E300", img: "https://picsum.photos/350/200?sig=benz1", p60: "115", p36_30: "95", p60_30: "108" },
+            { name: "벤츠 C클래스 C200", img: "https://picsum.photos/350/200?sig=benz2", p60: "88", p36_30: "72", p60_30: "82" },
+            { name: "벤츠 S클래스 S450", img: "https://picsum.photos/350/200?sig=benz3", p60: "240", p36_30: "195", p60_30: "225" }
+        ],
+        bmw: [
+            { name: "BMW 5시리즈 520i", img: "https://picsum.photos/350/200?sig=bmw1", p60: "98", p36_30: "80", p60_30: "92" },
+            { name: "BMW 3시리즈 320i", img: "https://picsum.photos/350/200?sig=bmw2", p60: "75", p36_30: "59", p60_30: "69" },
+            { name: "BMW X5 xDrive", img: "https://picsum.photos/350/200?sig=bmw3", p60: "155", p36_30: "128", p60_30: "146" }
+        ],
+        audi: [
+            { name: "아우디 A6 TFSI", img: "https://picsum.photos/350/200?sig=audi1", p60: "85", p36_30: "68", p60_30: "79" },
+            { name: "아우디 A4 TFSI", img: "https://picsum.photos/350/200?sig=audi2", p60: "68", p36_30: "52", p60_30: "62" }
+        ],
+        porsche: [
+            { name: "포르쉐 카이엔", img: "https://picsum.photos/350/200?sig=por1", p60: "198", p36_30: "165", p60_30: "185" },
+            { name: "포르쉐 파나메라", img: "https://picsum.photos/350/200?sig=por2", p60: "250", p36_30: "210", p60_30: "235" }
+        ],
+        volvo: [
+            { name: "볼보 XC60 B5", img: "https://picsum.photos/350/200?sig=vol1", p60: "92", p36_30: "76", p60_30: "86" },
+            { name: "볼보 S90 B5", img: "https://picsum.photos/350/200?sig=vol2", p60: "89", p36_30: "72", p60_30: "83" }
+        ]
+    };
+
+    const localReviewDatabase = [
+        { img: "https://picsum.photos/400/250?sig=rv1", desc: "기아 카니발 하이브리드 무보증 3일 만에 빠른 면책 인도 받았습니다!" },
+        { img: "https://picsum.photos/400/250?sig=rv2", desc: "신용 점수가 애매해서 조마조마했는데 권도형 팀장님 솔루션으로 타사 거절 건 승인 완료했습니다." },
+        { img: "https://picsum.photos/400/250?sig=rv3", desc: "BMW 520i 즉시 출고 및 전국 최고 수준 프로모션 매칭에 매우 만족합니다." }
+    ];
+
+    function initData() {
         initTracking();
-        const SHEET_NAME = '시트1';
-        const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
         
-        try {
-            const response = await fetch(url);
-            vehicleData = await response.json();
-            
-            applyBackgrounds();
-            renderAllCars();
-            renderReviews();
-            checkPromoPopup();
-            setInterval(autoSlide, 5000);
-            initNavScrollHint();
-        } catch (e) {
-            console.error("데이터 연동에 실패했습니다.", e);
+        // 로컬에 커스텀 저장된 데이터가 있다면 적용하고, 없다면 정적 데이터베이스 초기 세팅
+        let savedVehicles = localStorage.getItem('cargo_vehicles');
+        if (savedVehicles) {
+            vehicleData = JSON.parse(savedVehicles);
+        } else {
+            vehicleData = localVehicleDatabase;
+            localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData));
         }
+
+        let savedReviews = localStorage.getItem('cargo_reviews');
+        if (savedReviews) {
+            reviewData = JSON.parse(savedReviews);
+        } else {
+            reviewData = localReviewDatabase;
+            localStorage.setItem('cargo_reviews', JSON.stringify(reviewData));
+        }
+        
+        applyBackgrounds();
+        renderAllCars();
+        renderReviews();
+        checkPromoPopup();
+        setInterval(autoSlide, 5000);
+        initNavScrollHint();
     }
 
     function initNavScrollHint() {
@@ -681,14 +742,6 @@
         trackEvent('프로모션 팝업 닫기');
     }
 
-    function generateCars(brand, count, prefix) {
-        let arr = [];
-        for(let i=1; i<=count; i++) {
-            arr.push({ name: `${brand} 스페셜 트림 ${i}`, img: `https://picsum.photos/350/200?sig=${prefix}${i}`, p60: (42 + i).toString(), p36_30: (32 + i).toString(), p60_30: (39 + i).toString() });
-        }
-        return arr;
-    }
-
     function renderAllCars() {
         const brands = ['kia', 'hyundai', 'kgm', 'chev', 'benz', 'bmw', 'audi', 'porsche', 'volvo'];
         brands.forEach(b => {
@@ -704,7 +757,7 @@
             const imageUrl = car.img || 'https://via.placeholder.com/350x200?text=Image+Ready';
             html += `
                 <div class="card">
-                    <img src="${imageUrl}" alt="${car.name}" style="width: 100%; height: 160px; object-fit: contain;">
+                    <img src="${imageUrl}" alt="${car.name}">
                     <h4>${car.name}</h4>
                     <div class="price-box">
                         <div class="price-row"><span>60개월 다이렉트</span><strong>${car.p60} 만원~</strong></div>
@@ -1007,7 +1060,7 @@
         let html = '';
         filteredLogs.forEach(log => {
             let displayIp = log.ip ? log.ip : '알수없음';
-            html += `<div class="log-item" style="padding:10px 0; border-bottom:1px solid #f1f5f9; font-size:12px; display:flex; justify-content:space-between; align-items:center;">
+            html += `<div class="log-item">
                         <div style="color:#64748b; white-space:nowrap; margin-right:15px;">
                             [${log.time}]<br><span style="font-size:10px; color:var(--accent); font-weight:700;">IP: ${displayIp}</span>
                         </div>
@@ -1029,7 +1082,7 @@
         if(!listDiv) return;
         if(leads.length === 0) { listDiv.innerHTML = '<p style="text-align:center; color:#64748b; font-size:12px;">수집된 상담 인바운드가 없습니다.</p>'; return; }
         let html = '<table style="width:100%; border-collapse:collapse; font-size:13px; text-align:left;"><tr style="border-bottom:2px solid #0f172a; color:#1e293b;"><th style="padding:12px 6px;">인입 시각</th><th>고객명</th><th>요청 모델</th><th>전화번호</th></tr>';
-        leads.reverse().forEach(l => { html += `<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px 6px; color:#64748b; font-size:12px;">${l.time}</td><td style="font-weight:600;">${l.name}</td><td style="color:var(--accent); font-weight:600;">${l.car}</td><td>${l.phone}</td></tr>`; });
+        leads.slice().reverse().forEach(l => { html += `<tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:12px 6px; color:#64748b; font-size:12px;">${l.time}</td><td style="font-weight:600;">${l.name}</td><td style="color:var(--accent); font-weight:600;">${l.car}</td><td>${l.phone}</td></tr>`; });
         html += '</table>'; listDiv.innerHTML = html;
     }
     
