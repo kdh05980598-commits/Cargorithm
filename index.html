@@ -56,7 +56,7 @@
         .brand-tabs-wrap { display: none; gap: 8px; flex-wrap: wrap; justify-content: center; width: 100%; }
         .brand-tabs-wrap.active { display: flex; }
 
-        .mid-bg-wrapper { min-height: 600px; padding: 40px 0; }
+        .mid-bg-wrapper { min-height: 600px; padding: 40px 0; position: relative; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
         .tab-content.active { display: block; }
@@ -95,22 +95,17 @@
         .promo-flex-container { display: flex; flex-direction: column; gap: 30px; }
         .promo-horizontal-card { display: flex; background: #ffffff; border-radius: 20px; overflow: hidden; border: 1px solid #e2e8f0; box-shadow: 0 10px 25px rgba(0,0,0,0.02); position: relative; }
         .promo-horizontal-card:hover { transform: translateY(-4px); box-shadow: 0 15px 35px rgba(255, 71, 87, 0.08); border-color: #ffccd2; }
-        
         .promo-tag-badge { position: absolute; top: 15px; left: 15px; background: linear-gradient(135deg, #ff4757, #ff6b81); color: #ffffff; font-size: 11px; font-weight: 800; padding: 4px 12px; border-radius: 30px; z-index: 10; letter-spacing: 0px; box-shadow: 0 4px 8px rgba(255,71,87,0.25); }
-        
         .promo-media-frame { width: 340px; background: linear-gradient(145deg, #0f172a, #1e293b); display: flex; align-items: center; justify-content: center; padding: 30px; position: relative; overflow: hidden; border-right: 3px solid #ff4757; }
         .promo-media-frame::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(45deg, transparent 40%, rgba(255, 255, 255, 0.08) 50%, transparent 60%); animation: flashSweep 5s infinite linear; }
         @keyframes flashSweep { 0% { transform: translate(-20%, -20%); } 100% { transform: translate(20%, 20%); } }
         .promo-media-frame img { width: 100%; height: auto; max-height: 160px; object-fit: contain; filter: drop-shadow(0 12px 20px rgba(0,0,0,0.35)); }
-        
         .promo-content-holder { flex: 1; padding: 30px; display: flex; flex-direction: column; justify-content: space-between; text-align: left; }
         .promo-heading-group h3 { font-size: 22px; margin: 0 0 4px 0; color: var(--primary); font-weight: 800; }
         .promo-live-status { font-size: 12px; color: #ff4757; font-weight: 700; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
         .promo-live-status::before { content: ''; display: inline-block; width: 7px; height: 7px; background: #ff4757; border-radius: 50%; animation: pulseBlink 1.2s infinite; }
         @keyframes pulseBlink { 0% { opacity: 0.3; } 50% { opacity: 1; } 100% { opacity: 0.3; } }
-        
         .promo-explanation-paragraph { font-size: 14px; color: var(--text-main); line-height: 1.7; margin: 0 0 20px 0; background: #f8fafc; padding: 15px 18px; border-radius: 12px; border-left: 4px solid #ff4757; }
-        
         .promo-pricing-bar { display: flex; gap: 25px; background: #fff5f5; padding: 16px 24px; border-radius: 12px; align-items: center; border: 1px solid #ffe3e3; }
         .promo-price-column { flex: 1; }
         .promo-price-column span { display: block; font-size: 12px; color: #94a3b8; font-weight: 500; }
@@ -206,6 +201,15 @@
         .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
         .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
 
+        /* 좌측 배너 광고 영역 */
+        .left-banner-container { position: absolute; left: 20px; top: 80px; display: flex; flex-direction: column; gap: 15px; z-index: 100; }
+        .left-banner-container img { width: 130px; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transition: transform 0.2s; }
+        .left-banner-container img:hover { transform: translateY(-3px); }
+
+        @media (max-width: 1350px) {
+            .left-banner-container { display: none; }
+        }
+
         @media (max-width: 768px) {
             header { flex-direction: column; align-items: stretch; padding: 15px 5%; gap: 15px; }
             .logo-area { text-align: center; }
@@ -253,8 +257,11 @@
             .promo-pricing-bar { flex-direction: column; gap: 12px; align-items: stretch; }
             .btn-promo-action { width: 100%; text-align: center; justify-content: center; }
             
-            /* 저신용 테이블 스크롤 보정 */
             #brand-lowcredit_list table { font-size: 12px; white-space: nowrap; }
+            
+            /* 모바일에서 검색창 수정 */
+            .search-box { width: 100%; margin-right: 0 !important; margin-bottom: 10px; }
+            .search-box input { flex: 1; }
         }
     </style>
 </head>
@@ -279,7 +286,7 @@
         <div class="main-tab active" onclick="showMainTab(0)">카고리즘 소개</div>
         <div class="main-tab" onclick="showMainTab(1)">차량 라인업 및 견적</div>
         <div class="main-tab promo-menu-item" onclick="showMainTab(2)">🔥 신차프로모션</div>
-        <div class="main-tab" onclick="showMainTab(3)">실질 금리 계산기</div>
+        <div class="main-tab" onclick="showMainTab(3)">실질 금리/절세 계산기</div>
         <div class="main-tab" onclick="showMainTab(4)">심사 자가진단</div>
         <div class="main-tab" onclick="showMainTab(5)">고객 인도 후기</div>
         <div class="main-tab" onclick="showMainTab(6)">전기차 보조금 조회(무공해차 통합누리집)</div>
@@ -290,11 +297,17 @@
     <div id="sub-nav-intro" class="sub-nav active"></div>
 
     <div id="sub-nav-models" class="sub-nav" style="flex-direction: column; align-items: center;">
-        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px;">
+        <div class="car-group-toggles" style="display: flex; gap: 10px; margin-bottom: 15px; align-items: center; flex-wrap: wrap;">
+            <div class="search-box" style="display: flex; gap: 8px; margin-right: 15px;">
+                <input type="text" id="car-search-input" placeholder="차종 검색" style="padding: 10px 15px; border-radius: 8px; border: 3px solid #ff4757; font-size: 16px; outline: none; width: 220px; font-weight: 700;">
+                <button onclick="searchCar()" style="padding: 10px 20px; border-radius: 8px; background: #ff4757; color: #fff; border: none; font-weight: 800; cursor: pointer; font-size: 16px;">차량 검색</button>
+            </div>
+            
             <button class="group-btn active" onclick="setCarGroup('domestic')">국산차</button>
             <button class="group-btn" onclick="setCarGroup('imported')">수입차</button>
             <button class="group-btn" onclick="setCarGroup('lowcredit')">저신용</button>
         </div>
+        
         <div id="brand-tabs-domestic" class="brand-tabs-wrap active">
             <div class="sub-tab active" onclick="showBrand('kia', this, 'domestic')">기아자동차</div>
             <div class="sub-tab" onclick="showBrand('hyundai', this, 'domestic')">현대자동차</div>
@@ -321,6 +334,7 @@
         <div class="sub-tab active" onclick="showSubContent('rates', 0)">렌트 금리</div>
         <div class="sub-tab" onclick="showSubContent('rates', 1)">리스 금리</div>
         <div class="sub-tab" onclick="showSubContent('rates', 2)">할부 금리</div>
+        <div class="sub-tab" style="background:#0f172a; color:#fff;" onclick="showSubContent('rates', 3)">사업자 절세 계산기</div>
     </div>
     
     <div id="sub-nav-diagnosis" class="sub-nav"></div>
@@ -329,6 +343,16 @@
 </div>
 
 <div class="mid-bg-wrapper" id="site-middle">
+    
+    <div class="left-banner-container">
+        <a href="https://open.kakao.com/o/szQQdOCh" target="_blank">
+            <img src="https://via.placeholder.com/130x300?text=특별+상담+AD" alt="광고배너1">
+        </a>
+        <a href="tel:010-6670-0590">
+            <img src="https://via.placeholder.com/130x300?text=다이렉트+연결" alt="광고배너2">
+        </a>
+    </div>
+
     <div class="container">
         
         <div class="slider-wrapper">
@@ -388,6 +412,14 @@
         </div>
 
         <div id="content-models" class="tab-content">
+            
+            <div id="brand-search_result" class="brand-item">
+                <div class="brand-header">
+                    <h3 style="color: var(--accent); font-size: 18px;">차량 검색 결과</h3>
+                </div>
+                <div id="search-result-grid" class="grid"></div>
+            </div>
+
             <div id="brand-kia" class="brand-item active">
                 <div class="brand-header" onclick="toggleAccordion('kia-list')">
                     <h3>기아자동차 (KIA) 라인업</h3><span id="kia-list-arrow" class="arrow">▲</span>
@@ -477,14 +509,13 @@
                             </tr>
                         </thead>
                         <tbody id="lowcredit-table-body">
-                            <!-- 수정해서 적을 수 있는 테이블 영역 -->
                             <tr style="border-bottom: 1px solid #e2e8f0;">
                                 <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">현대 아반떼 1.6 가솔린</td>
                                 <td style="padding: 15px 10px; color: #64748b;">19,600,000원</td>
                                 <td style="padding: 15px 10px; color: #64748b;">모던 트림, 내비게이션 추가</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">550,000원</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">510,000원</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">480,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">450,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">410,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">380,000원</td>
                             </tr>
                             <tr style="border-bottom: 1px solid #e2e8f0;">
                                 <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">기아 스포티지 1.6 터보</td>
@@ -492,15 +523,15 @@
                                 <td style="padding: 15px 10px; color: #64748b;">프레스티지, 스타일 패키지</td>
                                 <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">580,000원</td>
                                 <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">530,000원</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">500,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">490,000원</td>
                             </tr>
                             <tr>
                                 <td style="padding: 15px 10px; font-weight: 700; color: #0f172a;">현대 디 올 뉴 그랜저 2.5</td>
                                 <td style="padding: 15px 10px; color: #64748b;">37,160,000원</td>
                                 <td style="padding: 15px 10px; color: #64748b;">프리미엄, 파노라마 선루프</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">750,000원</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">700,000원</td>
-                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">650,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">720,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">670,000원</td>
+                                <td style="padding: 15px 10px; color: #2563eb; font-weight: 700;">620,000원</td>
                             </tr>
                         </tbody>
                     </table>
@@ -573,7 +604,8 @@
         </div>
 
         <div id="content-rates" class="tab-content">
-            <div class="calc-card">
+            
+            <div id="rate-calc-container" class="calc-card">
                 <h3 id="calc-display-title" style="text-align:center; color:var(--primary); margin:0 0 24px 0; font-size:20px;">렌트 금리 실질 분석</h3>
                 <div class="input-group"><label>차량 가격 (원)</label><input type="number" id="p_val" value="45000000"></div>
                 <div class="input-group"><label>계약 기간 (개월)</label><input type="number" id="m_val" value="60"></div>
@@ -583,6 +615,29 @@
                 <button class="btn-calc" onclick="calculateAuto()">실질 금리 결과 분석하기</button>
                 <div id="calc-result" class="result"></div>
             </div>
+
+            <div id="tax-calc-container" class="calc-card" style="display: none;">
+                <h3 style="text-align:center; color:var(--primary); margin:0 0 24px 0; font-size:20px;">사업자 차량 절세액 시뮬레이션</h3>
+                <div class="input-group">
+                    <label>사업자 유형</label>
+                    <select id="tax_type">
+                        <option value="individual">개인사업자</option>
+                        <option value="corporate">법인사업자</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>예상 연 과세표준(순이익) (만원)</label>
+                    <input type="number" id="tax_income" value="8000">
+                </div>
+                <div class="input-group">
+                    <label>차량 월 납입료 (만원)</label>
+                    <input type="number" id="tax_monthly" value="80">
+                </div>
+                <button class="btn-calc" style="background:#03c75a; box-shadow: 0 4px 12px rgba(3,199,90,0.2);" onclick="calculateTax()">연간 절세액 확인하기</button>
+                <div id="tax-result" class="result" style="color:#03c75a;"></div>
+                <p style="font-size:12px; color:var(--text-muted); margin-top:15px; text-align:center; line-height:1.6;">※ 운행기록부 미작성 기준 연간 1,500만원 한도 내 비용처리 가정입니다.<br>최적의 절세 효과는 카고리즘 전문 상담을 통해 안내받으실 수 있습니다.</p>
+            </div>
+
         </div>
         
         <div id="content-diagnosis" class="tab-content">
@@ -696,7 +751,7 @@
 
 <div id="leadModal" class="modal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">&times;</span>
+        <span class="close-modal" onclick="closeModal()">×</span>
         <h2 style="color:var(--primary); margin:0 0 24px 0; font-size:22px; font-weight:800;">프리미엄 견적 상담</h2>
         <form action="#" method="POST" onsubmit="saveLeadData(); return false;">
             <div class="input-group"><label>고객명</label><input type="text" name="name" id="userName" required></div>
@@ -725,7 +780,7 @@
 
 <div id="adminModal" class="modal">
     <div class="modal-content" style="max-width: 650px;">
-        <span class="close-modal" onclick="closeAdmin()">&times;</span>
+        <span class="close-modal" onclick="closeAdmin()">×</span>
         <h2 style="color:var(--primary); margin:0 0 20px 0;">통합 관리 시스템</h2>
         
         <div class="admin-tab-btns">
@@ -818,7 +873,7 @@
         <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
         <br>
         <div class="visitor-counter">
-            오늘 방문자: <span id="visit-today">0</span>명 &nbsp;|&nbsp; 누적 방문자: <span id="visit-total">0</span>명
+            오늘 방문자: <span id="visit-today">0</span>명  |  누적 방문자: <span id="visit-total">0</span>명
         </div>
         <br><br>
         <span onclick="openAdmin()" style="cursor:pointer; color:var(--text-muted); font-size:11px; text-decoration:underline;">보안 관리자 모드</span>
@@ -909,8 +964,8 @@
             { name: "볼보 XC90", img: "https://kdh05980598-commits.github.io/Cargorithm/xc90.png", p60: "108", p36_30: "62", p60_30: "98" }
         ],
         byd: [
-            { name: "BYD Atto 3", img: "https://via.placeholder.com/350x200?text=BYD+Atto+3", p60: "45", p36_30: "30", p60_30: "40" },
-            { name: "BYD Seal", img: "https://via.placeholder.com/350x200?text=BYD+Seal", p60: "55", p36_30: "38", p60_30: "50" }
+            { name: "BYD ATTO 3", img: "https://via.placeholder.com/350x200?text=BYD+Atto+3", p60: "45", p36_30: "30", p60_30: "40" },
+            { name: "BYD SEAL", img: "https://via.placeholder.com/350x200?text=BYD+Seal", p60: "55", p36_30: "38", p60_30: "50" }
         ],
         tesla: [
             { name: "테슬라 Model 3", img: "https://via.placeholder.com/350x200?text=Tesla+Model+3", p60: "80", p36_30: "60", p60_30: "75" },
@@ -949,6 +1004,46 @@
         checkPromoPopup();
         setInterval(autoSlide, 5000);
         initNavScrollHint();
+    }
+
+    function searchCar() {
+        const keyword = document.getElementById('car-search-input').value.trim().toLowerCase();
+        if(!keyword) return;
+        
+        document.querySelectorAll('.group-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.brand-tabs-wrap').forEach(w => w.classList.remove('active'));
+        document.querySelectorAll('#content-models .brand-item').forEach(item => item.classList.remove('active'));
+        
+        const resultGrid = document.getElementById('search-result-grid');
+        let results = [];
+        for(let brand in vehicleData) {
+            vehicleData[brand].forEach(car => {
+                if(car.name.toLowerCase().includes(keyword)) results.push(car);
+            });
+        }
+        
+        let html = '';
+        if(results.length > 0) {
+            results.forEach(car => {
+                html += `<div class="card">
+                    <img src="${car.img}" alt="${car.name}">
+                    <h4 style="margin: 0 0 12px 0; font-size: 18px; font-weight: 700; color: var(--primary);">${car.name}</h4>
+                    <div class="price-box">
+                        <div class="price-row"><span>60개월 다이렉트</span><span style="color: var(--primary); font-weight: 700;">${car.p60} 만원~</span></div>
+                        <div class="price-row"><span>36개월 (선납30%)</span><span style="color: var(--primary); font-weight: 700;">${car.p36_30} 만원~</span></div>
+                        <div class="price-row"><span>60개월 (보증30%)</span><span style="color: var(--primary); font-weight: 700;">${car.p60_30} 만원~</span></div>
+                    </div>
+                    <button class="btn-consult" onclick="openModal('${car.name}')">상담 신청</button>
+                </div>`;
+            });
+        } else {
+            html = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 40px 0;">검색 결과가 없습니다.</p>';
+        }
+        resultGrid.innerHTML = html;
+        
+        const targetDiv = document.getElementById('brand-search_result');
+        if(targetDiv) targetDiv.classList.add('active');
+        trackEvent('차량 검색: ' + keyword);
     }
 
     function resetToDatabase() {
@@ -1130,12 +1225,22 @@
         if(type === 'rates') {
             const subTabs = document.querySelectorAll(`#sub-nav-${type} .sub-tab`);
             subTabs.forEach((t, i) => t.classList.toggle('active', i === idx));
-            const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
-            currentCalcType = titles[idx].split(' ')[0];
-            trackEvent('금리 탭 조회: ' + currentCalcType);
-            document.getElementById('calc-display-title').innerText = titles[idx];
-            document.getElementById('rv-group').style.display = (currentCalcType === '할부') ? 'none' : 'block';
-            document.getElementById('calc-result').innerText = '';
+            
+            if(idx === 3) {
+                document.getElementById('rate-calc-container').style.display = 'none';
+                document.getElementById('tax-calc-container').style.display = 'block';
+                trackEvent('사업자 절세 계산기 탭 조회');
+            } else {
+                document.getElementById('tax-calc-container').style.display = 'none';
+                document.getElementById('rate-calc-container').style.display = 'block';
+                
+                const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
+                currentCalcType = titles[idx].split(' ')[0];
+                trackEvent('금리 탭 조회: ' + currentCalcType);
+                document.getElementById('calc-display-title').innerText = titles[idx];
+                document.getElementById('rv-group').style.display = (currentCalcType === '할부') ? 'none' : 'block';
+                document.getElementById('calc-result').innerText = '';
+            }
         }
     }
 
@@ -1181,6 +1286,31 @@
             rate = next;
         }
         document.getElementById('calc-result').innerText = "입력 지표를 다시 점검해 주십시오.";
+    }
+    
+    function calculateTax() {
+        trackEvent('절세액 시뮬레이터 구동');
+        const type = document.getElementById('tax_type').value;
+        const income = Number(document.getElementById('tax_income').value);
+        const monthly = Number(document.getElementById('tax_monthly').value);
+        
+        let taxRate = 0;
+        if(type === 'individual') {
+            if(income <= 1400) taxRate = 0.06;
+            else if(income <= 5000) taxRate = 0.15;
+            else if(income <= 8800) taxRate = 0.24;
+            else if(income <= 15000) taxRate = 0.35;
+            else taxRate = 0.38; 
+        } else {
+            if(income <= 20000) taxRate = 0.09;
+            else taxRate = 0.19;
+        }
+        
+        let yearlyExpense = monthly * 12;
+        if(yearlyExpense > 1500) yearlyExpense = 1500; 
+        
+        const saving = yearlyExpense * taxRate;
+        document.getElementById('tax-result').innerText = `예상 연간 절세액: 약 ${Math.floor(saving).toLocaleString()} 만원`;
     }
 
     function setCustomerType(type) {
