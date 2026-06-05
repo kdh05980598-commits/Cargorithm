@@ -579,29 +579,33 @@
     let currentCustomerType = '개인';
     let currentInitCost = 0;
 
-    async function initData() {
-        initTracking();
+  async function initData() {
+    initTracking();
 
-        const SHEET_NAME = '시트1';
-        // 아래 URL은 사용자님이 앱스 스크립트에서 배포 후 복사한 '웹 앱' URL을 그대로 넣어야 합니다.
-        // 기존 코드의 EXECUTION_ID 부분을 제거하고 아래와 같이 깔끔하게 수정했습니다.
-        const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
+    const SHEET_NAME = '시트1';
+    // 이 URL은 앱스 스크립트 배포 시 발급받은 실제 URL로 사용하세요.
+    const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
+    
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error('네트워크 응답 오류');
         
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('네트워크 응답 오류');
-            
-            vehicleData = await response.json();
-            console.log("시트 데이터 성공적 로드:", vehicleData);
-            
-            applyBackgrounds();
-            renderAllCars();
-            renderReviews();
-            checkPromoPopup();
-            setInterval(autoSlide, 5000);
-            initNavScrollHint();
-        } catch (e) {
-            console.error("데이터 연동 실패:", e);
+        vehicleData = await response.json();
+        console.log("시트 데이터 로드 성공:", vehicleData);
+        
+        applyBackgrounds();
+        renderAllCars();
+        renderReviews();
+        checkPromoPopup();
+        setInterval(autoSlide, 5000);
+        initNavScrollHint();
+    } catch (e) {
+        console.error("데이터 연동에 실패했습니다.", e);
+        // 디버깅을 위해 에러 발생 시 화면에 표시
+        const grid = document.getElementById('grid-kia');
+        if(grid) grid.innerHTML = "데이터 연동 실패: " + e.message;
+    }
+}
             alert("데이터를 불러오는 중 오류가 발생했습니다. 앱스 스크립트 권한을 확인해주세요.");
         }
     }
