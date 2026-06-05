@@ -23,9 +23,26 @@
         
         header { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 20px 8%; border-bottom: 1px solid #e2e8f0; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.02); }
         .logo-area { text-align: left; }
-        .main-logo { font-size: 28px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; margin: 0; display: flex; align-items: center; gap: 8px; }
+        .main-logo { font-size: 28px; font-weight: 900; color: var(--primary); letter-spacing: -1.5px; margin: 0; display: flex; align-items: center; gap: 8px; position: relative; z-index: 1; padding: 5px 10px; }
+        
+        /* 1번 요청: 브랜드 로고 연하게 워터마크 삽입 */
+        .main-logo::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 140px;
+            height: 70px;
+            /* 사용자님의 로고 이미지 파일명(예: logo_car.jpg)으로 아래 경로를 수정하여 사용하세요 */
+            background: url('https://kdh05980598-commits.github.io/Cargorithm/logo_car.jpg') no-repeat center/contain;
+            opacity: 0.12;
+            z-index: -1;
+            pointer-events: none;
+        }
+
         .main-logo span { color: var(--accent); }
-        .top-contact { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; }
+        .top-contact { font-size: 13px; color: var(--text-muted); font-weight: 500; margin-top: 4px; padding-left: 10px; }
         
         .links { display: flex; gap: 8px; }
         .links a { text-decoration: none; padding: 8px 16px; border-radius: 6px; font-size: 12px; color: #fff; font-weight: 600; display: inline-flex; align-items: center; }
@@ -201,11 +218,13 @@
         .log-time { color: var(--text-muted); white-space: nowrap; margin-right: 15px; }
         .log-action { color: var(--primary); font-weight: 600; text-align: right; word-break: break-all; }
 
-        /* 좌측 배너 광고 영역 */
         .left-banner-container { position: absolute; left: 20px; top: 80px; display: flex; flex-direction: column; gap: 15px; z-index: 100; }
         .left-banner-container img { width: 130px; height: auto; border-radius: 10px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border: 1px solid #e2e8f0; transition: transform 0.2s; }
         .left-banner-container img:hover { transform: translateY(-3px); }
 
+        /* 절세액 계산기 + 안내 표 flex 컨테이너 */
+        .tax-flex-container { display: flex; max-width: 1000px; margin: 20px auto; gap: 30px; align-items: stretch; justify-content: center; }
+        
         @media (max-width: 1350px) {
             .left-banner-container { display: none; }
         }
@@ -259,9 +278,11 @@
             
             #brand-lowcredit_list table { font-size: 12px; white-space: nowrap; }
             
-            /* 모바일에서 검색창 수정 */
             .search-box { width: 100%; margin-right: 0 !important; margin-bottom: 10px; }
             .search-box input { flex: 1; }
+
+            .tax-flex-container { flex-direction: column !important; align-items: center; }
+            .tax-info-card { margin-top: 10px; padding: 25px !important; }
         }
     </style>
 </head>
@@ -616,26 +637,55 @@
                 <div id="calc-result" class="result"></div>
             </div>
 
-            <div id="tax-calc-container" class="calc-card" style="display: none;">
-                <h3 style="text-align:center; color:var(--primary); margin:0 0 24px 0; font-size:20px;">사업자 차량 절세액 시뮬레이션</h3>
-                <div class="input-group">
-                    <label>사업자 유형</label>
-                    <select id="tax_type">
-                        <option value="individual">개인사업자</option>
-                        <option value="corporate">법인사업자</option>
-                    </select>
+            <div id="tax-calc-wrapper" class="tax-flex-container" style="display: none;">
+                <div id="tax-calc-container" class="calc-card" style="flex: 1; margin: 0; align-self: flex-start;">
+                    <h3 style="text-align:center; color:var(--primary); margin:0 0 24px 0; font-size:20px;">사업자 차량 절세액 시뮬레이션</h3>
+                    <div class="input-group">
+                        <label>사업자 유형</label>
+                        <select id="tax_type">
+                            <option value="individual">개인사업자</option>
+                            <option value="corporate">법인사업자</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>예상 연 과세표준(순이익) (만원)</label>
+                        <input type="number" id="tax_income" value="8000">
+                    </div>
+                    <div class="input-group">
+                        <label>차량 월 납입료 (만원)</label>
+                        <input type="number" id="tax_monthly" value="80">
+                    </div>
+                    <button class="btn-calc" style="background:#03c75a; box-shadow: 0 4px 12px rgba(3,199,90,0.2);" onclick="calculateTax()">연간 절세액 확인하기</button>
+                    <div id="tax-result" class="result" style="color:#03c75a;"></div>
+                    <p style="font-size:12px; color:var(--text-muted); margin-top:15px; text-align:center; line-height:1.6;">※ 운행기록부 미작성 기준 연간 1,500만원 한도 내 비용처리 가정입니다.<br>최적의 절세 효과는 카고리즘 전문 상담을 통해 안내받으실 수 있습니다.</p>
                 </div>
-                <div class="input-group">
-                    <label>예상 연 과세표준(순이익) (만원)</label>
-                    <input type="number" id="tax_income" value="8000">
+
+                <div class="tax-info-card" style="flex: 1; background: #fff; padding: 40px; border-radius: 24px; box-shadow: 0 20px 50px rgba(15,23,42,0.06); border: 1px solid #e2e8f0; text-align: left;">
+                    <h3 style="color:var(--primary); margin: 0 0 20px 0; font-size: 18px; text-align: center;">과세표준 구간별 적용 세율 안내</h3>
+                    
+                    <h4 style="color: #2563eb; font-size: 15px; margin: 0 0 10px 0;">개인사업자 (종합소득세율)</h4>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 20px; text-align: center;">
+                        <tr style="background: #f1f5f9; color: #334155;"><th style="padding: 8px; border: 1px solid #e2e8f0;">과세표준</th><th style="padding: 8px; border: 1px solid #e2e8f0;">세율</th></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">1,400만원 이하</td><td style="padding: 8px; border: 1px solid #e2e8f0;">6%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">1,400만 ~ 5,000만원</td><td style="padding: 8px; border: 1px solid #e2e8f0;">15%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">5,000만 ~ 8,800만원</td><td style="padding: 8px; border: 1px solid #e2e8f0;">24%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">8,800만 ~ 1.5억원</td><td style="padding: 8px; border: 1px solid #e2e8f0;">35%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">1.5억원 초과 (최대)</td><td style="padding: 8px; border: 1px solid #e2e8f0;">38% ~ 45%</td></tr>
+                    </table>
+
+                    <h4 style="color: #2563eb; font-size: 15px; margin: 0 0 10px 0;">법인사업자 (법인세율)</h4>
+                    <table style="width: 100%; font-size: 12px; border-collapse: collapse; margin-bottom: 20px; text-align: center;">
+                        <tr style="background: #f1f5f9; color: #334155;"><th style="padding: 8px; border: 1px solid #e2e8f0;">과세표준</th><th style="padding: 8px; border: 1px solid #e2e8f0;">세율</th></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">2억원 이하</td><td style="padding: 8px; border: 1px solid #e2e8f0;">9%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">2억원 ~ 200억원</td><td style="padding: 8px; border: 1px solid #e2e8f0;">19%</td></tr>
+                        <tr><td style="padding: 8px; border: 1px solid #e2e8f0;">200억원 초과 (최대)</td><td style="padding: 8px; border: 1px solid #e2e8f0;">21% ~ 24%</td></tr>
+                    </table>
+
+                    <div style="background: #eff6ff; padding: 15px; border-radius: 8px; font-size: 13px; color: #1e293b;">
+                        <span style="color: #2563eb; font-weight: 700;">절세액 계산법</span><br>
+                        연간 총 비용처리 금액(최대 1,500만원) × 해당 사업자의 과세표준 구간 세율 = 연간 실질 절세액
+                    </div>
                 </div>
-                <div class="input-group">
-                    <label>차량 월 납입료 (만원)</label>
-                    <input type="number" id="tax_monthly" value="80">
-                </div>
-                <button class="btn-calc" style="background:#03c75a; box-shadow: 0 4px 12px rgba(3,199,90,0.2);" onclick="calculateTax()">연간 절세액 확인하기</button>
-                <div id="tax-result" class="result" style="color:#03c75a;"></div>
-                <p style="font-size:12px; color:var(--text-muted); margin-top:15px; text-align:center; line-height:1.6;">※ 운행기록부 미작성 기준 연간 1,500만원 한도 내 비용처리 가정입니다.<br>최적의 절세 효과는 카고리즘 전문 상담을 통해 안내받으실 수 있습니다.</p>
             </div>
 
         </div>
@@ -751,7 +801,7 @@
 
 <div id="leadModal" class="modal">
     <div class="modal-content">
-        <span class="close-modal" onclick="closeModal()">×</span>
+        <span class="close-modal" onclick="closeModal()">&times;</span>
         <h2 style="color:var(--primary); margin:0 0 24px 0; font-size:22px; font-weight:800;">프리미엄 견적 상담</h2>
         <form action="#" method="POST" onsubmit="saveLeadData(); return false;">
             <div class="input-group"><label>고객명</label><input type="text" name="name" id="userName" required></div>
@@ -780,7 +830,7 @@
 
 <div id="adminModal" class="modal">
     <div class="modal-content" style="max-width: 650px;">
-        <span class="close-modal" onclick="closeAdmin()">×</span>
+        <span class="close-modal" onclick="closeAdmin()">&times;</span>
         <h2 style="color:var(--primary); margin:0 0 20px 0;">통합 관리 시스템</h2>
         
         <div class="admin-tab-btns">
@@ -873,7 +923,7 @@
         <a href="https://map.naver.com/p/entry/place/1186410778?placePath=/home?entry=plt&from=map&fromPanelNum=1&additionalHeight=76&timestamp=202604020336&locale=ko&svcName=map_pcv5&searchType=place&lng=127.0648947&lat=37.1696934&c=15.00,0,0,0,dh" target="_blank" class="footer-link"> 오시는 길</a>
         <br>
         <div class="visitor-counter">
-            오늘 방문자: <span id="visit-today">0</span>명  |  누적 방문자: <span id="visit-total">0</span>명
+            오늘 방문자: <span id="visit-today">0</span>명 &nbsp;|&nbsp; 누적 방문자: <span id="visit-total">0</span>명
         </div>
         <br><br>
         <span onclick="openAdmin()" style="cursor:pointer; color:var(--text-muted); font-size:11px; text-decoration:underline;">보안 관리자 모드</span>
@@ -1228,10 +1278,10 @@
             
             if(idx === 3) {
                 document.getElementById('rate-calc-container').style.display = 'none';
-                document.getElementById('tax-calc-container').style.display = 'block';
+                document.getElementById('tax-calc-wrapper').style.display = 'flex';
                 trackEvent('사업자 절세 계산기 탭 조회');
             } else {
-                document.getElementById('tax-calc-container').style.display = 'none';
+                document.getElementById('tax-calc-wrapper').style.display = 'none';
                 document.getElementById('rate-calc-container').style.display = 'block';
                 
                 const titles = ['렌트 금리 실질 분석', '리스 금리 실질 분석', '할부 금리 실질 분석'];
