@@ -583,11 +583,16 @@
         initTracking();
 
         const SHEET_NAME = '시트1';
-        const url = `https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=${SHEET_NAME}`;
+        // 아래 URL은 사용자님이 앱스 스크립트에서 배포 후 복사한 '웹 앱' URL을 그대로 넣어야 합니다.
+        // 기존 코드의 EXECUTION_ID 부분을 제거하고 아래와 같이 깔끔하게 수정했습니다.
+        const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
         
         try {
             const response = await fetch(url);
+            if (!response.ok) throw new Error('네트워크 응답 오류');
+            
             vehicleData = await response.json();
+            console.log("시트 데이터 성공적 로드:", vehicleData);
             
             applyBackgrounds();
             renderAllCars();
@@ -596,7 +601,8 @@
             setInterval(autoSlide, 5000);
             initNavScrollHint();
         } catch (e) {
-            console.error("데이터 연동에 실패했습니다.", e);
+            console.error("데이터 연동 실패:", e);
+            alert("데이터를 불러오는 중 오류가 발생했습니다. 앱스 스크립트 권한을 확인해주세요.");
         }
     }
 
