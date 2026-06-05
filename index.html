@@ -578,31 +578,51 @@
     
     let currentCustomerType = '개인';
     let currentInitCost = 0;
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>카고리즘 - 프리미엄 장기렌트·리스 솔루션</title>
+    <style>
+        /* (기존 스타일 코드와 동일합니다) */
+    </style>
+</head>
+<body>
+    <script>
+        // (기존 스크립트의 윗부분은 그대로 두시고, initData 함수부터 아래를 이렇게 교체하세요)
+        async function initData() {
+            initTracking();
 
-  async function initData() {
-    initTracking();
+            const SHEET_NAME = '시트1';
+            // 배포된 URL을 정확히 입력하세요
+            const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
+            
+            try {
+                const response = await fetch(url);
+                vehicleData = await response.json();
+                
+                applyBackgrounds();
+                renderAllCars();
+                renderReviews();
+                checkPromoPopup();
+                setInterval(autoSlide, 5000);
+                initNavScrollHint();
+            } catch (e) {
+                console.error("데이터 연동에 실패했습니다.", e);
+            }
+        } // initData 끝
 
-    const SHEET_NAME = '시트1';
-    // 이 URL은 앱스 스크립트 배포 시 발급받은 실제 URL로 사용하세요.
-    const url = 'https://script.google.com/macros/s/AKfycbzIobku4w_Fh8VYP01WvnyuYu6qZ-jCr6O_-TpSE1ntvdWKUn0zA6bzYS_NX3SeeGy7_Q/exec?sheet=' + SHEET_NAME;
-    
-    try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error('네트워크 응답 오류');
+        // 괄호가 꼬이지 않도록 여기서부터 함수들이 다시 시작됩니다
+        function initNavScrollHint() { /* ... 기존 내용 ... */ }
+        function getVisitorId() { /* ... 기존 내용 ... */ }
+        // ... (나머지 함수들을 여기에 순서대로 넣으세요)
         
-        vehicleData = await response.json();
-        console.log("시트 데이터 로드 성공:", vehicleData);
-        
-        applyBackgrounds();
-        renderAllCars();
-        renderReviews();
-        checkPromoPopup();
-        setInterval(autoSlide, 5000);
-        initNavScrollHint();
-    } catch (e) {
-        console.error("데이터 연동에 실패했습니다.", e);
-        // 디버깅을 위해 에러 발생 시 화면에 표시
-        const grid = document.getElementById('grid-kia');
+        // 마지막에 window.onload는 반드시 하나만 있어야 합니다
+        window.onload = initData;
+    </script>
+</body>
+</html>
         if(grid) grid.innerHTML = "데이터 연동 실패: " + e.message;
     }
 }
