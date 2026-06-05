@@ -581,52 +581,28 @@
     let currentCustomerType = '개인';
     let currentInitCost = 0;
 
-    function initData() {
-        initTracking();
+    function initData() {const SPREADSHEET_ID = '여기에_복사한_시트ID를_넣으세요';
+const SHEET_NAME = '시트1';
 
-        let savedData = localStorage.getItem('cargo_vehicles');
-        if (savedData) { 
-            vehicleData = JSON.parse(savedData); 
-            if(!vehicleData.benz) {
-                vehicleData.benz = generateCars('벤츠', 4, 'grid-benz');
-                vehicleData.bmw = generateCars('BMW', 4, 'grid-bmw');
-                vehicleData.audi = generateCars('아우디', 4, 'grid-audi');
-                vehicleData.porsche = generateCars('포르쉐', 4, 'grid-por');
-                vehicleData.volvo = generateCars('볼보', 4, 'grid-vol');
-                localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData));
-            }
-        } else {
-            vehicleData = {
-                'kia': generateCars('기아', 8, 'grid-kia'), 
-                'hyundai': generateCars('현대', 8, 'grid-hyundai'),
-                'kgm': generateCars('KGM', 4, 'grid-kgm'), 
-                'chev': generateCars('쉐보레', 4, 'grid-chev'),
-                'benz': generateCars('벤츠', 4, 'grid-benz'),
-                'bmw': generateCars('BMW', 4, 'grid-bmw'),
-                'audi': generateCars('아우디', 4, 'grid-audi'),
-                'porsche': generateCars('포르쉐', 4, 'grid-por'),
-                'volvo': generateCars('볼보', 4, 'grid-vol')
-            };
-            localStorage.setItem('cargo_vehicles', JSON.stringify(vehicleData));
-        }
+async function initData() {
+    initTracking();
+    
+    const url = `https://script.google.com/macros/s/EXECUTION_ID/exec?spreadsheetId=${SPREADSHEET_ID}&sheet=${SHEET_NAME}`;
+    
+    try {
+        const response = await fetch(url);
+        vehicleData = await response.json();
         
-        let savedReviews = localStorage.getItem('cargo_reviews');
-        if(savedReviews) { reviewData = JSON.parse(savedReviews); } else {
-            reviewData = [
-                {img: 'https://picsum.photos/400/300?sig=rv1', desc: '철저한 심사 승인으로 신속 출고 완료 - 캐스퍼 EV 실 오너 스마트 패키지'},
-                {img: 'https://picsum.photos/400/300?sig=rv2', desc: '최적 금리 컨설팅을 통한 플래그십 인도 가이드 - 현대 프리미엄 승인 건'}
-            ];
-            localStorage.setItem('cargo_reviews', JSON.stringify(reviewData));
-        }
-
         applyBackgrounds();
         renderAllCars();
         renderReviews();
         checkPromoPopup();
         setInterval(autoSlide, 5000);
-        
-        // 메뉴 스크롤 화살표 로직 초기화
         initNavScrollHint();
+    } catch (e) {
+        console.error("데이터 연동에 실패했습니다.");
+    }
+}
     }
 
     function initNavScrollHint() {
