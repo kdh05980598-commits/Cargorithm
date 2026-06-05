@@ -492,7 +492,8 @@
 
         <div id="admin-sec-leads" class="admin-sec active">
             <div id="admin-list" style="max-height:400px; overflow-y:auto; border:1px solid #e2e8f0; padding:15px; border-radius:12px; background:#fff;"></div>
-            <button onclick="clearLeads()" class="btn-calc" style="margin-top:20px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">데이터 전체 파기</button>
+            <button onclick="resetToDatabase()" class="btn-calc" style="margin-top:20px; padding:12px; font-size:14px; background:#f97316; box-shadow:none;">로컬 데이터 초기화 및 코드 연동</button>
+            <button onclick="clearLeads()" class="btn-calc" style="margin-top:10px; padding:12px; font-size:14px; background:#ef4444; box-shadow:none;">데이터 전체 파기</button>
         </div>
 
         <div id="admin-sec-stats" class="admin-sec">
@@ -585,15 +586,10 @@
 
     const localVehicleDatabase = {
         kia: [
-            { name: "기아 EV3", img: "https://kdh05980598-commits.github.io/Cargorithm/ev3.png", p60: "52", p36_30: "21", p60_30: "48" },
-            { name: "기아 EV4", img: "https://kdh05980598-commits.github.io/Cargorithm/ev4.png", p60: "52", p36_30: "20", p60_30: "47" },
-            { name: "기아 EV5", img: "https://kdh05980598-commits.github.io/Cargorithm/ev5.png", p60: "52", p36_30: "25", p60_30: "52" },
-            { name: "기아 EV6", img: "https://kdh05980598-commits.github.io/Cargorithm/ev6.png", p60: "52", p36_30: "28", p60_30: "60" },
-            { name: "기아 EV9", img: "https://kdh05980598-commits.github.io/Cargorithm/ev9.png", p60: "52", p36_30: "41", p60_30: "95" },
-            { name: "기아 더 뉴 카니발", img: "https://kdh05980598-commits.github.io/Cargorithm/카니발.png", p60: "56", p36_30: "41", p60_30: "52" },
-            { name: "기아 쏘렌토 하이브리드", img: "https://kdh05980598-commits.github.io/Cargorithm/쏘렌토.png", p60: "53", p36_30: "38", p60_30: "49" },
-            { name: "기아 스포티지", img: "https://kdh05980598-commits.github.io/Cargorithm/스포티지.pngg", p60: "49", p36_30: "21", p60_30: "45" },
-            { name: "기아 K8 하이브리드", img: "https://kdh05980598-commits.github.io/Cargorithm/k8.png", p60: "48", p36_30: "20", p60_30: "43" }
+            { name: "기아 더 뉴 카니발", img: "https://kdh05980598-commits.github.io/Cargorithm/카니발.png", p60: "52", p36_30: "41", p60_30: "48" },
+            { name: "기아 쏘렌토 하이브리드", img: "https://kdh05980598-commits.github.io/Cargorithm/쏘렌토.png", p60: "48", p36_30: "38", p60_30: "44" },
+            { name: "기아 스포티지", img: "https://kdh05980598-commits.github.io/Cargorithm/스포티지.png", p60: "38", p36_30: "29", p60_30: "35" },
+            { name: "기아 K8 하이브리드", img: "https://kdh05980598-commits.github.io/Cargorithm/k8.png", p60: "49", p36_30: "39", p60_30: "45" }
         ],
         hyundai: [
             { name: "현대 디 올 뉴 그랜저", img: "https://picsum.photos/350/200?sig=hy1", p60: "51", p36_30: "40", p60_30: "47" },
@@ -664,6 +660,14 @@
         checkPromoPopup();
         setInterval(autoSlide, 5000);
         initNavScrollHint();
+    }
+
+    function resetToDatabase() {
+        if(confirm('기기에 저장된 모든 편집 데이터를 지우고, 깃허브 코드 원본 이미지와 정보로 강제 연동하시겠습니까?')) {
+            localStorage.removeItem('cargo_vehicles');
+            alert('로컬 메모리가 초기화되었습니다. 웹페이지가 새로고침됩니다.');
+            location.reload();
+        }
     }
 
     function initNavScrollHint() {
